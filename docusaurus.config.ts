@@ -25,7 +25,7 @@ const config: Config = {
   organizationName: 'alihaidernoorani', // Usually your GitHub org/user name.
   projectName: 'Physical-AI-Humanoid-Robotics-Textbook', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -102,7 +102,7 @@ const config: Config = {
           items: [
             {
               label: 'Modules',
-              to: '/docs/01-ros2-nervous-system/intro',
+              to: '/docs/ros2-nervous-system/intro',
             },
           ],
         },

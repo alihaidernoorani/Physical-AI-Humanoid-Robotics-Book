@@ -103,3 +103,17 @@ Rivera, S. S., Leturc, I., Rodriguez-Araujo, J., & Bouchard, M. (2020). ROS and 
 Shibata, H., Saito, T., & Sato, M. (2021). Distributed robotic systems using ROS 2: Architecture and applications. Advanced Robotics, 35(8), 467-482.
 
 Vander Hoek, K., Hart, S., Belpaeme, T., & Feil-Seifer, D. (2019). Socially assistive robotics: A focus on trust and trustworthiness. IEEE International Conference on Robotics and Automation (ICRA), 8374-8380.
+
+## Navigation
+<div style={{display: 'flex', justifyContent: 'space-between', marginTop: '2rem', marginBottom: '2rem'}}>
+  <div>
+    <a href="../../intro" style={{display: 'inline-block', backgroundColor: '#f1f1f1', color: '#333', padding: '0.5rem 1rem', textDecoration: 'none', borderRadius: '4px', border: '1px solid #ddd'}}>
+      ← Back to Textbook
+    </a>
+  </div>
+  <div>
+    <a href="../02-digital-twin/intro" style={{display: 'inline-block', backgroundColor: '#4285f4', color: 'white', padding: '0.5rem 1rem', textDecoration: 'none', borderRadius: '4px'}}>
+    Next: Module 2 →
+    </a>
+  </div>
+</div>

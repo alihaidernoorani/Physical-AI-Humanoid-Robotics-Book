@@ -1,0 +1,56 @@
+name: "urdu-translation-skill"
+version: "1.0.0"
+description: "Translate content to Urdu language using LibreTranslate API or browser fallback"
+author: "Physical AI & Humanoid Robotics Textbook"
+license: "MIT"
+
+metadata:
+  category: "translation"
+  tags: ["urdu", "translation", "localization", "language"]
+  requirements:
+    - "Internet connection for API calls"
+    - "Browser with JavaScript support"
+
+input_schema:
+  type: "object"
+  properties:
+    text:
+      type: "string"
+      description: "Text to translate to Urdu"
+      required: true
+    source_lang:
+      type: "string"
+      description: "Source language code (default: en)"
+      default: "en"
+    target_lang:
+      type: "string"
+      description: "Target language code (default: ur)"
+      default: "ur"
+
+output_schema:
+  type: "object"
+  properties:
+    translated_text:
+      type: "string"
+      description: "Translated text in Urdu"
+    source_lang:
+      type: "string"
+      description: "Detected or provided source language"
+    target_lang:
+      type: "string"
+      description: "Target language"
+    success:
+      type: "boolean"
+      description: "Whether the translation was successful"
+
+implementation:
+  language: "javascript"
+  file: "implementation.js"
+  entry_point: "translateToUrdu"
+
+dependencies:
+  - "node-fetch" # for server-side API calls (if needed)
+
+permissions:
+  network: true
+  browser: true

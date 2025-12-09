@@ -1,0 +1,91 @@
+/* Enhanced typography and readability styles */
+.textbook-content {
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+}
+
+.textbook-content p {
+  margin-bottom: 1.5em !important;
+}
+
+/* Enhanced callout styles for Key Takeaways */
+.admonition.key-takeaways {
+  border-left: 4px solid #4285f4 !important;
+  background-color: #f8f9fa !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.admonition.key-takeaways .admonition-heading {
+  background-color: #e8f0fe !important;
+  margin: 0 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0 3px 0 0 !important;
+}
+
+.admonition.key-takeaways .admonition-content {
+  padding: 1rem !important;
+}
+
+/* Enhanced callout styles for Ethical Notes */
+.admonition.ethical-notes {
+  border-left: 4px solid #ea4335 !important;
+  background-color: #fef7f6 !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.admonition.ethical-notes .admonition-heading {
+  background-color: #fce8e6 !important;
+  margin: 0 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0 3px 0 0 !important;
+}
+
+.admonition.ethical-notes .admonition-content {
+  padding: 1rem !important;
+}
+
+/* Improved code block styling */
+.prism-code {
+  font-size: 0.9em !important;
+  line-height: 1.5 !important;
+  border-radius: 4px !important;
+}
+
+/* Enhanced table styling */
+.table {
+  display: block !important;
+  overflow-x: auto !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem !important;
+  text-align: left !important;
+  border: 1px solid #dee2e6 !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .textbook-content {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  .admonition.key-takeaways,
+  .admonition.ethical-notes {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* RTL layout support for Urdu */
+[dir="rtl"] {
+  text-align: right !important;
+}
+
+[dir="rtl"] .textbook-content p {
+  text-align: right !important;
+}

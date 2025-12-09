@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: Urdu Translation API Contract
+  description: API contract for Urdu translation functionality in the Physical AI & Humanoid Robotics textbook
+  version: 1.0.0
+  contact:
+    name: Textbook Development Team
+    email: dev@textbook.example.com
+
+paths:
+  /translate-to-urdu:
+    post:
+      summary: Translate English content to Urdu
+      description: Translates textbook chapter content from English to Urdu using LibreTranslate API
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslationRequest'
+      responses:
+        '200':
+          description: Successfully translated content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationResponse'
+        '400':
+          description: Invalid input content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Translation service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /user-profile:
+    post:
+      summary: Save user profile
+      description: Save user profile information to localStorage (simulated API for contract consistency)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: Profile saved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Profile saved successfully"
+
+components:
+  schemas:
+    TranslationRequest:
+      type: object
+      required:
+        - content
+        - chapterId
+      properties:
+        content:
+          type: string
+          description: English content to translate
+          example: "This chapter covers the fundamentals of ROS 2 nodes and communication patterns."
+        chapterId:
+          type: string
+          description: Unique identifier for the textbook chapter
+          example: "01-ros2-nodes"
+        sourceLang:
+          type: string
+          description: Source language code
+          default: "en"
+        targetLang:
+          type: string
+          description: Target language code
+          default: "ur"
+
+    TranslationResponse:
+      type: object
+      required:
+        - translatedContent
+        - chapterId
+        - success
+      properties:
+        translatedContent:
+          type: string
+          description: Urdu translated content
+          example: "یہ باب ROS 2 نوڈس اور مواصلاتی نمونوں کے بنیادیات پر مشتمل ہے۔"
+        chapterId:
+          type: string
+          description: Unique identifier for the textbook chapter
+          example: "01-ros2-nodes"
+        success:
+          type: boolean
+          description: Whether the translation was successful
+          example: true
+        cacheUsed:
+          type: boolean
+          description: Whether the response used cached content
+          example: false
+
+    UserProfile:
+      type: object
+      required:
+        - softwareExperience
+        - hardwareSetup
+        - learningStyle
+      properties:
+        softwareExperience:
+          type: string
+          enum: [Beginner, Intermediate, Advanced]
+          description: User's software experience level
+          example: "Intermediate"
+        hardwareSetup:
+          type: string
+          description: User's hardware setup
+          example: "Jetson Orin"
+        learningStyle:
+          type: string
+          enum: [Visual, Text-based, Hands-on]
+          description: User's preferred learning style
+          example: "Visual"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "TRANSLATION_ERROR"
+        message:
+          type: string
+          description: Error description
+          example: "Translation service is temporarily unavailable"

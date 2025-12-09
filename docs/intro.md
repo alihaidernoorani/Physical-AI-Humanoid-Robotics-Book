@@ -91,7 +91,13 @@ Upon completion, your capstone project will represent a significant achievement 
 
 Begin your journey into the future of robotics by exploring the modules below. Each module builds upon the previous ones, creating a comprehensive understanding of humanoid robotics. Start with Module 1 to establish the foundational ROS 2 concepts, then progress through simulation, AI integration, and natural interaction to complete your understanding of autonomous humanoid systems.
 
-Ready to begin? Start with the [Robotic Nervous System](/docs/01-ros2-nervous-system/intro) to build the foundation of your humanoid robot!
+<div style={{textAlign: 'center', marginTop: '2rem', marginBottom: '2rem'}}>
+  <a href="./01-ros2-nervous-system/intro" style={{display: 'inline-block', backgroundColor: '#4285f4', color: 'white', padding: '1rem 2rem', textDecoration: 'none', borderRadius: '8px', fontSize: '1.2rem', fontWeight: 'bold', boxShadow: '0 4px 6px rgba(0,0,0,0.1)'}}>
+    Start Learning →
+  </a>
+</div>
+
+Ready to begin? Start with the [Robotic Nervous System](./01-ros2-nervous-system/intro) to build the foundation of your humanoid robot!
 
 ## Ethical & Safety Considerations
 

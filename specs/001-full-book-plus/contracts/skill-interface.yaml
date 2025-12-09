@@ -1,0 +1,95 @@
+# Skill Interface Contract: Urdu Translation Skill
+
+name: urdu-translation-skill
+version: 1.0.0
+description: Translates English text to Urdu using LibreTranslate API with RTL layout support
+
+metadata:
+  author: Claude Code
+  license: MIT
+  tags: ["translation", "urdu", "localization", "text-processing"]
+
+interface:
+  input:
+    type: object
+    properties:
+      text:
+        type: string
+        description: The English text content to be translated to Urdu
+        required: true
+      chapterId:
+        type: string
+        description: Identifier for the chapter being translated
+        required: false
+      preserveFormat:
+        type: boolean
+        description: Whether to preserve original text formatting
+        required: false
+        default: true
+
+  output:
+    type: object
+    properties:
+      urduText:
+        type: string
+        description: The translated Urdu text
+        required: true
+      rtlLayout:
+        type: boolean
+        description: Whether RTL layout should be applied
+        required: true
+        default: true
+      success:
+        type: boolean
+        description: Whether the translation was successful
+        required: true
+      error:
+        type: string
+        description: Error message if translation failed
+        required: false
+      cached:
+        type: boolean
+        description: Whether the result was retrieved from cache
+        required: false
+        default: false
+      confidence:
+        type: number
+        description: Confidence level of the translation (0-1)
+        required: false
+
+configuration:
+  apiEndpoint:
+    type: string
+    description: LibreTranslate API endpoint URL
+    default: "https://libretranslate.com/translate"
+  timeout:
+    type: number
+    description: Request timeout in milliseconds
+    default: 10000
+  maxTextLength:
+    type: number
+    description: Maximum text length for single translation request
+    default: 5000
+
+execution:
+  runtime: javascript
+  dependencies:
+    - axios
+  permissions:
+    - network-access
+
+lifecycle:
+  init: initialize()
+  execute: translate(input)
+  destroy: cleanup()
+
+validation:
+  inputSchema:
+    required: ["text"]
+    properties:
+      text:
+        type: string
+        minLength: 1
+        maxLength: 5000
+  outputSchema:
+    required: ["urduText", "rtlLayout", "success"]

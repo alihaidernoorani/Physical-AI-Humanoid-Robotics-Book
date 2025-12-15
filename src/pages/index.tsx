@@ -18,11 +18,28 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/ros2-nervous-system/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
+          <div className={styles.moduleButtons}>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/ros2-nervous-system/intro">
+              Module 1: The Robotic Nervous System (ROS 2)
+            </Link>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/digital-twin/intro">
+              Module 2: The Digital Twin (Gazebo & Unity)
+            </Link>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/ai-robot-brain/intro">
+              Module 3: The AI-Robot Brain (NVIDIA Isaac™)
+            </Link>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/vla/intro">
+              Module 4: Vision-Language-Action (VLA)
+            </Link>
+          </div>
         </div>
       </div>
     </header>

@@ -1,0 +1,18 @@
+{
+  "extends": ["@docusaurus"],
+  "rules": {
+    "mdx/space-before-closing-slash": "error",
+    "mdx/no-unescaped-entities": "error",
+    "mdx/no-unused-expressions": "error",
+    "mdx/remark": [
+      "error",
+      {
+        "plugins": [
+          "remark-preset-lint-recommended",
+          "remark-lint-list-item-indent",
+          "remark-lint-no-duplicate-definitions"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+# Skill Interface Contract: textbook-mdx-compliance
+
+## Overview
+This document defines the skill interface contracts for the interactive components used in the textbook MDX compliance update. These contracts define how different interactive elements should behave and interface with the rest of the system.
+
+## Translation Toggle Skill Contract
+
+### Interface Definition
+```yaml
+name: translation-toggle-skill
+version: 1.0.0
+type: frontend-component
+purpose: Provide language switching functionality between English and Urdu
+```
+
+### Input Schema
+```yaml
+type: object
+properties:
+  content:
+    type: object
+    description: Content in both languages
+    properties:
+      en:
+        type: string
+        description: English content
+      ur:
+        type: string
+        description: Urdu content
+  defaultLanguage:
+    type: string
+    enum: [en, ur]
+    default: en
+    description: Default language to display
+required: [content]
+```
+
+### Output Schema
+```yaml
+type: object
+properties:
+  currentLanguage:
+    type: string
+    enum: [en, ur]
+    description: Currently selected language
+  renderedContent:
+    type: string
+    description: Content in the currently selected language
+  toggleFunction:
+    type: function
+    description: Function to switch between languages
+```
+
+### Methods
+- `switchLanguage(targetLanguage: "en" | "ur")`: Switches the displayed language
+- `getCurrentContent()`: Returns content in the current language
+- `getDefaultLanguage()`: Returns the default language setting
+
+## Quiz Skill Contract
+
+### Interface Definition
+```yaml
+name: quiz-skill
+version: 1.0.0
+type: frontend-component
+purpose: Provide interactive quiz functionality within textbook chapters
+```
+
+### Input Schema
+```yaml
+type: object
+properties:
+  questions:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique question identifier
+        text:
+          type: string
+          description: The question text
+        type:
+          type: string
+          enum: [multiple-choice, true-false, short-answer]
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              text:
+                type: string
+          description: Options for multiple choice questions
+        correctAnswer:
+          type: string
+          description: The correct answer identifier
+      required: [id, text, type, correctAnswer]
+  showResults:
+    type: boolean
+    default: false
+    description: Whether to show results immediately after each answer
+required: [questions]
+```
+
+### Output Schema
+```yaml
+type: object
+properties:
+  score:
+    type: number
+    description: Current score (0-100)
+  answers:
+    type: object
+    description: User's answers to each question
+  results:
+    type: array
+    items:
+      type: object
+      properties:
+        questionId:
+          type: string
+        correct:
+          type: boolean
+        userAnswer:
+          type: string
+        correctAnswer:
+          type: string
+```
+
+### Methods
+- `submitAnswers()`: Submits all answers and calculates score
+- `resetQuiz()`: Resets the quiz to initial state
+- `checkAnswer(questionId, answer)`: Checks if an answer is correct
+
+## Content Navigation Skill Contract
+
+### Interface Definition
+```yaml
+name: content-navigation-skill
+version: 1.0.0
+type: frontend-component
+purpose: Provide navigation between textbook chapters and modules
+```
+
+### Input Schema
+```yaml
+type: object
+properties:
+  currentPath:
+    type: string
+    description: Current page path
+  navigationTree:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        path:
+          type: string
+        children:
+          type: array
+          items:
+            type: object
+  showBreadcrumbs:
+    type: boolean
+    default: true
+required: [currentPath, navigationTree]
+```
+
+### Output Schema
+```yaml
+type: object
+properties:
+  breadcrumbs:
+    type: array
+    items:
+      type: object
+      properties:
+        title:
+          type: string
+        path:
+          type: string
+  nextChapter:
+    type: object
+    properties:
+      title:
+        type: string
+      path:
+        type: string
+  previousChapter:
+    type: object
+    properties:
+      title:
+        type: string
+      path:
+        type: string
+```
+
+### Methods
+- `goToNext()`: Navigate to the next chapter in sequence
+- `goToPrevious()`: Navigate to the previous chapter in sequence
+- `updatePath(newPath)`: Update the current path and recalculate navigation

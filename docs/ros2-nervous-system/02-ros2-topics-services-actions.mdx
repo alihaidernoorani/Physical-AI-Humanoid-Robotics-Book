@@ -1,0 +1,333 @@
+---
+title: "Advanced ROS 2 Communication Patterns"
+sidebar_label: "Advanced Communication"
+---
+
+import Callout from '@site/src/components/Callout';
+import Quiz from '@site/src/components/Quiz';
+import Exercise from '@site/src/components/Exercise';
+import Diagram from '@site/src/components/Diagram';
+
+## Learning Objectives
+
+By the end of this chapter, you will:
+- Configure and optimize Quality of Service (QoS) policies for different robot communication needs
+- Implement complex service interfaces for synchronous robot operations with error handling
+- Design and implement action-based interfaces for long-running robot behaviors with feedback
+- Analyze and optimize communication performance for real-time humanoid robot systems
+
+## Quality of Service (QoS) in Depth
+
+Quality of Service (QoS) policies in ROS 2 provide fine-grained control over communication characteristics. They enable precise tuning for different robot applications, which is crucial for humanoid robots with varying requirements for reliability, latency, and data delivery.
+
+<Callout type="tip" title="QoS Best Practice">
+Always match your QoS settings to the criticality and performance requirements of your specific robot application. Safety-critical data like IMU readings for balance control should use reliable delivery, while perception data might use best-effort for better performance.
+</Callout>
+
+### Primary QoS Policies
+
+The main QoS policies you'll work with include:
+
+- **Reliability**: Choose between best-effort (faster, may lose messages) or reliable (slower, ensures delivery)
+- **Durability**: Volatile (new subscribers don't get old messages) vs. transient-local (new subscribers get latest message)
+- **History**: Keep-all (store all messages) vs. keep-last (store only recent messages)
+- **Deadline**: Maximum time between consecutive messages
+- **Lifespan**: How long messages are kept before being dropped
+
+For humanoid robots, IMU data critical for balance control requires reliable delivery and low latency. In contrast, camera feeds for perception might tolerate best-effort delivery with higher latency.
+
+<Quiz
+  question="Which QoS policy would be most appropriate for IMU data used in humanoid robot balance control?"
+  options={[
+    "Best-effort reliability with keep-last history",
+    "Reliable reliability with keep-all history",
+    "Reliable reliability with keep-last history",
+    "Best-effort reliability with keep-all history"
+  ]}
+  correctAnswer={2}
+  explanation="For safety-critical IMU data in balance control, reliable delivery is essential to ensure no data is lost. Keep-last history is typically sufficient since only the most recent IMU readings are relevant for control."
+/>
+
+### Reliability Policies
+
+Reliability policies determine how messages are delivered between nodes:
+
+- **Reliable**: Guarantees message delivery but may result in higher latency - ideal for safety-critical applications like humanoid balance control
+- **Best-effort**: Provides lower latency but doesn't guarantee delivery - suitable for sensor data where occasional message loss is acceptable
+
+The choice between these policies directly impacts the robot's ability to maintain stable operation, especially under varying network conditions.
+
+### Durability Policies
+
+Durability policies control how messages are retained for late-joining subscribers:
+
+- **Volatile**: Provides the highest performance by not retaining messages for late subscribers - appropriate for high-frequency sensor data
+- **Transient-local**: Ensures newly connected subscribers receive the most recent messages - valuable for visualization tools or logging nodes
+
+### History Policies
+
+History policies determine how many messages are stored for delivery:
+
+- **Keep-all**: Stores all messages until delivered (memory intensive but ensures no data loss)
+- **Keep-last**: Stores only the most recent messages (balances memory usage with data availability)
+
+<Diagram
+  title="QoS Policy Effects"
+  description="How different QoS policies affect message delivery characteristics"
+  width="700"
+  height="400"
+/>
+
+<Exercise
+  title="QoS Configuration Exercise"
+  problem="Configure a ROS 2 publisher for a humanoid robot's camera feed that should prioritize performance over reliability, but still retain the last 5 frames for late-joining subscribers."
+  hints={[
+    "Use the rclpy.qos module",
+    "Set reliability to BEST_EFFORT",
+    "Set durability to VOLATILE",
+    "Set history to KEEP_LAST with depth of 5"
+  ]}
+  solution={`from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy, HistoryPolicy
+
+# Create a QoS profile for camera feed prioritizing performance
+camera_qos_profile = QoSProfile(
+    depth=5,  # Keep last 5 messages
+    reliability=ReliabilityPolicy.BEST_EFFORT,  # Prioritize performance over delivery guarantee
+    durability=DurabilityPolicy.VOLATILE,  # Don't keep messages for late-joining subscribers
+    history=HistoryPolicy.KEEP_LAST  # Keep only the most recent samples
+)`}
+/>
+
+## Advanced Service Implementations
+
+Complex service interfaces in ROS 2 extend basic request-response patterns to handle sophisticated robot operations with comprehensive error handling and state management. In humanoid robotics, services often manage operations that require guaranteed delivery and specific responses like calibration routines, configuration changes, or state queries with complex return values.
+
+### Service Architecture
+
+Services provide synchronous request-response communication patterns suitable for operations that require acknowledgment and result delivery. The synchronous nature ensures that clients receive definitive responses, which is critical for safety-related operations where the outcome must be known before proceeding.
+
+<Callout type="warning" title="Error Handling">
+Service servers in safety-critical humanoid robots should implement comprehensive error checking and provide meaningful error messages that enable clients to take appropriate recovery actions.
+</Callout>
+
+### Service Implementation Example
+
+Here's how to implement a complex service with error handling:
+
+```python
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import Trigger  # Using a simple service for example
+
+class CalibrationService(Node):
+    def __init__(self):
+        super().__init__('calibration_service')
+        self.srv = self.create_service(
+            Trigger,
+            'calibrate_joint',
+            self.calibrate_joint_callback
+        )
+
+    def calibrate_joint_callback(self, request, response):
+        try:
+            # Perform calibration logic
+            success = self.perform_calibration()
+
+            if success:
+                response.success = True
+                response.message = "Calibration completed successfully"
+            else:
+                response.success = False
+                response.message = "Calibration failed"
+
+        except Exception as e:
+            response.success = False
+            response.message = f"Calibration error: {str(e)}"
+
+        return response
+
+    def perform_calibration(self):
+        # Complex calibration logic here
+        # This is a simplified example
+        return True  # Simulate successful calibration
+
+def main(args=None):
+    rclpy.init(args=args)
+    calibration_service = CalibrationService()
+
+    try:
+        rclpy.spin(calibration_service)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        calibration_service.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+### Service Client Implementation
+
+Service clients should implement appropriate timeout values based on expected service execution time and include retry logic for non-critical operations that might fail due to temporary system conditions.
+
+<Quiz
+  question="Which of the following is the most important consideration for service timeout values in humanoid robots?"
+  options={[
+    "Always use the shortest possible timeout to improve performance",
+    "Balance responsiveness with the time required for complex operations",
+    "Use fixed timeout values for all services to maintain consistency",
+    "Set timeout values to the maximum possible to ensure completion"
+  ]}
+  correctAnswer={1}
+  explanation="For humanoid robots, timeout values must balance responsiveness with the time required for complex operations, particularly for operations involving physical movement or sensor data processing."
+/>
+
+## Action Server and Client Patterns
+
+Action-based communication in ROS 2 provides sophisticated interfaces for long-running operations with feedback, goal preemption, and result delivery. For humanoid robots, actions are essential for complex behaviors like navigation, manipulation, and coordinated motion sequences that require continuous monitoring and potential interruption.
+
+### Action Architecture
+
+The action architecture includes three distinct communication channels:
+
+- **Goal**: The desired action to be performed, including parameters and constraints
+- **Feedback**: Continuous updates on the progress of the operation, enabling other systems to coordinate appropriately
+- **Result**: The final outcome of the operation, including any relevant data or status information
+
+<Diagram
+  title="Action Communication Pattern"
+  description="Three-channel communication for long-running operations"
+  width="700"
+  height="400"
+/>
+
+<Callout type="tip" title="When to Use Actions">
+Use actions for long-running operations that need to provide feedback and allow for interruption, such as navigation, manipulation, or complex motion sequences."
+</Callout>
+
+### Action Server Implementation
+
+Action servers implement state machines that manage the lifecycle of long-running operations. The typical action server state flow includes:
+
+- **Idle**: Server is waiting for a new goal
+- **Active**: Goal is being executed
+- **Succeeded**: Goal completed successfully
+- **Aborted**: Goal execution failed
+- **Preempted**: Goal was cancelled in favor of a new goal
+
+For humanoid robots, this state management is critical to maintain system stability and enable safe operation. The server must handle goal acceptance, execution monitoring, feedback generation, and proper cleanup upon completion or cancellation.
+
+### Action Client Implementation
+
+Action clients provide interfaces for monitoring and controlling long-running operations. They can send goals to action servers, monitor progress through feedback, and send cancel requests when necessary.
+
+The ability to preempt actions is particularly important for safety-critical robots that may need to interrupt ongoing behaviors in response to emergency situations.
+
+<Exercise
+  title="Action Client Implementation"
+  problem="Implement a ROS 2 action client that sends a navigation goal to a humanoid robot and monitors progress with appropriate timeout handling."
+  hints={[
+    "Use the rclpy.action module",
+    "Set appropriate timeout values",
+    "Handle preemption and cancellation",
+    "Monitor feedback for progress updates"
+  ]}
+  solution={`import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from nav2_msgs.action import NavigateToPose
+import time
+
+class NavigationClient(Node):
+    def __init__(self):
+        super().__init__('navigation_client')
+        self._action_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
+
+    def send_goal(self, pose):
+        goal_msg = NavigateToPose.Goal()
+        goal_msg.pose = pose
+
+        self._action_client.wait_for_server()
+        future = self._action_client.send_goal_async(goal_msg)
+
+        # Wait for result with timeout
+        rclpy.spin_until_future_complete(self, future, timeout_sec=30.0)
+
+        if future.result() is not None:
+            goal_handle = future.result()
+            if goal_handle.accepted:
+                self.get_logger().info('Goal accepted')
+                result_future = goal_handle.get_result_async()
+                rclpy.spin_until_future_complete(self, result_future, timeout_sec=60.0)
+                return result_future.result()
+        else:
+            self.get_logger().error('Goal rejected')
+            return None`}
+/>
+
+<Quiz
+  question="Which of the following is NOT a communication channel in ROS 2 actions?"
+  options={[
+    "Goal",
+    "Feedback",
+    "Result",
+    "Status"
+  ]}
+  correctAnswer={3}
+  explanation="ROS 2 actions have three communication channels: Goal, Feedback, and Result. Status is not a separate channel but is part of the feedback."
+/>
+
+## Communication Performance Optimization
+
+Optimizing communication performance in ROS 2 systems requires careful consideration of QoS policies, message sizes, and network topology. For humanoid robots, real-time performance is critical as communication optimization directly impacts the robot's ability to respond to environmental changes and execute complex behaviors reliably.
+
+### Message Size Optimization
+
+Message size optimization involves balancing the amount of information transmitted with the frequency of communication:
+
+- Large messages provide comprehensive information but consume bandwidth and increase latency
+- Small messages reduce overhead but may require multiple transmissions to convey complete information
+
+For humanoid robots, this balance is particularly important for sensor data, as the trade-off between data completeness and update frequency affects the robot's situational awareness.
+
+<Callout type="danger" title="Performance Impact">
+Poor communication performance can severely impact humanoid robot safety and responsiveness. Always optimize communication patterns for your specific application requirements.
+</Callout>
+
+### Network Partitioning Strategies
+
+Network partitioning strategies can improve communication performance by organizing nodes into logical groups with optimized QoS settings. For humanoid robots, this might involve separating safety-critical communication paths from less critical data streams to ensure critical information receives priority and reliable delivery.
+
+The use of multiple DDS domains or partitions can further isolate communication paths, preventing interference between different subsystems.
+
+### Monitoring and Profiling
+
+Monitoring and profiling tools are essential for identifying communication bottlenecks and optimizing performance. ROS 2 provides tools for analyzing message rates, latency, and resource usage, which can be used to identify areas for improvement.
+
+For humanoid robots, continuous monitoring of communication performance is important to maintain system stability and identify potential issues before they affect robot operation.
+
+## Ethical & Safety Considerations
+
+The design of advanced communication patterns in humanoid robots has important ethical and safety implications:
+
+- The reliability of QoS configurations affects the consistency of robot behavior, directly impacting safety in human environments
+- Service calls for critical operations must be designed with appropriate timeouts and error handling to prevent system hangs that could lead to unsafe robot behavior
+- Actions for robot behaviors must include proper preemption capabilities to allow for emergency stops or safety interventions, which is particularly important as humanoid robots operate in close proximity to humans
+
+<Callout type="danger" title="Safety Critical">
+For safety-critical operations in humanoid robots, always implement proper error handling, timeouts, and preemption capabilities to ensure safe robot operation."
+</Callout>
+
+## Summary
+
+In this chapter, we've covered advanced ROS 2 communication patterns:
+
+- **Quality of Service (QoS) policies** provide fine-grained control over communication characteristics for different robot applications
+- **Complex service interfaces** enable sophisticated robot operations with comprehensive error handling and state management
+- **Action-based communication** supports long-running operations with feedback, goal preemption, and result delivery
+- **Proper QoS configuration** is critical for achieving real-time performance in humanoid robot systems
+- **Communication performance optimization** requires balancing message size, frequency, and reliability requirements
+- **Safety-critical communication paths** should be isolated and prioritized in humanoid robot systems
+
+These advanced communication patterns are essential for implementing the complete humanoid robot system in your projects. The QoS configuration skills you've learned will be crucial for achieving real-time performance, particularly for safety-critical communication paths. The service and action patterns will be essential for implementing complex humanoid behaviors like navigation, manipulation, and coordinated motion control.

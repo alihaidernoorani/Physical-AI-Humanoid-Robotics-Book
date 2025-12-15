@@ -1,0 +1,315 @@
+[INFO] [en] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled with some errors in 52.71s
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/03-grounding-language-ros2.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/01-synthetic-data-generation.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/02-isaac-ros-gems.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/01-voice-to-text-whisper.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/digital-twin/03-unity-high-fidelity-env.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/intro.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/04-edge-inference-jetson.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/digital-twin/04-synchronizing-gazebo-unity.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/03-nav2-bipedal-navigation.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/04-capstone-end-to-end.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/intro.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/node_modules/@docusaurus/mdx-loader/lib/index.js??ruleSet[1].rules[8].use[0]!/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/02-llm-task-decomposition.mdx': No serializer registered for VFileMessage
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> Error -> VFileMessage
+[webpackbar] ✔ Client: Compiled with some errors in 2.57m
+[ERROR] Client bundle compiled with errors therefore further build is impossible.
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/intro.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 106,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 157,
+  "name": "157:106",
+  "place": {
+    "_bufferIndex": 105,
+    "_index": 19,
+    "line": 157,
+    "column": 106,
+    "offset": 10156
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/01-synthetic-data-generation.mdx"
+Cause: Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `"`, `'`, or `{`
+Details:
+{
+  "column": 9,
+  "file": "",
+  "message": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "line": 157,
+  "name": "157:9",
+  "place": {
+    "_bufferIndex": 8,
+    "_index": 55,
+    "line": 157,
+    "column": 9,
+    "offset": 9653
+  },
+  "reason": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/02-isaac-ros-gems.mdx"
+Cause: Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `"`, `'`, or `{`
+Details:
+{
+  "column": 11,
+  "file": "",
+  "message": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "line": 211,
+  "name": "211:11",
+  "place": {
+    "_bufferIndex": 10,
+    "_index": 7,
+    "line": 211,
+    "column": 11,
+    "offset": 12743
+  },
+  "reason": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/03-nav2-bipedal-navigation.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 136,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 233,
+  "name": "233:136",
+  "place": {
+    "_bufferIndex": 135,
+    "_index": 19,
+    "line": 233,
+    "column": 136,
+    "offset": 14734
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/ai-robot-brain/04-edge-inference-jetson.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 95,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 429,
+  "name": "429:95",
+  "place": {
+    "_bufferIndex": 94,
+    "_index": 19,
+    "line": 429,
+    "column": 95,
+    "offset": 20602
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/digital-twin/03-unity-high-fidelity-env.mdx"
+Cause: Unexpected character `[` (U+005B) before local attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; `=` to initialize a value; or the end of the tag
+Details:
+{
+  "column": 11,
+  "file": "",
+  "message": "Unexpected character `[` (U+005B) before local attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; `=` to initialize a value; or the end of the tag",
+  "line": 344,
+  "name": "344:11",
+  "place": {
+    "_bufferIndex": 10,
+    "_index": 7,
+    "line": 344,
+    "column": 11,
+    "offset": 20934
+  },
+  "reason": "Unexpected character `[` (U+005B) before local attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; `=` to initialize a value; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/digital-twin/04-synchronizing-gazebo-unity.mdx"
+Cause: Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `"`, `'`, or `{`
+Details:
+{
+  "column": 9,
+  "file": "",
+  "message": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "line": 77,
+  "name": "77:9",
+  "place": {
+    "_bufferIndex": 8,
+    "_index": 39,
+    "line": 77,
+    "column": 9,
+    "offset": 5074
+  },
+  "reason": "Unexpected character `[` (U+005B) before attribute value, expected a character that can start an attribute value, such as `\"`, `'`, or `{`",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/intro.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 85,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 163,
+  "name": "163:85",
+  "place": {
+    "_bufferIndex": 84,
+    "_index": 19,
+    "line": 163,
+    "column": 85,
+    "offset": 10012
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/01-voice-to-text-whisper.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 85,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 198,
+  "name": "198:85",
+  "place": {
+    "_bufferIndex": 84,
+    "_index": 19,
+    "line": 198,
+    "column": 85,
+    "offset": 11284
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/02-llm-task-decomposition.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 100,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 287,
+  "name": "287:100",
+  "place": {
+    "_bufferIndex": 99,
+    "_index": 19,
+    "line": 287,
+    "column": 100,
+    "offset": 15704
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/03-grounding-language-ros2.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 113,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 457,
+  "name": "457:113",
+  "place": {
+    "_bufferIndex": 112,
+    "_index": 19,
+    "line": 457,
+    "column": 113,
+    "offset": 22019
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}
+
+--------------------------
+
+Error: MDX compilation failed for file "/mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/docs/vla/04-capstone-end-to-end.mdx"
+Cause: Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag
+Details:
+{
+  "column": 87,
+  "file": "",
+  "message": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "line": 636,
+  "name": "636:87",
+  "place": {
+    "_bufferIndex": 86,
+    "_index": 19,
+    "line": 636,
+    "column": 87,
+    "offset": 28402
+  },
+  "reason": "Unexpected character `,` (U+002C) before attribute name, expected a character that can start an attribute name, such as a letter, `$`, or `_`; whitespace before attributes; or the end of the tag",
+  "ruleId": "unexpected-character",
+  "source": "micromark-extension-mdx-jsx",
+  "url": "https://github.com/micromark/micromark-extension-mdx-jsx#unexpected-character-at-expected-expect"
+}

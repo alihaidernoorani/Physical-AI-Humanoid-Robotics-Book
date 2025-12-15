@@ -13,7 +13,7 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  Create as many sidebars as you want.
  */
 const sidebars: SidebarsConfig = {
-  // Manual sidebar configuration to match actual document IDs (without numeric prefixes)
+  // Manual sidebar configuration to match actual document IDs without numeric prefixes
   tutorialSidebar: [
     {
       type: 'category',

@@ -2,188 +2,136 @@
 id: 1
 title: Create Textbook Constitution
 stage: constitution
-date: 2025-12-07
+date: 2025-12-14
 surface: agent
-model: claude-sonnet-4-5-20250929
+model: Claude Sonnet 4.5
 feature: none
-branch: master
+branch: main
 user: user
 command: /sp.constitution
-labels: [constitution,physical-ai,robotics,textbook]
+labels: [constitution, textbook, physical-ai]
 links:
   spec: null
   ticket: null
   adr: null
   pr: null
 files:
- - .specify/memory/constitution.md
+- .specify/memory/constitution.md
+- .specify/templates/plan-template.md
+- .specify/templates/spec-template.md
+- .specify/templates/tasks-template.md
 tests:
- - none
+
 ---
 
 ## Prompt
 
-```text
+```
+/sp.constitution
+
 Project: Physical AI & Humanoid Robotics Textbook
 
-1. Mission & Purpose
-
-Create an academically rigorous, technically accurate, and highly structured textbook that introduces, explains, and expands the field of Physical AI, Embodied Intelligence, and Humanoid Robotics, grounded in verifiable, state-of-the-art research.
-The constitution governs all content generation, review, editing, and verification across the full book creation process.
-
-2. Core Principles
-
-Scientific Accuracy
-
-Every factual claim must be traceable to a verifiable source.
-
-Prefer primary research from robotics, embodied cognition, biomechanics, and AI/ML.
-
-Academic Clarity
-
-Write for an audience with an undergraduate-level background in computer science, robotics, or AI.
-
-Define advanced terminology before use.
-
-Reproducibility & Transparency
-
-All methods, algorithms, mathematical formulations, and conceptual frameworks must be presented with enough detail to be reproducible.
-
-Each chapter must clearly state assumptions, models, and dependencies.
-
-Rigor & Peer-Review Standards
-
-Minimum 50% peer-reviewed sources from robotics/AI conferences and journals.
-
-Prioritize sources such as: IEEE, Nature Robotics, Science Robotics, ACM, arXiv (with caution), RSS, ICRA, IROS.
-
-Ethical & Safety Awareness
-
-Consider ethical implications, safety constraints, societal impact, and human-robot interaction standards.
-
-No unverified claims about capabilities or dangers.
-
-3. Content Standards
-
-Writing Grade Level: Flesch–Kincaid Grade 10–12
-
-Tone: instructional, analytical, research-driven
-
-Definition Requirements: Every chapter must include key term definitions
-
-Visuals & Diagrams:
-
-Non-copyright diagrams preferred
-
-Provide descriptions of all figures for accessibility
-
-4. Citation & Verification
-
-Citation Format: APA 7th edition
-
-Verification Rule:
-
-No claim should appear unless verified by at least one reputable source.
-
-Plagiarism Tolerance: 0% (all text must be original)
-
-Source Types:
-
-≥ 50% peer-reviewed academic sources
-
-Remaining sources may include technical standards, robotics lab documentation, textbooks, reputable industry whitepapers, and specifications from leading robotics groups
-
-5. Structural Requirements
-
-Book Format: Docusaurus-based
-
-Deployment: GitHub Pages
-
-Minimum Length: 20–30 full chapters
-
-Per-Chapter Requirements:
-
-Learning objectives
-
-Key definitions
-
-Examples & illustrations
-
-Summary
-
-Citations section
-
-Glossary entries where needed
-
-6. Constraints
-
-Total Word Count: 30,000–50000 words
-
-Minimum Sources: 40+
-
-Mathematical Accuracy:
-
-Use canonical equations from robotics, control theory, machine learning, and embodied intelligence
-
-Include symbolic definitions for all variables
-
-No hallucinated references under any circumstances.
-
-7. Success Criteria
-
-The book is considered complete only if:
-
-All factual claims are source-verified
-
-Plagiarism check shows 0%
-
-All references are real, valid, and publicly verifiable
-
-Content passes an academic-level fact-checking review
-
-Book builds a coherent narrative from Physical AI foundations → humanoid robotics systems → future directions
-
-Final Docusaurus version builds and deploys successfully on GitHub Pages
-
-8. Workflow Requirements (Spec-Kit Plus Compatible)
-
-Use Spec-Kit Plus to create:
-
-/sp.chapter
-
-/sp.glossary
-
-/sp.diagram.description
-
-/sp.proto
-
-/sp.checklist
-
-Each chapter must be generated through a spec-first workflow: outline → draft → verify → revise.
+Purpose:
+Build a complete AI-native technical textbook using Docusaurus to teach the Physical AI & Humanoid Robotics 13 week course exactly as defined in the provided course outline. The textbook must include a polished landing page and a fully functional RAG chatbot backend.
+
+Fixed Module List (Locked):
+The textbook consists of exactly four modules. These names are frozen and must not be changed, reworded, abbreviated, or reordered.
+
+Module 1: The Robotic Nervous System (ROS 2)
+Module 2: The Digital Twin (Gazebo & Unity)
+Module 3: The AI-Robot Brain (NVIDIA Isaac™)
+Module 4: Vision-Language-Action (VLA)
+
+These module names must be used verbatim in:
+- Sidebar labels
+- URL slugs
+- Homepage module cards
+- RAG indexing metadata
+
+Scope Boundary:
+All content must strictly follow the provided course outline and verified robotics fundamentals. No speculative hardware, invented concepts, or hallucinated technologies are allowed. Module structure, titles, and hierarchy are locked.
+
+Primary Deliverables:
+
+Frontend (Docusaurus):
+- Homepage with interactive module cards
+- Modules → chapters → subsections matching the outline
+- Glossary, quizzes, exercises, diagrams
+- Reusable MDX components: callouts, quizzes, Urdu toggle, personalization toggle
+- Clean navigation and stable routing
+
+Backend (FastAPI):
+- RAG chatbot using OpenAI Agents / ChatKit
+- Qdrant vector database + Neon Postgres
+- Chunk size: 300–500 tokens, top_k: 5, MiniLM embeddings, cosine similarity
+- Per-page RAG mode using selected page context
+- Urdu translation endpoint
+- User personalization endpoint
+
+Personalization & Translation:
+Personalization may adjust explanation depth by user level but must never alter technical correctness. Urdu translations must preserve exact technical meaning. Toggles must function on every chapter.
+
+Subagents (Role-Locked):
+- ContentWriterAgent
+- GlossaryAgent
+- QuizAgent
+- TranslationAgent
+- PersonalizationAgent
+- RAGIndexAgent
+- HomepageDesignAgent
+
+Acceptance Criteria:
+- Zero build warnings or broken links
+- RAG chatbot answers at least 90% of seeded test questions correctly
+- Personalization and Urdu toggles work across all chapters
+- Folder structure complies with Docusaurus standards
+- Project is fully deployable to GitHub Pages and/or Vercel
+
+Change Control & Failure Rules:
+Module names, structure, and hierarchy are immutable. Any conflict, missing dependency, or build failure must pause execution and be reported. No autonomous scope expansion or renaming is allowed.
+
+End of constitution.
 ```
 
 ## Response snapshot
 
-Created a comprehensive constitution for the Physical AI & Humanoid Robotics Textbook project based on the user's requirements. The constitution includes:
+The constitution for the Physical AI & Humanoid Robotics Textbook has been successfully updated to version 1.1.0. The following changes were made:
 
-- Core Principles: Scientific Accuracy, Academic Clarity, Reproducibility & Transparency, Rigor & Peer-Review Standards, Ethical & Safety Awareness, and Content Verification & Plagiarism Standards
-- Structural Requirements: Book Format & Deployment standards and Visual & Accessibility standards
-- Development Workflow: Chapter Creation Process and Content Constraints
-- Governance: Rules for compliance and amendment procedures
+### New Version: 1.1.0 (Minor version bump - new sections added)
 
-The constitution file is now stored at .specify/memory/constitution.md with version 1.0.0.
+**Added sections:**
+- Fixed Module List (Locked) with the four required modules
+- Technical Architecture section with Frontend (Docusaurus) and Backend (FastAPI) requirements
+- Personalization & Translation requirements
+- Role-Locked Subagents section
+- Quality Assurance section with Scope Boundary, Acceptance Criteria, and Change Control rules
+
+**Updated templates:**
+- `.specify/templates/plan-template.md` - Added constitution checks aligned with textbook requirements
+- `.specify/templates/spec-template.md` - Added functional requirements aligned with constitution
+- `.specify/templates/tasks-template.md` - Added task categories aligned with textbook architecture
+
+**Key constitution elements:**
+- Scientific Accuracy: All claims must be verifiable and traceable to reputable sources
+- Academic Clarity: Content for undergraduate-level audience with proper terminology
+- Fixed 4-module structure: The Robotic Nervous System (ROS 2), The Digital Twin (Gazebo & Unity), The AI-Robot Brain (NVIDIA Isaac™), Vision-Language-Action (VLA)
+- Frontend: Docusaurus-based with interactive components
+- Backend: FastAPI with RAG chatbot, Qdrant vector database, translation/personalization
+- Acceptance: 90% RAG accuracy, zero build warnings, proper deployment
+
+The constitution now fully reflects the requirements specified in your input, ensuring all future development aligns with these principles.
 
 ## Outcome
 
-- ✅ Impact: Created foundational constitution document for Physical AI textbook project
-- 🧪 Tests: none
-- 📁 Files: Updated .specify/memory/constitution.md
-- 🔁 Next prompts: Chapter creation using /sp.chapter, glossary generation using /sp.glossary
-- 🧠 Reflection: The constitution establishes clear academic and technical standards for the textbook project
+- ✅ Impact: Constitution updated to v1.1.0 with comprehensive textbook requirements
+- 🧪 Tests: constitution validation
+- 📁 Files: 4 files updated to align with new constitution
+- 🔁 Next prompts: Feature specification and planning based on new constitution
+- 🧠 Reflection: The constitution now properly captures all requirements for the Physical AI & Humanoid Robotics Textbook project
 
 ## Evaluation notes (flywheel)
 
-- Failure modes observed: none
-- Graders run and results (PASS/FAIL): PASS
+- Failure modes observed: None
+- Graders run and results (PASS/FAIL): PASS - All requirements properly captured
 - Prompt variant (if applicable): N/A
-- Next experiment (smallest change to try): Begin creating first chapter using /sp.chapter
+- Next experiment (smallest change to try): Begin feature specification based on new constitution

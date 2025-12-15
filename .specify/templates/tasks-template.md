@@ -51,6 +51,11 @@ description: "Task list template for feature implementation"
 - [ ] T001 Create project structure per implementation plan
 - [ ] T002 Initialize [language] project with [framework] dependencies
 - [ ] T003 [P] Configure linting and formatting tools
+- [ ] T004 [P] Setup Docusaurus framework for textbook frontend
+- [ ] T005 [P] Configure FastAPI backend project structure
+- [ ] T006 [P] Setup Qdrant vector database configuration
+- [ ] T007 [P] Setup Neon Postgres database configuration
+- [ ] T008 [P] Configure environment variables and secrets management
 
 ---
 
@@ -62,12 +67,18 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T009 Setup database schema and migrations framework
+- [ ] T010 [P] Implement authentication/authorization framework
+- [ ] T011 [P] Setup API routing and middleware structure
+- [ ] T012 Create base models/entities that all stories depend on
+- [ ] T013 Configure error handling and logging infrastructure
+- [ ] T014 Setup environment configuration management
+- [ ] T015 Implement RAG chatbot framework with OpenAI Agents
+- [ ] T016 Configure MiniLM embeddings with cosine similarity
+- [ ] T017 Setup chunking mechanism for 300-500 token sizes
+- [ ] T018 Implement Urdu translation endpoint
+- [ ] T019 Implement user personalization endpoint
+- [ ] T020 Create fixed 4-module structure: The Robotic Nervous System (ROS 2), The Digital Twin (Gazebo & Unity), The AI-Robot Brain (NVIDIA Isaac™), Vision-Language-Action (VLA)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -83,17 +94,21 @@ Examples of foundational tasks (adjust based on your project):
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T021 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T022 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T023 [P] [US1] Test scientific accuracy verification for content in tests/integration/test_content_verification.py
+- [ ] T024 [P] [US1] Test academic clarity compliance for target audience in tests/integration/test_academic_clarity.py
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T025 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+- [ ] T026 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+- [ ] T027 [US1] Implement [Service] in src/services/[service].py (depends on T025, T026)
+- [ ] T028 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T029 [US1] Add validation and error handling
+- [ ] T030 [US1] Add logging for user story 1 operations
+- [ ] T031 [US1] Implement content verification framework to ensure plagiarism tolerance of 0%
+- [ ] T032 [US1] Add proper citation and source tracking mechanisms
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -156,6 +171,15 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Implement Urdu translation toggle functionality across all chapters
+- [ ] TXXX Ensure personalization features adjust explanation depth without altering technical correctness
+- [ ] TXXX Verify all content addresses ethical implications and safety constraints
+- [ ] TXXX Test RAG chatbot accuracy (must answer at least 90% of seeded test questions correctly)
+- [ ] TXXX Validate zero build warnings or broken links
+- [ ] TXXX Verify folder structure complies with Docusaurus standards
+- [ ] TXXX Ensure project is fully deployable to GitHub Pages and/or Vercel
+- [ ] TXXX Create reusable MDX components: callouts, quizzes, Urdu toggle, personalization toggle
+- [ ] TXXX Implement per-page RAG mode using selected page context
 
 ---
 

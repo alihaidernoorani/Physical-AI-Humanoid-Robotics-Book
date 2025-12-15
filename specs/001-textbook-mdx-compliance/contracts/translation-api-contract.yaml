@@ -1,0 +1,180 @@
+# Translation API Contract: textbook-mdx-compliance
+
+## Overview
+This document defines the API contract for translation functionality between English and Urdu for the textbook content. This is primarily a frontend contract that defines how translation components should be structured and behave.
+
+## Translation Toggle Component API
+
+### Component Definition
+```yaml
+component: TranslationToggle
+type: React/MDX Component
+description: Provides a toggle interface between English and Urdu content
+```
+
+### Props Interface
+```yaml
+interface TranslationToggleProps {
+  /**
+   * Content in both languages
+   */
+  content: {
+    en: string | React.ReactNode;
+    ur: string | React.ReactNode;
+  };
+
+  /**
+   * Default language to display initially
+   * @default 'en'
+   */
+  defaultLanguage?: 'en' | 'ur';
+
+  /**
+   * Callback function called when language is switched
+   */
+  onLanguageChange?: (language: 'en' | 'ur') => void;
+
+  /**
+   * Whether to persist the user's language preference
+   * @default true
+   */
+  persistPreference?: boolean;
+
+  /**
+   * CSS class name for the toggle container
+   */
+  className?: string;
+}
+```
+
+### State Structure
+```yaml
+state: {
+  currentLanguage: 'en' | 'ur',
+  isToggleVisible: boolean,
+  userPreference: 'en' | 'ur' | null
+}
+```
+
+### Event Handlers
+```yaml
+events: {
+  onToggle: () => void,
+  onLanguageChange: (newLanguage: 'en' | 'ur') => void,
+  onMount: () => void,
+  onUnmount: () => void
+}
+```
+
+## Translation Context API
+
+### Context Definition
+```yaml
+context: TranslationContext
+description: Provides translation functionality to child components
+```
+
+### Context Value Interface
+```yaml
+interface TranslationContextValue {
+  /**
+   * Current active language
+   */
+  currentLanguage: 'en' | 'ur';
+
+  /**
+   * Function to switch language
+   */
+  switchLanguage: (language: 'en' | 'ur') => void;
+
+  /**
+   * Function to get content in current language
+   */
+  getContent: (content: { en: string; ur: string }) => string;
+
+  /**
+   * Function to check if translation is available
+   */
+  hasTranslation: (content: { en?: string; ur?: string }) => boolean;
+}
+```
+
+## Translation Hook API
+
+### Hook Definition
+```yaml
+hook: useTranslation
+description: React hook for translation functionality
+```
+
+### Hook Return Interface
+```yaml
+interface UseTranslationReturn {
+  /**
+   * Current active language
+   */
+  language: 'en' | 'ur';
+
+  /**
+   * Function to switch language
+   */
+  toggleLanguage: () => void;
+
+  /**
+   * Function to set specific language
+   */
+  setLanguage: (lang: 'en' | 'ur') => void;
+
+  /**
+   * Function to translate content
+   */
+  t: (content: { en: string; ur: string }) => string;
+
+  /**
+   * Function to check if content has translation
+   */
+  hasTranslation: (content: { en?: string; ur?: string }) => boolean;
+}
+```
+
+## Content Translation Structure
+
+### Content Format
+```yaml
+contentStructure: {
+  type: 'text' | 'component' | 'mixed',
+  translations: {
+    en: string | ReactElement,
+    ur: string | ReactElement
+  },
+  metadata: {
+    lastUpdated: string,
+    translatedBy: string,
+    verified: boolean
+  }
+}
+```
+
+### Translation Status
+```yaml
+translationStatus: {
+  en: 'complete' | 'partial' | 'missing',
+  ur: 'complete' | 'partial' | 'missing',
+  isBilingual: boolean
+}
+```
+
+## Validation Rules
+
+### Component Validation
+- All translation components must have fallback content for missing translations
+- Language switching must be instantaneous without page reload
+- User's language preference must be persisted across sessions
+- Components must be accessible and work with screen readers
+- Components must be responsive and work on all device sizes
+
+### Content Validation
+- All English content must have corresponding Urdu translations where applicable
+- Technical terms must be consistently translated
+- Code examples and technical content may remain in English if translation is not appropriate
+- Images and diagrams should have bilingual captions where necessary

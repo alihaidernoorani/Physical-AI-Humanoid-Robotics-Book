@@ -1,0 +1,275 @@
+---
+title: "ROS 2 Nodes: The Foundation of Robot Communication"
+sidebar_label: "ROS2 Nodes"
+---
+
+import Callout from '@site/src/components/Callout';
+import Quiz from '@site/src/components/Quiz';
+import Exercise from '@site/src/components/Exercise';
+import Diagram from '@site/src/components/Diagram';
+
+## Learning Objectives
+
+By the end of this chapter, you will:
+- Understand what ROS 2 nodes are and why they're essential for humanoid robotics
+- Learn how to create and structure ROS 2 nodes in Python
+- Master the three communication patterns: topics, services, and actions
+- Configure Quality of Service (QoS) policies for different communication needs
+- Implement node-based systems for humanoid robot applications
+
+## Understanding ROS 2 Nodes
+
+ROS 2 nodes represent the fundamental computational units that execute specific robot functionality. Think of nodes as the individual organs in a robot's nervous system - each performing specific functions while communicating with others to achieve complex behaviors. In humanoid robotics, nodes encapsulate various capabilities such as sensor processing, motion control, perception, planning, and decision-making.
+
+Each node operates as an independent process, providing fault isolation. This enables distributed computation across multiple processing units—a critical requirement for humanoid robots with complex sensorimotor systems.
+
+<Callout type="info" title="Node Architecture">
+The node architecture in ROS 2 incorporates improved lifecycle management and better support for real-time systems compared to ROS 1.
+</Callout>
+
+### Key Characteristics of Nodes
+
+ROS 2 nodes have several important characteristics:
+
+- **Modularity**: Each node focuses on a specific task, promoting separation of concerns
+- **Independence**: Nodes can start, stop, and fail without affecting the entire system
+- **Communication**: Nodes interact through standardized interfaces and message passing
+- **Scalability**: Multiple nodes can run on the same machine or distributed across networks
+- **Multi-language support**: Nodes can be implemented in C++, Python, Rust, and other languages
+
+### Practical Example: Node Organization in Humanoid Robots
+
+In humanoid robots, nodes are often organized by functional domains:
+
+- **Sensor driver nodes**: Handle raw data acquisition from IMUs, cameras, and joint encoders
+- **Perception nodes**: Process raw data to extract meaningful information such as object locations or environment maps
+- **Planning nodes**: Generate motion trajectories
+- **Control nodes**: Execute trajectories on the robot's actuators
+
+This functional separation enables modular development and independent optimization of each subsystem.
+
+<Quiz
+  question="Which of the following is NOT a benefit of the node-based architecture in ROS 2 for humanoid robots?"
+  options={[
+    "Fault isolation between different robot subsystems",
+    "Distributed computation across multiple processing units",
+    "Single language requirement for all robot subsystems",
+    "Modular development of robot capabilities"
+  ]}
+  correctAnswer={2}
+  explanation="ROS 2 supports multiple programming languages, which is a benefit for humanoid robotics where different subsystems may require specialized languages for performance or legacy reasons."
+/>
+
+## Topic-Based Communication
+
+Topics in ROS 2 implement a publish-subscribe communication pattern. This is ideal for sensor data distribution and state broadcasting - perfect for the continuous data streams that humanoid robots generate.
+
+In humanoid robotics, topics are commonly used for continuous data streams like joint states, sensor readings, and robot poses. The asynchronous nature of topic communication allows for efficient data distribution where multiple consumers can access the same information stream without blocking the publisher.
+
+<Callout type="warning" title="QoS Criticality">
+For humanoid robots, different sensor data streams require different QoS settings. For example, IMU data critical for balance control requires reliable delivery and low latency. In contrast, camera feeds for perception might tolerate best-effort delivery with higher latency.
+</Callout>
+
+### Quality of Service (QoS) Policies
+
+QoS policies are a critical feature of ROS 2 topics that allow fine-tuning of communication characteristics:
+
+- **Reliability**: Choose between best-effort (faster, may lose messages) or reliable (slower, ensures delivery)
+- **Durability**: Volatile (new subscribers don't get old messages) vs. transient-local (new subscribers get latest message)
+- **History**: Keep-all (store all messages) vs. keep-last (store only recent messages)
+- **Depth**: Number of messages to store in the history
+
+These can be configured based on the specific requirements of each data stream.
+
+<Diagram
+  title="Topic Communication Pattern"
+  description="Publisher-subscriber model with multiple subscribers receiving the same published data"
+  width="600"
+  height="300"
+/>
+
+The pub/sub pattern is particularly beneficial for humanoid robots. It naturally supports the broadcast nature of sensor data. A single joint state publisher can provide information to multiple subscribers including controllers, visualizers, and logging nodes. This reduces system complexity and eliminates the need for multiple direct connections between components.
+
+<Exercise
+  title="QoS Configuration Exercise"
+  problem="Configure a ROS 2 publisher for IMU data that requires reliable delivery with low latency for humanoid balance control."
+  hints={[
+    "Use the rclpy.qos module",
+    "Set reliability to RELIABLE",
+    "Set durability to VOLATILE",
+    "Consider history and depth settings"
+  ]}
+  solution={`from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
+
+# Create a QoS profile for IMU data with reliable delivery
+imu_qos_profile = QoSProfile(
+    depth=10,  # Keep last 10 messages
+    reliability=ReliabilityPolicy.RELIABLE,  # Ensure all messages are delivered
+    durability=DurabilityPolicy.VOLATILE,  # Don't keep messages for late-joining subscribers
+    history=10  # Keep last 10 samples
+)
+
+# Use this profile when creating your publisher
+publisher = node.create_publisher(Imu, 'imu/data', imu_qos_profile)`}
+/>
+
+## Service-Based Communication
+
+Services provide synchronous request-response communication patterns. These are suitable for operations that require acknowledgment and result delivery - perfect for operations that have a clear beginning and end.
+
+In humanoid robotics, services are commonly used for operations like calibration routines, configuration changes, or state queries. Unlike topics, services establish a direct connection between the client and server for each request, ensuring that the client receives a response to its specific request.
+
+Service-based communication is appropriate for operations that require guaranteed delivery and specific responses. For example, a humanoid robot might use a service to request a specific joint calibration sequence - the service response indicates success or failure.
+
+The synchronous nature of services ensures that the requesting node receives a definitive response, which is important for safety-critical operations. However, services are not suitable for continuous data streams or operations that might take extended periods to complete, as the blocking nature of service calls means that the client node waits for the response.
+
+<Diagram
+  title="Service Communication Pattern"
+  description="Client-server model with request-response interaction"
+  width="600"
+  height="300"
+/>
+
+## Action-Based Communication
+
+Actions extend services to support long-running operations. They provide feedback and goal preemption capabilities - essential for humanoid robot behaviors that take extended time to complete.
+
+In humanoid robotics, actions are essential for behaviors like navigation to a goal, manipulation tasks, or complex motion sequences. Actions provide three key communication channels:
+
+- **Goal**: The desired action to be performed
+- **Feedback**: Continuous updates on the progress of the action
+- **Result**: The final outcome when the action completes
+
+These allow clients to monitor progress and cancel operations if necessary.
+
+<Callout type="tip" title="When to Use Actions">
+Use actions for long-running operations that need to provide feedback and allow for interruption, such as navigation, manipulation, or complex motion sequences.
+</Callout>
+
+The action architecture is particularly valuable for humanoid robot behaviors. It provides a standardized interface for complex operations while allowing for interruption and recovery. For example, a walking action might provide continuous feedback about the robot's current step phase, allowing other systems to coordinate appropriately. If the robot detects a dangerous situation, it can preempt the walking action and execute an emergency behavior.
+
+<Diagram
+  title="Action Communication Pattern"
+  description="Client-server model with goal, feedback, and result communication"
+  width="700"
+  height="400"
+/>
+
+<Quiz
+  question="Which communication pattern is most appropriate for a humanoid robot's walking behavior that needs to provide continuous feedback and allow for interruption?"
+  options={[
+    "Topics",
+    "Services",
+    "Actions",
+    "Parameters"
+  ]}
+  correctAnswer={2}
+  explanation="Actions are specifically designed for long-running operations that provide feedback and can be preempted, making them ideal for humanoid robot behaviors like walking."
+/>
+
+## Implementation Example: Creating a Node
+
+Let's look at how to create a simple ROS 2 node in Python that demonstrates these concepts:
+
+```python
+#!/usr/bin/env python3
+# minimal_node.py
+
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+class MinimalNode(Node):
+    def __init__(self):
+        super().__init__('minimal_node')
+
+        # Create a publisher
+        self.publisher_ = self.create_publisher(String, 'topic', 10)
+
+        # Create a subscription
+        self.subscription = self.create_subscription(
+            String,
+            'topic',
+            self.listener_callback,
+            10)
+
+        # Create a timer to publish messages
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.i = 0
+
+    def timer_callback(self):
+        msg = String()
+        msg.data = f'Hello World: {self.i}'
+        self.publisher_.publish(msg)
+        self.get_logger().info(f'Publishing: "{msg.data}"')
+        self.i += 1
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f'I heard: "{msg.data}"')
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    minimal_node = MinimalNode()
+
+    try:
+        rclpy.spin(minimal_node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        minimal_node.destroy_node()
+        rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+```
+
+## Best Practices for Humanoid Robotics
+
+When implementing nodes for humanoid robotics, consider these best practices:
+
+### Lifecycle Management
+- Always call `rclpy.init()` before creating nodes
+- Use try/except blocks around `rclpy.spin()` for graceful interruption
+- Clean up resources by calling `destroy_node()` before shutdown
+- Handle `KeyboardInterrupt` for clean Ctrl+C termination
+
+### The lifecycle node pattern provides enhanced control over node initialization, configuration, and shutdown, which is important for humanoid robots that need to transition between different operational states.
+
+<Callout type="tip" title="Lifecycle Nodes">
+Use lifecycle nodes for humanoid robot systems that need to transition between different operational states (e.g., idle, active, emergency stop) in a controlled manner.
+</Callout>
+
+### Performance Considerations
+- Choose appropriate queue sizes for publishers and subscribers
+- Use efficient timer periods (avoid very short intervals causing excessive CPU usage)
+- Consider using intra-process communication for high-frequency local communication
+- Monitor memory usage for long-running nodes
+
+## Ethical & Safety Considerations
+
+The design of communication patterns in humanoid robots has important ethical and safety implications:
+
+- The reliability of topic communication affects the consistency of sensor data, which directly impacts robot decision-making and safety
+- Service calls for critical operations must be designed with appropriate timeouts and error handling to prevent system hangs
+- Actions for robot behaviors must include proper preemption capabilities to allow for emergency stops or safety interventions
+
+<Callout type="danger" title="Safety Critical">
+For safety-critical operations in humanoid robots, always implement proper error handling, timeouts, and preemption capabilities to ensure safe robot operation.
+</Callout>
+
+## Summary
+
+In this chapter, we've covered the fundamental concepts of ROS 2 communication:
+
+- **Nodes** provide the fundamental computational units for robot functionality with improved lifecycle management
+- **Topics** enable efficient publish-subscribe communication with configurable Quality of Service policies
+- **Services** provide synchronous request-response communication for operations requiring acknowledgment
+- **Actions** support long-running operations with feedback and preemption capabilities
+- Proper selection of communication patterns is critical for humanoid robot performance and safety
+- QoS policies allow fine-tuning of communication characteristics for specific robot requirements
+
+Understanding these communication patterns forms the foundation for developing complex humanoid robot systems. The node architecture you learn here will structure the perception, planning, and control systems in more advanced applications.
+
+In the next chapter, we'll dive deeper into implementing these concepts with practical examples and advanced patterns for humanoid robotics.

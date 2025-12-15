@@ -1,0 +1,217 @@
+---
+title: "Lifecycle Nodes and Composition"
+sidebar_label: "Lifecycle Nodes"
+---
+
+import Callout from '@site/src/components/Callout';
+import Quiz from '@site/src/components/Quiz';
+import Exercise from '@site/src/components/Exercise';
+import Diagram from '@site/src/components/Diagram';
+
+## Learning Objectives
+
+By the end of this chapter, you will:
+- Implement lifecycle nodes for managed state transitions in humanoid robot systems
+- Design and manage state transitions for safety-critical robot operations
+- Apply component composition patterns for modular robot software development
+- Optimize real-time performance in lifecycle node implementations
+
+## Understanding Lifecycle Nodes
+
+Lifecycle nodes in ROS 2 provide enhanced control over node initialization, configuration, and shutdown. This is particularly valuable for humanoid robots that require predictable behavior during startup and shutdown sequences.
+
+The lifecycle node pattern extends basic ROS nodes by incorporating a well-defined state machine that ensures proper resource management and coordinated system initialization. Unlike basic nodes that start operating immediately upon initialization, lifecycle nodes follow a controlled sequence of states that enables safe and predictable operation.
+
+<Callout type="tip" title="Lifecycle Benefits">
+Lifecycle nodes enable coordinated startup procedures that ensure all dependencies are satisfied before activation, which is essential for safety-critical humanoid systems.
+</Callout>
+
+### Why Lifecycle Nodes Matter
+
+The primary advantage of lifecycle nodes over basic nodes is the ability to coordinate complex initialization sequences across multiple nodes. In humanoid robotics, multiple subsystems must initialize in a specific order - sensors must be ready before controllers can operate, and safety systems must be active before any movement can occur.
+
+This coordination is essential for safety-critical systems. Improper initialization could result in unsafe robot behavior. Lifecycle nodes enable coordinated startup procedures that ensure all dependencies are satisfied before activation, preventing potentially dangerous situations during robot startup.
+
+Lifecycle nodes also provide improved error handling and recovery capabilities compared to basic nodes. When a lifecycle node encounters an error, it can transition to a specific error state, remain in a safe configuration, and allow other system components to continue operating. For humanoid robots operating in human environments, this capability enables graceful degradation and recovery from component failures.
+
+<Quiz
+  question="Which of the following is NOT a primary state in the lifecycle node state machine?"
+  options={[
+    "Unconfigured",
+    "Inactive",
+    "Active",
+    "Running"
+  ]}
+  correctAnswer={3}
+  explanation="The primary lifecycle node states are Unconfigured, Inactive, Active, and Finalized. 'Running' is not a defined state in the lifecycle node state machine."
+/>
+
+## Lifecycle Node States and Transitions
+
+The lifecycle node state machine defines a comprehensive set of states and transitions that provide fine-grained control over node behavior. Understanding these states is crucial for developing robust humanoid robot systems.
+
+The primary states include:
+- **Unconfigured (UC)**: Initial state after node creation
+- **Configuring (C)**: Node is initializing resources and parameters
+- **Inactive (I)**: Node is configured but not active
+- **Activating (A)**: Node is transitioning to active state
+- **Active (AC)**: Node is running and processing data
+- **Deactivating (DA)**: Node is transitioning to inactive state
+- **Finalized (F)**: Node has been shut down and resources released
+
+There are also additional error states for handling exceptional conditions during transitions.
+
+<Diagram
+  title="Lifecycle Node State Transitions"
+  description="State transitions in lifecycle nodes"
+  width="700"
+  height="400"
+/>
+
+<Exercise
+  title="Lifecycle Node Implementation"
+  problem="Create an rclpy lifecycle node that manages a humanoid robot's sensor driver with proper state transitions."
+  hints={[
+    "Inherit from LifecycleNode instead of Node",
+    "Implement the required lifecycle callbacks",
+    "Handle state transitions properly"
+  ]}
+  solution={`import rclpy
+from rclpy.lifecycle import LifecycleNode, LifecycleState
+from rclpy.lifecycle import TransitionCallbackReturn
+from sensor_msgs.msg import JointState
+
+class SensorDriverLifecycleNode(LifecycleNode):
+    def __init__(self):
+        super().__init__('sensor_driver_lifecycle_node')
+        self.joint_publisher = None
+
+    def on_configure(self, state: LifecycleState):
+        self.get_logger().info('Configuring sensor driver')
+        # Initialize resources but don't start publishing
+        return TransitionCallbackReturn.SUCCESS
+
+    def on_activate(self, state: LifecycleState):
+        self.get_logger().info('Activating sensor driver')
+        # Create publisher and start publishing
+        self.joint_publisher = self.create_publisher(JointState, 'joint_states', 10)
+        return super().on_activate(state)
+
+    def on_deactivate(self, state: LifecycleState):
+        self.get_logger().info('Deactivating sensor driver')
+        # Stop publishing but keep resources
+        self.joint_publisher = None
+        return super().on_deactivate(state)
+
+    def on_cleanup(self, state: LifecycleState):
+        self.get_logger().info('Cleaning up sensor driver')
+        # Release resources
+        return TransitionCallbackReturn.SUCCESS
+
+    def on_shutdown(self, state: LifecycleState):
+        self.get_logger().info('Shutting down sensor driver')
+        return TransitionCallbackReturn.SUCCESS
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = SensorDriverLifecycleNode()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()`}
+/>
+
+### State-by-State Breakdown
+
+The **unconfigured state** represents a node that has been created but not yet initialized with parameters or resources. In this state, the node consumes minimal resources and cannot participate in communication patterns. For humanoid robots, nodes typically start in this state and transition through configuration before becoming operational.
+
+The **configuring state** is where nodes initialize parameters, allocate resources, and establish initial connections. For humanoid robots, this might include loading robot-specific parameters, initializing sensor interfaces, and establishing communication with hardware controllers. The configuration process must complete successfully to allow the node to transition to the inactive state, ensuring that all required resources are available.
+
+The **inactive state** represents a configured node that is ready to operate but not currently processing data or controlling hardware. For humanoid robots, this state is useful for nodes that are prepared to operate but waiting for specific conditions or commands. The inactive state allows for resource allocation while preventing active robot control, providing a safe intermediate state between configuration and operation.
+
+The **activating state** is a transitional state where the node moves from inactive to active. This ensures that all necessary operations occur in the correct sequence before the node becomes fully operational.
+
+The **active state** is where the node performs its primary functions, processing data and participating in communication patterns. In this state, the node is fully operational and performing its intended tasks.
+
+## Component Composition Patterns
+
+Component composition in ROS 2 enables the creation of complex systems from smaller, reusable components. This promotes modularity and maintainability in humanoid robot software systems.
+
+The composition pattern allows developers to combine multiple components within a single process, reducing communication overhead while maintaining the benefits of modular design. This is particularly important for humanoid robots where latency between related functions can significantly impact performance.
+
+<Callout type="note" title="Component Benefits">
+Component composition allows for reduced latency between related functions while maintaining separate concerns for development and testing.
+</Callout>
+
+The component interface defines the contract between components and the container that manages them. For humanoid robots, components might implement specific robot functions such as sensor processing, control algorithms, or perception systems.
+
+The interface includes methods for initialization, configuration, activation, and cleanup, which align with the lifecycle node state machine to ensure proper coordination between components and the container.
+
+Component containers provide the runtime environment for managing multiple components within a single process. For humanoid robots, this approach can reduce latency between related functions while maintaining modularity.
+
+For example, a perception component and a planning component might be composed in the same container. This minimizes communication delays while maintaining separate concerns for development and testing.
+
+The composition pattern supports both static and dynamic composition. Static composition is defined at compile time and provides the best performance, while dynamic composition allows for runtime loading and unloading of components.
+
+For humanoid robots, static composition is typically used for core functionality where performance is critical, while dynamic composition enables flexible system configuration and maintenance during development or for field updates.
+
+## Real-time Considerations for Lifecycle Nodes
+
+Real-time performance in lifecycle nodes requires careful attention to state transition timing, resource allocation, and communication patterns. For humanoid robots, safety and performance are critical, and lifecycle nodes must execute state transitions within predictable time bounds to ensure system stability and responsiveness.
+
+State transition timing must account for the time required to execute callbacks and complete resource allocation or deallocation. For humanoid robots, this includes considerations for sensor initialization, actuator preparation, and safety system activation. The timing of these operations directly impacts the robot's ability to respond to commands and maintain safe operation during state transitions.
+
+<Quiz
+  question="What is the primary purpose of the inactive state in the lifecycle node state machine?"
+  options={[
+    "To actively process data and control hardware",
+    "To represent a configured node ready to operate but not currently active",
+    "To indicate an error condition",
+    "To finalize resource cleanup"
+  ]}
+  correctAnswer={1}
+  explanation="The inactive state represents a configured node that is ready to operate but not currently processing data or controlling hardware, providing a safe intermediate state."
+/>
+
+Resource allocation in lifecycle nodes must consider real-time requirements for memory, CPU, and I/O operations. For humanoid robots, this includes pre-allocating memory for sensor data processing, configuring real-time scheduling policies, and ensuring that critical operations have priority access to system resources.
+
+The allocation strategy must balance resource efficiency with real-time performance requirements. Communication patterns in lifecycle nodes must maintain real-time performance while providing the coordination required for state management. For humanoid robots, this includes ensuring that state change notifications propagate quickly through the system and that dependent nodes can respond appropriately to lifecycle events.
+
+The communication architecture must support both internal state management of the lifecycle node and external coordination with other system components. This ensures that the system remains responsive and safe during all state transitions.
+
+## Practical Applications in Humanoid Robotics
+
+In humanoid robotics, lifecycle nodes are essential for managing the complex startup and shutdown procedures required for safe operation. When a humanoid robot powers on, multiple subsystems must initialize in a specific sequence:
+
+1. **Safety systems** must be active first to ensure safe operation
+2. **Sensor systems** must initialize to provide awareness of the environment
+3. **Control systems** can then become active once sensors are ready
+4. **Actuator systems** must be carefully enabled with proper safety checks
+
+This coordinated startup prevents dangerous situations where actuators might move before the robot knows its position or environmental conditions. Similarly, during shutdown, systems must deactivate in the reverse order to ensure safe stopping of all motion.
+
+Configuration management in lifecycle nodes enables dynamic parameter adjustment and system reconfiguration without requiring node restarts. For humanoid robots, this capability allows for adaptive behavior during operation, such as adjusting control parameters based on environmental conditions or changing operational modes.
+
+Error handling in lifecycle nodes provides structured approaches for managing system failures and recovery. For humanoid robots, the lifecycle node pattern enables graceful degradation and recovery from component failures, which is essential for safe operation in human environments.
+
+## Ethical & Safety Considerations
+
+The implementation of lifecycle nodes in humanoid robots has important ethical and safety implications. Proper state management ensures that robots transition between operational states safely, preventing unsafe behaviors during startup, shutdown, and error recovery.
+
+The component composition patterns must maintain safety boundaries between different robot functions, ensuring that failures in one component do not compromise safety-critical systems. Additionally, the transparency of state transitions is important to maintain human trust and enable appropriate oversight of robot behavior.
+
+<Callout type="danger" title="Safety Critical">
+Proper lifecycle management is critical for safety in humanoid robots, ensuring that all systems initialize, operate, and shut down in a coordinated and predictable manner.
+</Callout>
+
+## Summary
+
+In this chapter, we've covered lifecycle nodes and composition patterns:
+
+- **Lifecycle nodes** provide enhanced control over node initialization, configuration, and shutdown for safety-critical systems
+- **The lifecycle node state machine** includes well-defined states and transitions for coordinated system management
+- **Component composition** enables modular development while reducing communication overhead between related functions
+- **Real-time considerations** require careful attention to state transition timing and resource allocation
+- **Lifecycle nodes enable** graceful error handling and recovery in humanoid robot systems
+- **Safety-critical humanoid robots** benefit from coordinated initialization and controlled state transitions
+
+The lifecycle node patterns you've learned in this chapter are essential for implementing safe and reliable humanoid robot systems. These patterns ensure that your robot starts up, operates, and shuts down in a predictable and safe manner, which is crucial for humanoid robots operating in human environments. The component composition techniques will help you build modular, maintainable systems that can be easily extended and maintained over time.

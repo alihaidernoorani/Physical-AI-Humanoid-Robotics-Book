@@ -1,0 +1,5 @@
+docs/vla/01-voice-to-text-whisper.mdx
+docs/vla/02-llm-task-decomposition.mdx
+docs/vla/03-grounding-language-ros2.mdx
+docs/vla/04-capstone-end-to-end.mdx
+docs/vla/intro.mdx

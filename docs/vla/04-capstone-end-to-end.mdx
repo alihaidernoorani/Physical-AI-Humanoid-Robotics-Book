@@ -57,13 +57,13 @@ import Toggle from '@site/src/components/Toggle';
 
 ## Integration of All Previous Modules
 
-The integration of all previous modules into a complete autonomous humanoid system represents the culmination of the knowledge and skills developed throughout the course. This integration brings together the ROS 2 nervous system, digital twin simulation environment, AI-powered robot brain, and vision-language-action capabilities to create a unified autonomous system (Driess et al., 2023).
+The integration of all previous modules into a complete autonomous humanoid system represents the culmination of the knowledge and skills developed throughout the course. This integration brings together the ROS 2 nervous system, digital twin simulation environment, AI-powered robot brain, and vision-language-action capabilities to create a unified autonomous system.
 
 <Callout type="note" title="System Integration">
 Complete system integration combines all course modules into a unified autonomous humanoid system, bringing together ROS 2, digital twin simulation, AI-powered robot brain, and vision-language-action capabilities.
 </Callout>
 
-System architecture design for the integrated humanoid robot must account for the complex interactions between all components while maintaining modularity and maintainability. The architecture should provide clear interfaces between subsystems, enable independent development and testing of components, and support the real-time performance requirements of autonomous operation. For humanoid robots, the architecture must also handle the safety-critical nature of human-robot interaction (Brohan & Wyatt, 2020).
+System architecture design for the integrated humanoid robot must account for the complex interactions between all components while maintaining modularity and maintainability. The architecture should provide clear interfaces between subsystems, enable independent development and testing of components, and support the real-time performance requirements of autonomous operation. For humanoid robots, the architecture must also handle the safety-critical nature of human-robot interaction.
 
 <Diagram
   title="Integrated System Architecture"
@@ -71,7 +71,7 @@ System architecture design for the integrated humanoid robot must account for th
   caption="Integrated system architecture connecting all modules: ROS 2, Digital Twin, AI-Brain, and VLA"
 />
 
-Data flow integration connects the various processing pipelines including voice-to-text, language understanding, task decomposition, navigation planning, perception processing, and action execution. The integration must handle the timing constraints of real-time operation while providing appropriate buffering and synchronization between components. For humanoid robots, the data flow must support both high-bandwidth sensor data and high-frequency control commands (Huang et al., 2022).
+Data flow integration connects the various processing pipelines including voice-to-text, language understanding, task decomposition, navigation planning, perception processing, and action execution. The integration must handle the timing constraints of real-time operation while providing appropriate buffering and synchronization between components. For humanoid robots, the data flow must support both high-bandwidth sensor data and high-frequency control commands.
 
 <Exercise
   title="System Integration Architecture"
@@ -231,7 +231,7 @@ class IntegratedHumanoidSystem:
         # Additional cleanup code here`}
 />
 
-Resource management integration coordinates the computational resources across all subsystems to ensure that critical components receive appropriate priority and resources. For humanoid robots operating on resource-constrained platforms, this includes managing GPU memory for AI inference, CPU cycles for control systems, and communication bandwidth for sensor and actuator data. The resource management must adapt to changing operational conditions and prioritize safety-critical functions (Zhang et al., 2023).
+Resource management integration coordinates the computational resources across all subsystems to ensure that critical components receive appropriate priority and resources. For humanoid robots operating on resource-constrained platforms, this includes managing GPU memory for AI inference, CPU cycles for control systems, and communication bandwidth for sensor and actuator data. The resource management must adapt to changing operational conditions and prioritize safety-critical functions.
 
 <Quiz
   question="What is a key consideration for system architecture design in integrated humanoid robots?"
@@ -246,13 +246,13 @@ Resource management integration coordinates the computational resources across a
 
 ## End-to-End Pipeline Implementation
 
-The end-to-end pipeline implementation creates a complete system that processes voice commands through the entire chain of processing to generate appropriate robot actions. This pipeline integrates voice recognition, language understanding, task decomposition, action planning, and execution in a seamless flow that enables natural human-robot interaction (Radford et al., 2022).
+The end-to-end pipeline implementation creates a complete system that processes voice commands through the entire chain of processing to generate appropriate robot actions. This pipeline integrates voice recognition, language understanding, task decomposition, action planning, and execution in a seamless flow that enables natural human-robot interaction.
 
 <Callout type="tip" title="End-to-End Pipeline">
 The end-to-end pipeline processes voice commands through the entire chain of processing to generate robot actions, integrating voice recognition, language understanding, task decomposition, action planning, and execution in a seamless flow.
 </Callout>
 
-Voice command processing begins with speech recognition and flows through language understanding to task decomposition, then to action planning and execution. Each stage must maintain appropriate timing and data integrity while handling the uncertainties and variations inherent in natural language and real-world operation. The pipeline must also provide appropriate feedback and error handling throughout the process (Brohan & Wyatt, 2020).
+Voice command processing begins with speech recognition and flows through language understanding to task decomposition, then to action planning and execution. Each stage must maintain appropriate timing and data integrity while handling the uncertainties and variations inherent in natural language and real-world operation. The pipeline must also provide appropriate feedback and error handling throughout the process.
 
 <Diagram
   title="End-to-End Pipeline Flow"
@@ -260,7 +260,7 @@ Voice command processing begins with speech recognition and flows through langua
   caption="End-to-end pipeline flow from voice command to action execution"
 />
 
-State management across the pipeline maintains context and coherence throughout complex multi-step interactions. For humanoid robots, this includes tracking the robot's current state, the progress of ongoing tasks, and the context of the human-robot interaction. The state management system must handle interruptions, task switching, and context recovery to maintain natural interaction (Huang et al., 2022).
+State management across the pipeline maintains context and coherence throughout complex multi-step interactions. For humanoid robots, this includes tracking the robot's current state, the progress of ongoing tasks, and the context of the human-robot interaction. The state management system must handle interruptions, task switching, and context recovery to maintain natural interaction.
 
 <Exercise
   title="End-to-End Pipeline Implementation"
@@ -619,7 +619,7 @@ if __name__ == "__main__":
     asyncio.run(main())`}
 />
 
-Performance optimization of the end-to-end pipeline ensures that the complete processing chain meets the real-time requirements for natural interaction while maintaining the accuracy and safety required for robot operation. This includes optimizing data flow, minimizing processing latencies, and ensuring that critical safety functions remain responsive. The optimization must balance performance with resource constraints and maintain system stability (Zhang et al., 2023).
+Performance optimization of the end-to-end pipeline ensures that the complete processing chain meets the real-time requirements for natural interaction while maintaining the accuracy and safety required for robot operation. This includes optimizing data flow, minimizing processing latencies, and ensuring that critical safety functions remain responsive. The optimization must balance performance with resource constraints and maintain system stability.
 
 ### Concrete Examples
 - Example: "Clean the room" command decomposed into navigation, object detection, and manipulation sequence
@@ -634,13 +634,13 @@ Performance optimization of the end-to-end pipeline ensures that the complete pr
 
 ## System Validation and Testing
 
-Comprehensive system validation ensures that the integrated autonomous humanoid system operates correctly and safely across all operational scenarios. The validation process must verify that individual components function correctly within the integrated system and that their interactions produce the expected behavior. For humanoid robots, validation must include safety-critical functions and human-robot interaction scenarios (Driess et al., 2023).
+Comprehensive system validation ensures that the integrated autonomous humanoid system operates correctly and safely across all operational scenarios. The validation process must verify that individual components function correctly within the integrated system and that their interactions produce the expected behavior. For humanoid robots, validation must include safety-critical functions and human-robot interaction scenarios.
 
 <Callout type="warning" title="System Validation">
 Comprehensive system validation is essential for integrated autonomous humanoid systems, ensuring correct operation and safety across all scenarios, including safety-critical functions and human-robot interaction.
 </Callout>
 
-Unit and integration testing validates individual components and their interactions within the larger system. For the integrated humanoid system, this includes testing the voice recognition pipeline, language understanding module, task decomposition system, navigation planning, and action execution individually and in combination. The testing must cover normal operation, edge cases, and failure scenarios (Brohan & Wyatt, 2020).
+Unit and integration testing validates individual components and their interactions within the larger system. For the integrated humanoid system, this includes testing the voice recognition pipeline, language understanding module, task decomposition system, navigation planning, and action execution individually and in combination. The testing must cover normal operation, edge cases, and failure scenarios.
 
 <Diagram
   title="System Validation Process"
@@ -648,7 +648,7 @@ Unit and integration testing validates individual components and their interacti
   caption="System validation process with unit, integration, simulation, and real-world testing"
 />
 
-Simulation-based validation uses the digital twin environment to test the complete system in a wide variety of scenarios before deployment to physical hardware. For humanoid robots, simulation allows for testing in diverse environments, with various obstacles and situations that might be difficult or dangerous to recreate in physical testing. The simulation must accurately model the physical and behavioral characteristics of the real robot (Huang et al., 2022).
+Simulation-based validation uses the digital twin environment to test the complete system in a wide variety of scenarios before deployment to physical hardware. For humanoid robots, simulation allows for testing in diverse environments, with various obstacles and situations that might be difficult or dangerous to recreate in physical testing. The simulation must accurately model the physical and behavioral characteristics of the real robot.
 
 <Exercise
   title="System Validation Framework"
@@ -1031,7 +1031,7 @@ if __name__ == "__main__":
     main()`}
 />
 
-Real-world validation on physical hardware verifies that the system operates correctly in actual operating conditions. This includes testing with real sensors, actuators, and environmental conditions that may differ from simulation. The real-world validation must include safety protocols and gradual progression from simple to complex scenarios (Zhang et al., 2023).
+Real-world validation on physical hardware verifies that the system operates correctly in actual operating conditions. This includes testing with real sensors, actuators, and environmental conditions that may differ from simulation. The real-world validation must include safety protocols and gradual progression from simple to complex scenarios.
 
 ### Concrete Examples
 - Example: Testing "Bring me water" command in simulation before real-world execution with safety protocols
@@ -1051,13 +1051,13 @@ Real-world validation on physical hardware verifies that the system operates cor
 
 ## Performance Optimization and Debugging
 
-Performance optimization of the integrated system addresses the computational and timing requirements of real-time autonomous operation. The optimization must balance the competing demands of different subsystems while ensuring that safety-critical functions remain responsive. For humanoid robots, this includes optimizing AI inference, sensor processing, and control loops to meet real-time requirements (Radford et al., 2022).
+Performance optimization of the integrated system addresses the computational and timing requirements of real-time autonomous operation. The optimization must balance the competing demands of different subsystems while ensuring that safety-critical functions remain responsive. For humanoid robots, this includes optimizing AI inference, sensor processing, and control loops to meet real-time requirements.
 
 <Callout type="danger" title="Performance and Safety Balance">
 Performance optimization must balance competing demands of different subsystems while ensuring safety-critical functions remain responsive, optimizing AI inference, sensor processing, and control loops for real-time humanoid operation.
 </Callout>
 
-Multi-module debugging addresses the complexity of debugging integrated systems where problems may arise from interactions between components rather than individual component failures. For humanoid robots, this requires sophisticated logging, monitoring, and diagnostic tools that can trace problems across the entire system. The debugging infrastructure must support both development and operational environments (Brohan & Wyatt, 2020).
+Multi-module debugging addresses the complexity of debugging integrated systems where problems may arise from interactions between components rather than individual component failures. For humanoid robots, this requires sophisticated logging, monitoring, and diagnostic tools that can trace problems across the entire system. The debugging infrastructure must support both development and operational environments.
 
 <Diagram
   title="Multi-Module Debugging System"
@@ -1065,7 +1065,7 @@ Multi-module debugging addresses the complexity of debugging integrated systems 
   caption="Multi-module debugging system with logging, monitoring, and diagnostic tools"
 />
 
-Resource contention management resolves conflicts between different subsystems competing for shared resources such as CPU, GPU, memory, and communication bandwidth. For humanoid robots, this includes managing the trade-offs between perception accuracy, planning complexity, and control frequency. The resource management must adapt to changing operational conditions while maintaining system stability (Huang et al., 2022).
+Resource contention management resolves conflicts between different subsystems competing for shared resources such as CPU, GPU, memory, and communication bandwidth. For humanoid robots, this includes managing the trade-offs between perception accuracy, planning complexity, and control frequency. The resource management must adapt to changing operational conditions while maintaining system stability.
 
 <Exercise
   title="Performance Optimization System"
@@ -1455,7 +1455,7 @@ if __name__ == "__main__":
     main()`}
 />
 
-Fault tolerance and recovery mechanisms ensure that the system can continue operating safely when individual components fail or when unexpected conditions occur. For humanoid robots, this includes graceful degradation of capabilities, safe state transitions, and recovery procedures that maintain safety while minimizing disruption to operation. The fault tolerance must handle both temporary and permanent failures (Driess et al., 2023).
+Fault tolerance and recovery mechanisms ensure that the system can continue operating safely when individual components fail or when unexpected conditions occur. For humanoid robots, this includes graceful degradation of capabilities, safe state transitions, and recovery procedures that maintain safety while minimizing disruption to operation. The fault tolerance must handle both temporary and permanent failures.
 
 ### Concrete Examples
 - Example: Optimizing GPU usage between perception and language processing during simultaneous tasks
@@ -1479,7 +1479,7 @@ The end-to-end integration concepts covered in this chapter provide the foundati
 
 ## Ethical & Safety Considerations
 
-The integration of a complete autonomous humanoid system raises important ethical and safety considerations regarding autonomous decision-making and human-robot interaction in complex environments. The system must be designed with appropriate safety constraints and oversight mechanisms to ensure safe operation in human environments. Comprehensive validation and testing are essential to verify that the integrated system behaves safely across all operational scenarios. The system should include mechanisms for human override and clear communication of the robot's intentions and limitations to maintain trust and enable appropriate oversight (Vander Hoek et al., 2019).
+The integration of a complete autonomous humanoid system raises important ethical and safety considerations regarding autonomous decision-making and human-robot interaction in complex environments. The system must be designed with appropriate safety constraints and oversight mechanisms to ensure safe operation in human environments. Comprehensive validation and testing are essential to verify that the integrated system behaves safely across all operational scenarios. The system should include mechanisms for human override and clear communication of the robot's intentions and limitations to maintain trust and enable appropriate oversight.
 
 <Callout type="danger" title="Safety and Oversight">
 Complete autonomous humanoid systems must include appropriate safety constraints, comprehensive validation, human override mechanisms, and clear communication of intentions and limitations to ensure safe operation and maintain trust in human environments.
@@ -1494,16 +1494,3 @@ Complete autonomous humanoid systems must include appropriate safety constraints
 - Multi-module debugging addresses complexity of integrated system interactions
 - Fault tolerance mechanisms ensure safe operation despite component failures
 
-## References
-
-Brohan, N., & Wyatt, J. (2020). Natural language interfaces for robotics: A survey. IEEE Transactions on Robotics, 36(4), 1025-1040.
-
-Driess, D., et al. (2023). Language models and embodied agents in robotics. IEEE International Conference on Robotics and Automation (ICRA), 1-8.
-
-Huang, S., et al. (2022). Language-conditioned robot behavior synthesis from demonstrations. IEEE International Conference on Robotics and Automation (ICRA), 4567-4574.
-
-Radford, A., et al. (2022). Robust speech recognition via large-scale weak supervision. International Conference on Machine Learning (ICML), 18742-18761.
-
-Vander Hoek, K., Hart, S., Belpaeme, T., & Feil-Seifer, D. (2019). Socially assistive robotics: A focus on trust and trustworthiness. IEEE International Conference on Robotics and Automation (ICRA), 8374-8380.
-
-Zhang, C., et al. (2023). Multimodal language grounding for robotic manipulation. IEEE International Conference on Robotics and Automation (ICRA), 2345-2352.

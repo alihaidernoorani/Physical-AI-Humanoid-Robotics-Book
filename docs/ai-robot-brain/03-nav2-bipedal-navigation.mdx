@@ -54,13 +54,13 @@ import Toggle from '@site/src/components/Toggle';
 
 ## Nav2 Stack Configuration for Humanoid Robots
 
-The Navigation2 (Nav2) stack configuration for humanoid robots requires specialized considerations. These account for the unique kinematic and dynamic constraints of bipedal locomotion. Unlike wheeled robots, humanoid robots have complex kinematic chains with numerous degrees of freedom. These require careful path planning that accounts for balance constraints and dynamic stability during locomotion. The Nav2 stack must be configured with specialized planners that consider the robot's center of mass, zero moment point, and balance constraints (Nav2, 2023).
+The Navigation2 (Nav2) stack configuration for humanoid robots requires specialized considerations that account for the unique kinematic and dynamic constraints of bipedal locomotion. Unlike wheeled robots, humanoid robots have complex kinematic chains with numerous degrees of freedom that require careful path planning that accounts for balance constraints and dynamic stability during locomotion. The Nav2 stack must be configured with specialized planners that consider the robot's center of mass, zero moment point, and balance constraints.
 
 <Callout type="note" title="Bipedal Navigation Considerations">
 Unlike wheeled robots, humanoid robots have complex kinematic chains with numerous degrees of freedom that require careful path planning accounting for balance constraints and dynamic stability during locomotion.
 </Callout>
 
-The global planner in Nav2 for humanoid robots must generate paths that consider the robot's dynamic capabilities and balance constraints. Traditional A* or Dijkstra planners need to be augmented with kinodynamic planning approaches. These account for the humanoid robot's bipedal locomotion patterns. The planner must generate paths that maintain the robot's center of mass within its support polygon. This prevents instability during navigation (Siciliano & Khatib, 2016).
+The global planner in Nav2 for humanoid robots must generate paths that consider the robot's dynamic capabilities and balance constraints. Traditional A* or Dijkstra planners need to be augmented with kinodynamic planning approaches that account for the humanoid robot's bipedal locomotion patterns. The planner must generate paths that maintain the robot's center of mass within its support polygon to prevent instability during navigation.
 
 <Diagram
   title="Humanoid Robot Navigation Planning"
@@ -192,13 +192,13 @@ The recovery behaviors in Nav2 for humanoid robots must include specialized acti
 
 ## Isaac Navigation Integration
 
-NVIDIA Isaac Navigation provides specialized navigation capabilities optimized for humanoid robots. It leverages Isaac Sim for development and testing. The integration with Nav2 enables the use of hardware-accelerated perception and planning algorithms. These take advantage of NVIDIA's GPU computing platform. This integration is particularly important for humanoid robots. These require real-time perception and planning capabilities to operate safely in human environments (Isaac Navigation, 2024).
+NVIDIA Isaac Navigation provides specialized navigation capabilities optimized for humanoid robots and leverages Isaac Sim for development and testing. The integration with Nav2 enables the use of hardware-accelerated perception and planning algorithms that take advantage of NVIDIA's GPU computing platform. This integration is particularly important for humanoid robots that require real-time perception and planning capabilities to operate safely in human environments.
 
-Isaac Navigation's SLAM capabilities are enhanced with hardware acceleration. This enables real-time mapping and localization for humanoid robots. The GPU-accelerated SLAM algorithms can process large amounts of sensor data. These include RGB-D cameras and LiDAR. This creates accurate maps of the environment. The hardware acceleration is essential for humanoid robots that must maintain real-time operation. These operate in complex human environments with dynamic obstacles (NVIDIA, 2024).
+Isaac Navigation's SLAM capabilities are enhanced with hardware acceleration, enabling real-time mapping and localization for humanoid robots. The GPU-accelerated SLAM algorithms can process large amounts of sensor data including RGB-D cameras and LiDAR to create accurate maps of the environment. The hardware acceleration is essential for humanoid robots that must maintain real-time operation while operating in complex human environments with dynamic obstacles.
 
-Path planning in Isaac Navigation incorporates GPU acceleration. This enables complex planning algorithms to run in real-time on edge platforms. For humanoid robots, this includes advanced planning techniques such as kinodynamic planning. These consider both kinematic and dynamic constraints of bipedal locomotion. The GPU acceleration enables the evaluation of complex cost functions. These include balance constraints and dynamic stability measures during path planning (Isaac Sim, 2024).
+Path planning in Isaac Navigation incorporates GPU acceleration to enable complex planning algorithms to run in real-time on edge platforms. For humanoid robots, this includes advanced planning techniques such as kinodynamic planning that consider both kinematic and dynamic constraints of bipedal locomotion. The GPU acceleration enables the evaluation of complex cost functions including balance constraints and dynamic stability measures during path planning.
 
-Obstacle detection and avoidance in Isaac Navigation uses GPU-accelerated perception algorithms. These provide real-time detection and tracking of static and dynamic obstacles. For humanoid robots, the obstacle detection must identify not only physical obstacles but also humans and other robots in the environment. The detection system must provide accurate distance measurements and velocity estimates. These are needed for safe navigation in human-populated spaces (ROS-Industrial, 2023).
+Obstacle detection and avoidance in Isaac Navigation uses GPU-accelerated perception algorithms that provide real-time detection and tracking of static and dynamic obstacles. For humanoid robots, the obstacle detection must identify not only physical obstacles but also humans and other robots in the environment. The detection system must provide accurate distance measurements and velocity estimates needed for safe navigation in human-populated spaces.
 
 <Callout type="tip" title="Isaac Navigation Benefits">
 Isaac Navigation provides hardware-accelerated SLAM, path planning, and obstacle avoidance capabilities optimized for humanoid robots operating in human environments.
@@ -383,7 +383,7 @@ def create_balanced_nav2_configuration():
 `}
 />
 
-Recovery behaviors in balance-aware navigation must handle the unique failure modes of bipedal locomotion. These include loss of balance, foot slippage, and external disturbances. For humanoid robots, recovery behaviors must quickly transition the robot to a stable configuration. This avoids falls while maintaining safety for nearby humans. The behaviors must be coordinated with the robot's balance control systems. This ensures smooth transitions between navigation and recovery modes (Hirai et al., 1998).
+Recovery behaviors in balance-aware navigation must handle the unique failure modes of bipedal locomotion including loss of balance, foot slippage, and external disturbances. For humanoid robots, recovery behaviors must quickly transition the robot to a stable configuration to avoid falls while maintaining safety for nearby humans. The behaviors must be coordinated with the robot's balance control systems to ensure smooth transitions between navigation and recovery modes.
 
 ### Diagram Descriptions
 - Diagram: ZMP-based path validation showing center of mass trajectory and support polygons
@@ -411,7 +411,7 @@ The navigation and path planning concepts covered in this chapter are essential 
 
 The deployment of navigation systems for humanoid robots in human environments raises important ethical and safety considerations. These relate to the safety of humans in proximity to the robot during navigation and the robot's behavior in crowded or sensitive environments.
 
-The navigation system must be designed with appropriate safety margins and fail-safe behaviors. These ensure that the robot can operate safely around humans. The balance-aware planning ensures that the robot maintains stability during navigation. This prevents dangerous falls that could injure humans or damage property. Additionally, the navigation system must respect privacy considerations when operating in human environments (Vander Hoek et al., 2019).
+The navigation system must be designed with appropriate safety margins and fail-safe behaviors to ensure that the robot can operate safely around humans. The balance-aware planning ensures that the robot maintains stability during navigation to prevent dangerous falls that could injure humans or damage property. Additionally, the navigation system must respect privacy considerations when operating in human environments.
 
 <Callout type="danger" title="Safety Critical Navigation">
 Navigation systems for humanoid robots must be designed with appropriate safety margins and fail-safe behaviors to ensure safe operation around humans, with balance-aware planning to prevent dangerous falls.
@@ -426,40 +426,3 @@ Navigation systems for humanoid robots must be designed with appropriate safety 
 - Integration of perception systems with navigation enables safe operation in human environments
 - Stability margins ensure robustness to disturbances during humanoid robot navigation
 
-## References
-
-Brooks, A., Joublot, T., & Zivotofsky, A. (2019). Behavior trees in robotics and AI: An introduction. CRC Press.
-
-Hirai, K., Hirose, M., Haikawa, Y., & Takenaka, T. (1998). The development of Honda humanoid robot. IEEE International Conference on Robotics and Automation (ICRA), 1321-1326.
-
-Hirukawa, H. (2005). Formation of robust 3D convex hull for a humanoid walking pattern generation based on the ZMP stability criterion. International Workshop on Humanoid Robots.
-
-Isaac Navigation. (2024). *NVIDIA Isaac Navigation Documentation*. NVIDIA Corporation.
-
-Isaac Sim. (2024). *NVIDIA Isaac Sim Documentation*. NVIDIA Corporation.
-
-Isaac ROS. (2024). *NVIDIA Isaac ROS GEMs Documentation*. NVIDIA Corporation.
-
-Kajita, S., Kanehiro, F., Kaneko, K., Yokoi, K., & Hirukawa, H. (2003). The 3D linear inverted pendulum mode: A simple modeling for a biped walking pattern generation. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 239-246.
-
-Koolen, T., de Boer, T., Rebula, J., Goswami, A., & Pratt, J. (2016). Capturability-based analysis and control of legged locomotion, Part 1: Theory and application to three simple gait models. International Journal of Robotics Research, 31(9), 1094-1113.
-
-McGann, C., Py, F., Rajan, K., Hentschel, B., Maclaren, B., & Rajan, K. (2008). Risk-aware planning in marine environments. IEEE/OES Autonomous Underwater Vehicles (AUV), 1-9.
-
-Nav2. (2023). *Navigation2 Stack Documentation*. Open Source Robotics Foundation.
-
-NVIDIA. (2024). *NVIDIA Isaac Platform Documentation*. NVIDIA Corporation.
-
-Rösmann, C., Hoffmann, F., & Bertram, T. (2017). Integrated online trajectory planning and optimization in distinctive topologies. Robotics and Autonomous Systems, 88, 142-153.
-
-ROS-Industrial. (2023). *ROS-Industrial Consortium Documentation*. Open Source Robotics Foundation.
-
-Siciliano, B., & Khatib, O. (2016). *Springer Handbook of Robotics* (2nd ed.). Springer.
-
-Takenaka, T., Matsumoto, T., & Yoshiike, T. (2009). Real time motion generation and control for biped robot. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 1076-1081.
-
-Tobin, J., Fong, R., Ray, A., Schneider, J., Zaremba, W., & Abbeel, P. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 23-30.
-
-Vander Hoek, K., Hart, S., Belpaeme, T., & Feil-Seifer, D. (2019). Socially assistive robotics: A focus on trust and trustworthiness. IEEE International Conference on Robotics and Automation (ICRA), 8374-8380.
-
-Vukobratovic, M., & Borovac, B. (2004). Zero-moment point—thirty five years of its life. International Journal of Humanoid Robotics, 1(1), 157-173.

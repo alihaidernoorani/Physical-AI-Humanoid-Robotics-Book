@@ -6,8 +6,8 @@
 
 ## Task Generation Summary
 
-- **Total Tasks**: 40
-- **User Story Tasks**: 32 (US1: 8, US2: 8, US3: 8, US4: 8)
+- **Total Tasks**: 84
+- **User Story Tasks**: 76 (US1: 8, US2: 32, US3: 8, US4: 8)
 - **Setup & Foundational Tasks**: 8
 - **Parallel Opportunities**: Chapter-level tasks can be executed in parallel using specialized agents
 - **MVP Scope**: User Story 1 (Inventory and Safety Audit) provides foundational compliance verification
@@ -24,6 +24,7 @@
 
 - All chapter MDX audits can run in parallel
 - All chapter rewrites can run in parallel
+- All chapter content refinements can run in parallel across modules
 - All chapter formatting standardizations can run in parallel
 - All module link validations can run in parallel
 
@@ -97,6 +98,54 @@ Can be fully tested by reviewing chapter content for improved clarity, flow, and
 - [X] T031 [P] [US2] Add pedagogical explanations and smooth transitions to Module 1 content
 - [X] T032 [P] [US2] Verify technical accuracy preservation in Module 1 rewrites
 
+### Phase 4.5: User Story 2 - Module 2 Content Refinement and Citation Removal (Priority: P2)
+### Goal
+Complete content refinement for Module 2 chapters to improve clarity, narrative flow, and pedagogical quality while preserving all original technical meaning and removing reader-facing references.
+
+### Independent Test Criteria
+Can be fully tested by reviewing Module 2 chapter content for improved clarity, flow, and pedagogical quality while ensuring technical accuracy remains intact and no reader-facing references exist.
+
+- [X] T061 [P] [US2] Rewrite Module 2 Chapter 1 for clarity and flow: docs/digital-twin/01-rigid-body-dynamics-gazebo.mdx
+- [X] T062 [P] [US2] Rewrite Module 2 Chapter 2 for clarity and flow: docs/digital-twin/02-sensor-simulation.mdx
+- [X] T063 [P] [US2] Rewrite Module 2 Chapter 3 for clarity and flow: docs/digital-twin/03-unity-high-fidelity-env.mdx
+- [X] T064 [P] [US2] Rewrite Module 2 Chapter 4 for clarity and flow: docs/digital-twin/04-synchronizing-gazebo-unity.mdx
+- [X] T065 [P] [US2] Rewrite Module 2 Intro for clarity and flow: docs/digital-twin/intro.mdx
+- [X] T066 [P] [US2] Remove external references from Module 2 content and internally verify factual claims
+- [X] T067 [P] [US2] Add pedagogical explanations and smooth transitions to Module 2 content
+- [X] T068 [P] [US2] Verify technical accuracy preservation in Module 2 rewrites
+
+### Phase 4.6: User Story 2 - Module 3 Content Refinement and Citation Removal (Priority: P2)
+### Goal
+Complete content refinement for Module 3 chapters to improve clarity, narrative flow, and pedagogical quality while preserving all original technical meaning and removing reader-facing references.
+
+### Independent Test Criteria
+Can be fully tested by reviewing Module 3 chapter content for improved clarity, flow, and pedagogical quality while ensuring technical accuracy remains intact and no reader-facing references exist.
+
+- [X] T069 [P] [US2] Rewrite Module 3 Chapter 1 for clarity and flow: docs/ai-robot-brain/01-synthetic-data-generation.mdx
+- [X] T070 [P] [US2] Rewrite Module 3 Chapter 2 for clarity and flow: docs/ai-robot-brain/02-isaac-ros-gems.mdx
+- [X] T071 [P] [US2] Rewrite Module 3 Chapter 3 for clarity and flow: docs/ai-robot-brain/03-nav2-bipedal-navigation.mdx
+- [X] T072 [P] [US2] Rewrite Module 3 Chapter 4 for clarity and flow: docs/ai-robot-brain/04-edge-inference-jetson.mdx
+- [X] T073 [P] [US2] Rewrite Module 3 Intro for clarity and flow: docs/ai-robot-brain/intro.mdx
+- [X] T074 [P] [US2] Remove external references from Module 3 content and internally verify factual claims
+- [X] T075 [P] [US2] Add pedagogical explanations and smooth transitions to Module 3 content
+- [X] T076 [P] [US2] Verify technical accuracy preservation in Module 3 rewrites
+
+### Phase 4.7: User Story 2 - Module 4 Content Refinement and Citation Removal (Priority: P2)
+### Goal
+Complete content refinement for Module 4 chapters to improve clarity, narrative flow, and pedagogical quality while preserving all original technical meaning and removing reader-facing references.
+
+### Independent Test Criteria
+Can be fully tested by reviewing Module 4 chapter content for improved clarity, flow, and pedagogical quality while ensuring technical accuracy remains intact and no reader-facing references exist.
+
+- [X] T077 [P] [US2] Rewrite Module 4 Chapter 1 for clarity and flow: docs/vla/01-voice-to-text-whisper.mdx
+- [X] T078 [P] [US2] Rewrite Module 4 Chapter 2 for clarity and flow: docs/vla/02-llm-task-decomposition.mdx
+- [X] T079 [P] [US2] Rewrite Module 4 Chapter 3 for clarity and flow: docs/vla/03-grounding-language-ros2.mdx
+- [X] T080 [P] [US2] Rewrite Module 4 Chapter 4 for clarity and flow: docs/vla/04-capstone-end-to-end.mdx
+- [X] T081 [P] [US2] Rewrite Module 4 Intro for clarity and flow: docs/vla/intro.mdx
+- [X] T082 [P] [US2] Remove external references from Module 4 content and internally verify factual claims
+- [X] T083 [P] [US2] Add pedagogical explanations and smooth transitions to Module 4 content
+- [X] T084 [P] [US2] Verify technical accuracy preservation in Module 4 rewrites
+
 ---
 
 ## Phase 5: User Story 3 - Citation Removal and Content Standardization (Priority: P3)
@@ -163,14 +212,18 @@ Final validation, link integrity, and comprehensive testing across all modules
 1. Complete Phase 1-2: Setup and foundational tasks (T001-T016)
 2. Focus on User Story 1 (P1): Inventory and safety audit (T017-T024)
 3. This provides foundational compliance verification before proceeding
-4. Then proceed with content rewriting (User Story 2)
-5. Follow with citation removal and standardization (User Story 3)
-6. Complete with MDX-safe formatting (User Story 4)
-7. End with comprehensive validation (Phase 7)
+4. Content rewriting for Module 1 already completed (User Story 2: T025-T032)
+5. Follow with citation removal and standardization (User Story 3: T033-T040)
+6. Complete with MDX-safe formatting (User Story 4: T041-T048)
+7. Add content refinement for remaining modules (Phase 4.5: T061-T068, Phase 4.6: T069-T076, Phase 4.7: T077-T084)
+8. End with comprehensive validation (Phase 7: T049-T060)
 
 ### Incremental Delivery
 - **MVP**: Complete Phase 1, 2, and 3 (T001-T024) - Provides complete inventory and safety audit
-- **Phase 2**: Complete Phase 4 (T025-T032) - Provides refined content for Module 1
+- **Phase 2**: Phase 4 already completed - Module 1 refined content (T025-T032)
 - **Phase 3**: Complete Phase 5 (T033-T040) - Provides citation-free Module 2 content
 - **Phase 4**: Complete Phase 6 (T041-T048) - Provides MDX-safe formatting for remaining modules
+- **Phase 5**: Complete Phase 4.5 (T061-T068) - Provides refined content for Module 2
+- **Phase 6**: Complete Phase 4.6 (T069-T076) - Provides refined content for Module 3
+- **Phase 7**: Complete Phase 4.7 (T077-T084) - Provides refined content for Module 4
 - **Final**: Complete Phase 7 (T049-T060) - Full validation and compliance verification

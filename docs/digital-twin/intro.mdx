@@ -52,17 +52,17 @@ import Toggle from '@site/src/components/Toggle';
 
 ## Introduction to Digital Twins in Robotics
 
-Digital twins represent virtual replicas of physical systems. These enable comprehensive testing, validation, and optimization of robot behaviors before deployment in real-world environments. In humanoid robotics, digital twins serve as critical tools. They develop complex behaviors, test safety protocols, and validate control algorithms. This occurs without the risks and costs associated with physical robot testing.
+Digital twins represent virtual replicas of physical systems that enable comprehensive testing, validation, and optimization of robot behaviors before deployment in real-world environments. In humanoid robotics, digital twins serve as critical tools that develop complex behaviors, test safety protocols, and validate control algorithms without the risks and costs associated with physical robot testing.
 
-The concept of digital twins in robotics extends beyond simple simulation. It encompasses real-time synchronization between physical and virtual systems. For humanoid robots, this synchronization enables bidirectional information flow. Sensor data from the physical robot informs the virtual model. Control strategies developed in simulation can be directly applied to the physical system. This capability is particularly valuable for humanoid robots. These operate in dynamic human environments where safety and reliability are paramount.
+The concept of digital twins in robotics extends beyond simple simulation to encompass real-time synchronization between physical and virtual systems. For humanoid robots, this synchronization enables bidirectional information flow where sensor data from the physical robot informs the virtual model, and control strategies developed in simulation can be directly applied to the physical system. This capability is particularly valuable for humanoid robots that operate in dynamic human environments where safety and reliability are paramount.
 
 <Callout type="note" title="Digital Twin Benefits">
 Digital twins enable comprehensive testing and validation of robot behaviors before real-world deployment, reducing risks and costs associated with physical robot testing.
 </Callout>
 
-Physics-based simulation forms the foundation of effective digital twins. It provides realistic modeling of forces, collisions, and environmental interactions. For humanoid robots, accurate physics simulation is essential. It develops stable locomotion, manipulation strategies, and collision avoidance behaviors. The fidelity of physics simulation directly impacts the transferability of learned behaviors from simulation to reality.
+Physics-based simulation forms the foundation of effective digital twins, providing realistic modeling of forces, collisions, and environmental interactions. For humanoid robots, accurate physics simulation is essential for developing stable locomotion, manipulation strategies, and collision avoidance behaviors. The fidelity of physics simulation directly impacts the transferability of learned behaviors from simulation to reality.
 
-The integration of multiple simulation environments enables comprehensive testing. This occurs across different fidelity levels and use cases. For humanoid robots, this might involve high-fidelity physics simulation in Gazebo. This is for locomotion and manipulation. It combines with high-fidelity rendering in Unity. This is for perception and human-robot interaction studies. This multi-environment approach maximizes the effectiveness of digital twin capabilities.
+The integration of multiple simulation environments enables comprehensive testing across different fidelity levels and use cases. For humanoid robots, this might involve high-fidelity physics simulation in Gazebo for locomotion and manipulation, combined with high-fidelity rendering in Unity for perception and human-robot interaction studies. This multi-environment approach maximizes the effectiveness of digital twin capabilities.
 
 ### Concrete Examples
 - Example: Creating a digital twin of a NAO humanoid robot for testing walking gaits in simulation
@@ -155,9 +155,9 @@ The physics simulation skills you learn here will be used to create realistic en
 
 ## Ethical & Safety Considerations
 
-The use of digital twins in humanoid robotics raises important ethical and safety considerations. These relate to the validation of robot behaviors before real-world deployment.
+The use of digital twins in humanoid robotics raises important ethical and safety considerations that relate to the validation of robot behaviors before real-world deployment.
 
-Simulation-to-reality transfer must be carefully validated. This ensures that behaviors developed in simulation are safe and appropriate for real-world operation. The fidelity of digital twins directly impacts the safety of humanoid robots deployed in human environments. This makes comprehensive validation essential.
+Simulation-to-reality transfer must be carefully validated to ensure that behaviors developed in simulation are safe and appropriate for real-world operation. The fidelity of digital twins directly impacts the safety of humanoid robots deployed in human environments, making comprehensive validation essential for responsible robotics development.
 
 <Callout type="danger" title="Safety Validation">
 Comprehensive validation of simulation-to-reality transfer is essential for ensuring the safety of humanoid robots deployed in human environments."
@@ -165,10 +165,10 @@ Comprehensive validation of simulation-to-reality transfer is essential for ensu
 
 ## Key Takeaways
 
-- Digital twins enable comprehensive testing and validation of robot behaviors before real-world deployment
-- Physics-based simulation must balance computational efficiency with physical accuracy for effective robot development
-- Gazebo provides accurate physics simulation while Unity offers high-fidelity rendering for perception systems
-- Sensor simulation accuracy is crucial for developing robust perception and navigation systems
-- Hybrid simulation approaches leverage multiple environments for comprehensive robot testing
-- Safety-critical validation requires careful consideration of simulation-to-reality transfer fidelity
+- Digital twins enable comprehensive testing and validation of robot behaviors before real-world deployment, reducing risks and costs associated with physical robot testing
+- Physics-based simulation must balance computational efficiency with physical accuracy for effective robot development across different fidelity levels and use cases
+- Gazebo provides accurate physics simulation while Unity offers high-fidelity rendering for perception systems, with both platforms serving complementary roles in digital twin development
+- Sensor simulation accuracy is crucial for developing robust perception and navigation systems that can successfully transfer from simulation to reality
+- Hybrid simulation approaches leverage multiple environments for comprehensive robot testing, maximizing both physical accuracy and visual fidelity of digital twins
+- Safety-critical validation requires careful consideration of simulation-to-reality transfer fidelity, particularly for humanoid robots operating in human environments
 

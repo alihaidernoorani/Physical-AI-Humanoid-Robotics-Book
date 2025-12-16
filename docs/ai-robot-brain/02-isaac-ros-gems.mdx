@@ -54,13 +54,13 @@ import Toggle from '@site/src/components/Toggle';
 
 ## Visual Simultaneous Localization and Mapping (VSLAM)
 
-Visual SLAM (Simultaneous Localization and Mapping) using Isaac ROS GEMs provides humanoid robots with the capability to build maps of their environment. These simultaneously determine their position within these maps. The hardware acceleration provided by Isaac ROS GEMs enables real-time VSLAM operation. This occurs even in complex environments with numerous visual features. This makes it suitable for humanoid robot navigation in human environments (Isaac ROS, 2024).
+Visual SLAM (Simultaneous Localization and Mapping) using Isaac ROS GEMs provides humanoid robots with the capability to build maps of their environment while simultaneously determining their position within these maps. The hardware acceleration provided by Isaac ROS GEMs enables real-time VSLAM operation even in complex environments with numerous visual features, making it suitable for humanoid robot navigation in human environments.
 
 <Callout type="tip" title="Hardware Acceleration">
 Isaac ROS GEMs provide hardware acceleration that enables real-time VSLAM operation even in complex environments with numerous visual features, making it suitable for humanoid robot navigation in human environments.
 </Callout>
 
-The VSLAM pipeline in Isaac ROS GEMs integrates visual feature extraction, tracking, and mapping algorithms. These are optimized for NVIDIA's GPU architecture. For humanoid robots, this includes robust feature detection and matching algorithms. These can handle the varying viewpoints and motion patterns typical of legged locomotion. The pipeline must maintain accuracy even when the robot experiences the vibrations and dynamic movements associated with bipedal walking (NVIDIA, 2024).
+The VSLAM pipeline in Isaac ROS GEMs integrates visual feature extraction, tracking, and mapping algorithms that are optimized for NVIDIA's GPU architecture. For humanoid robots, this includes robust feature detection and matching algorithms that can handle the varying viewpoints and motion patterns typical of legged locomotion. The pipeline must maintain accuracy even when the robot experiences the vibrations and dynamic movements associated with bipedal walking.
 
 <Diagram
   title="VSLAM Pipeline Architecture"
@@ -133,13 +133,13 @@ Map optimization in Isaac ROS VSLAM systems uses GPU-accelerated bundle adjustme
 
 ## Object Detection and Classification
 
-Object detection and classification using Isaac ROS GEMs leverages hardware acceleration. This provides real-time identification and categorization of objects in the humanoid robot's environment. The GEMs include optimized implementations of state-of-the-art detection networks. These can operate efficiently on Jetson platforms while maintaining high accuracy for robotic applications (Isaac ROS, 2024).
+Object detection and classification using Isaac ROS GEMs leverages hardware acceleration to provide real-time identification and categorization of objects in the humanoid robot's environment. The GEMs include optimized implementations of state-of-the-art detection networks that can operate efficiently on Jetson platforms while maintaining high accuracy for robotic applications.
 
 <Callout type="note" title="Hardware Acceleration Benefits">
 Hardware-accelerated object detection in Isaac ROS GEMs enables real-time identification of objects relevant to navigation, manipulation, and human-robot interaction for humanoid robots.
 </Callout>
 
-Hardware-accelerated object detection in Isaac ROS GEMs utilizes TensorRT optimization and GPU inference. This achieves real-time performance on edge platforms. For humanoid robots, this enables the identification of objects relevant to navigation, manipulation, and human-robot interaction. The system can detect furniture, obstacles, objects of interest, and humans. These use frame rates suitable for real-time decision making (NVIDIA, 2024).
+Hardware-accelerated object detection in Isaac ROS GEMs utilizes TensorRT optimization and GPU inference to achieve real-time performance on edge platforms. For humanoid robots, this enables the identification of objects relevant to navigation, manipulation, and human-robot interaction. The system can detect furniture, obstacles, objects of interest, and humans using frame rates suitable for real-time decision making.
 
 <Diagram
   title="Object Detection Pipeline"
@@ -228,13 +228,13 @@ Instance segmentation capabilities in Isaac ROS GEMs provide pixel-level object 
 
 ## Depth Estimation and 3D Reconstruction
 
-Depth estimation using Isaac ROS GEMs provides accurate 3D information. This comes from monocular or stereo camera inputs. This enables humanoid robots to understand the spatial structure of their environment. The hardware acceleration enables real-time depth estimation. This is suitable for dynamic navigation and manipulation tasks. For humanoid robots, accurate depth information is essential for safe navigation and object interaction (Isaac ROS, 2024).
+Depth estimation using Isaac ROS GEMs provides accurate 3D information from monocular or stereo camera inputs, enabling humanoid robots to understand the spatial structure of their environment. The hardware acceleration enables real-time depth estimation that is suitable for dynamic navigation and manipulation tasks. For humanoid robots, accurate depth information is essential for safe navigation and object interaction.
 
 <Callout type="warning" title="Spatial Awareness">
 Accurate depth information is essential for safe navigation and object interaction in humanoid robots, making depth estimation a critical component of spatial awareness systems.
 </Callout>
 
-Stereo depth estimation in Isaac ROS GEMs utilizes GPU-accelerated stereo matching algorithms. These compute depth maps from stereo camera inputs. For humanoid robots, stereo depth provides accurate metric depth information. This is crucial for navigation and manipulation. The GPU acceleration enables real-time stereo processing. This occurs even with high-resolution inputs. This supports detailed environmental understanding (NVIDIA, 2024).
+Stereo depth estimation in Isaac ROS GEMs utilizes GPU-accelerated stereo matching algorithms that compute depth maps from stereo camera inputs. For humanoid robots, stereo depth provides accurate metric depth information that is crucial for navigation and manipulation. The GPU acceleration enables real-time stereo processing even with high-resolution inputs, supporting detailed environmental understanding.
 
 <Diagram
   title="Depth Estimation Pipeline"
@@ -335,13 +335,13 @@ Point cloud processing in Isaac ROS GEMs handles the conversion and processing o
 
 ## Performance Optimization
 
-Performance optimization of Isaac ROS GEMs is critical for achieving real-time operation. This occurs on resource-constrained Jetson platforms. This maintains the accuracy required for humanoid robot applications. The optimization process involves careful configuration of computational resources, memory management, and algorithm parameters. These maximize throughput while minimizing latency (Isaac ROS, 2024).
+Performance optimization of Isaac ROS GEMs is critical for achieving real-time operation on resource-constrained Jetson platforms while maintaining the accuracy required for humanoid robot applications. The optimization process involves careful configuration of computational resources, memory management, and algorithm parameters to maximize throughput while minimizing latency.
 
 <Callout type="tip" title="Performance Optimization">
 Performance optimization of Isaac ROS GEMs involves TensorRT optimization, memory management, and pipeline coordination to maximize throughput while minimizing latency on edge platforms.
 </Callout>
 
-TensorRT optimization in Isaac ROS GEMs converts deep learning models to optimized inference engines. These maximize GPU utilization and minimize latency. For humanoid robots, this optimization is essential for achieving real-time perception performance on edge platforms. The optimization process includes model quantization, layer fusion, and memory optimization techniques (NVIDIA, 2024).
+TensorRT optimization in Isaac ROS GEMs converts deep learning models to optimized inference engines that maximize GPU utilization and minimize latency. For humanoid robots, this optimization is essential for achieving real-time perception performance on edge platforms. The optimization process includes model quantization, layer fusion, and memory optimization techniques.
 
 <Diagram
   title="Performance Optimization Workflow"
@@ -438,7 +438,7 @@ The VSLAM capabilities will enable long-term autonomous navigation. Object detec
 
 The deployment of AI perception systems using Isaac ROS GEMs in humanoid robots raises important ethical and safety considerations. These relate to the accuracy and reliability of object detection and localization.
 
-The perception systems must be thoroughly validated. This ensures they operate safely in human environments. These do not misidentify objects or people in ways that could lead to unsafe robot behavior. Additionally, the privacy implications of continuous visual and depth sensing must be considered in human environments (Vander Hoek et al., 2019).
+The perception systems must be thoroughly validated to ensure they operate safely in human environments and do not misidentify objects or people in ways that could lead to unsafe robot behavior. Additionally, the privacy implications of continuous visual and depth sensing must be considered in human environments.
 
 <Callout type="danger" title="Safety Validation">
 Perception systems using Isaac ROS GEMs must be thoroughly validated to ensure safe operation in human environments and prevent unsafe robot behavior caused by misidentification of objects or people.
@@ -453,12 +453,3 @@ Perception systems using Isaac ROS GEMs must be thoroughly validated to ensure s
 - Multi-class detection and instance segmentation support comprehensive scene understanding
 - TensorRT optimization enables efficient deep learning inference on Jetson platforms
 
-## References
-
-Isaac ROS. (2024). *NVIDIA Isaac ROS GEMs Documentation*. NVIDIA Corporation.
-
-NVIDIA. (2024). *NVIDIA Isaac Platform Documentation*. NVIDIA Corporation.
-
-ROS-Industrial. (2023). *ROS-Industrial Consortium Documentation*. Open Source Robotics Foundation.
-
-Vander Hoek, K., Hart, S., Belpaeme, T., & Feil-Seifer, D. (2019). Socially assistive robotics: A focus on trust and trustworthiness. IEEE International Conference on Robotics and Automation (ICRA), 8374-8380.

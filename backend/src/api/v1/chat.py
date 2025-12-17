@@ -7,6 +7,11 @@ from enum import Enum
 from src.models.chat_session import ChatMode, UserQuery, GeneratedResponse
 from src.services.chat_service import ChatService
 
+# Import the limiter from the main app
+from ...main import limiter
+
+from src.middleware.auth_middleware import get_current_user
+
 
 router = APIRouter()
 
@@ -41,7 +46,8 @@ class RetrieveResponse(BaseModel):
 
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat_endpoint(request: ChatRequest):
+@limiter.limit("100 per minute")
+async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_current_user)):
     """
     Main chat endpoint that handles both full-text and selected-text modes.
     """
@@ -73,7 +79,8 @@ async def chat_endpoint(request: ChatRequest):
 
 
 @router.post("/chat/retrieve", response_model=RetrieveResponse)
-async def retrieve_context(request: RetrieveRequest):
+@limiter.limit("200 per minute")
+async def retrieve_context(request: RetrieveRequest, current_user: dict = Depends(get_current_user)):
     """
     Endpoint to retrieve relevant contexts from the textbook without generating a response.
     """

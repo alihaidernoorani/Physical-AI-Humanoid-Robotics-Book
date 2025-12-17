@@ -3,6 +3,9 @@ from pydantic import BaseModel
 from typing import Dict, Any
 from src.config.settings import settings
 
+# Import the limiter from the main app
+from ...main import limiter
+
 
 router = APIRouter()
 
@@ -15,6 +18,7 @@ class HealthCheck(BaseModel):
 
 
 @router.get("/health", response_model=HealthCheck)
+@limiter.limit("1000 per minute")
 async def health_check():
     # Check dependencies status
     dependencies_status = {

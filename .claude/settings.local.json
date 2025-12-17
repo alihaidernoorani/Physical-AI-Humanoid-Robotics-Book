@@ -11,7 +11,12 @@
       "Bash(timeout 60 tail -n 100 /tmp/claude/tasks/bd77b3c.output)",
       "Bash(git --version)",
       "Bash(gh --version)",
-      "Bash(git push -u origin feature/textbook-mdx-compliance-implementation)"
+      "Bash(git push -u origin feature/textbook-mdx-compliance-implementation)",
+      "Bash(python3 -m py_compile src/services/qdrant_service.py)",
+      "Bash(python3 -m py_compile main.py)",
+      "Bash(python3 -m py_compile src/*.py src/api/*.py src/api/v1/*.py src/services/*.py src/utils/*.py src/middleware/*.py)",
+      "Bash(python -m pytest tests/integration/test_backend_frontend_integration.py -v)",
+      "Bash(python3 -m pytest tests/integration/test_backend_frontend_integration.py -v)"
     ]
   }
 }

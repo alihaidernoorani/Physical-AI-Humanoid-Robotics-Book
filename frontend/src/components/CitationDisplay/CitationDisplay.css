@@ -1,0 +1,154 @@
+.citation-display {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-left: 3px solid #007bff;
+  border-radius: 0 4px 4px 0;
+}
+
+.citations-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  color: #495057;
+  font-weight: 600;
+}
+
+.citations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.citation-item {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.citation-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.citation-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.citation-module {
+  font-weight: 600;
+  color: #212529;
+}
+
+.citation-details {
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.citation-chapter {
+  color: #007bff;
+}
+
+.citation-subsection {
+  color: #6c757d;
+}
+
+.citation-page {
+  color: #28a745;
+  font-style: italic;
+}
+
+.citation-id {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-family: monospace;
+}
+
+.no-citations {
+  margin: 0;
+  color: #6c757d;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.more-citations {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Compact citation display styles */
+.compact-citation-display {
+  display: inline-block;
+  margin: 0.25rem 0;
+  padding: 0.25rem 0.5rem;
+  background-color: #e9f4ff;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.citation-label {
+  font-weight: 600;
+  color: #495057;
+  margin-right: 0.25rem;
+}
+
+.compact-citation {
+  color: #007bff;
+}
+
+/* Citation stats styles */
+.citation-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .citation-display {
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+  }
+
+  .citations-title {
+    font-size: 0.95rem;
+  }
+
+  .citation-details {
+    font-size: 0.85rem;
+  }
+
+  .citation-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stat-item {
+    min-width: auto;
+  }
+}

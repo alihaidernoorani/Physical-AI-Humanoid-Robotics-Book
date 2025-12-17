@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npx docusaurus build -- --verbose)",
+      "Bash(cat build_output.txt)",
+      "Bash(timeout 120s npx docusaurus build)",
+      "Bash(find docs/ -name \"*.mdx\" -exec grep -n \",\" {} +)",
+      "Bash(timeout 60 tail -n 100 /tmp/claude/tasks/bd77b3c.output)",
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(git push -u origin feature/textbook-mdx-compliance-implementation)"
+    ]
+  }
+}

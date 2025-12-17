@@ -1,0 +1,191 @@
+# API Contract: RAG Chatbot Service
+
+## Overview
+This document defines the API contracts for the RAG chatbot service, including endpoints for chat interactions, retrieval, and health checks.
+
+## Base URL
+`/api/v1`
+
+## Authentication
+All endpoints require authentication via Bearer token in the Authorization header, except for health checks.
+
+## Endpoints
+
+### POST /chat
+Initiates a new chat conversation or continues an existing one.
+
+**Request**:
+```json
+{
+  "session_id": "string (optional, creates new session if not provided)",
+  "query": "string (the user's question)",
+  "mode": "enum (full_text|selected_text, default: full_text)",
+  "selected_text": "string (required if mode is selected_text)",
+  "include_citations": "boolean (default: true)"
+}
+```
+
+**Response (200)**:
+```json
+{
+  "session_id": "string",
+  "response_id": "string",
+  "response": "string (the chatbot's answer)",
+  "citations": [
+    {
+      "module": "string",
+      "chapter": "string",
+      "section": "string",
+      "page_reference": "string (optional)",
+      "similarity_score": "float"
+    }
+  ],
+  "grounding_confidence": "float (0.0-1.0)",
+  "timestamp": "datetime"
+}
+```
+
+**Error Responses**:
+- 400: Invalid request parameters
+- 401: Unauthorized
+- 403: Insufficient grounding in context
+- 429: Rate limit exceeded
+- 500: Internal server error
+
+### POST /chat/retrieve
+Retrieves relevant content from the textbook without generating a response.
+
+**Request**:
+```json
+{
+  "query": "string (the user's question or topic)",
+  "mode": "enum (full_text|selected_text)",
+  "selected_text": "string (required if mode is selected_text)",
+  "top_k": "integer (number of chunks to retrieve, default: 5)",
+  "min_similarity": "float (minimum similarity score, default: 0.3)"
+}
+```
+
+**Response (200)**:
+```json
+{
+  "retrieved_contexts": [
+    {
+      "id": "string",
+      "content": "string",
+      "module": "string",
+      "chapter": "string",
+      "section": "string",
+      "similarity_score": "float",
+      "page_reference": "string (optional)"
+    }
+  ],
+  "query": "string",
+  "timestamp": "datetime"
+}
+```
+
+**Error Responses**:
+- 400: Invalid request parameters
+- 401: Unauthorized
+- 500: Internal server error
+
+### GET /chat/session/{session_id}
+Retrieves the history of a specific chat session.
+
+**Path Parameters**:
+- `session_id`: string (the session identifier)
+
+**Response (200)**:
+```json
+{
+  "session_id": "string",
+  "created_at": "datetime",
+  "updated_at": "datetime",
+  "mode": "enum (full_text|selected_text)",
+  "history": [
+    {
+      "query": "string",
+      "response": "string",
+      "citations": "array",
+      "timestamp": "datetime"
+    }
+  ]
+}
+```
+
+**Error Responses**:
+- 401: Unauthorized
+- 404: Session not found
+- 500: Internal server error
+
+### DELETE /chat/session/{session_id}
+Deletes a specific chat session and its history.
+
+**Path Parameters**:
+- `session_id`: string (the session identifier)
+
+**Response (204)**: No content
+
+**Error Responses**:
+- 401: Unauthorized
+- 404: Session not found
+- 500: Internal server error
+
+### GET /health
+Health check endpoint for the RAG service.
+
+**Response (200)**:
+```json
+{
+  "status": "string (ok)",
+  "timestamp": "datetime",
+  "dependencies": {
+    "vector_db": "string (status)",
+    "embedding_service": "string (status)",
+    "llm_service": "string (status)"
+  }
+}
+```
+
+### POST /embeddings
+Generates embeddings for text content (internal use).
+
+**Request**:
+```json
+{
+  "text": "string (the text to embed)",
+  "batch": "boolean (whether to process as batch, default: false)"
+}
+```
+
+**Response (200)**:
+```json
+{
+  "embeddings": "array of arrays (the generated embeddings)",
+  "input_text_length": "integer"
+}
+```
+
+## Error Format
+All error responses follow this format:
+```json
+{
+  "error": {
+    "code": "string (error code)",
+    "message": "string (human-readable error message)",
+    "details": "object (optional, additional error details)"
+  }
+}
+```
+
+## Validation Rules
+- All string fields must be properly sanitized to prevent injection attacks
+- Query text must be between 10 and 1000 characters
+- Session IDs must follow UUID format
+- Timestamps must be in ISO 8601 format
+- Similarity scores must be between 0.0 and 1.0
+
+## Rate Limiting
+- 60 requests per minute per user
+- 1000 requests per minute per IP (unauthenticated)

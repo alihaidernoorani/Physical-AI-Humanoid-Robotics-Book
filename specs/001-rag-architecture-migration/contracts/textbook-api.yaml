@@ -1,0 +1,193 @@
+# Textbook Content API Contract
+
+## Overview
+The Textbook Content API provides endpoints to access and search the Physical AI & Humanoid Robotics textbook content that powers the RAG system.
+
+## Base URL
+`/api/v1/textbook`
+
+## Endpoints
+
+### GET /modules
+Retrieve a list of all textbook modules.
+
+#### Response
+```json
+{
+  "modules": [
+    {
+      "name": "string, module name",
+      "title": "string, full module title",
+      "description": "string, brief description of the module",
+      "chapter_count": "integer, number of chapters in the module"
+    }
+  ],
+  "total_modules": "integer, total number of modules",
+  "timestamp": "string, ISO 8601 timestamp of the response"
+}
+```
+
+### GET /chapters/{module_name}
+Retrieve a list of chapters for a specific module.
+
+#### Parameters
+- `module_name`: Path parameter, the name of the module to retrieve chapters for
+
+#### Response
+```json
+{
+  "module": {
+    "name": "string, module name",
+    "title": "string, full module title"
+  },
+  "chapters": [
+    {
+      "id": "string, unique chapter identifier",
+      "title": "string, chapter title",
+      "description": "string, brief description of the chapter",
+      "section_count": "integer, number of sections in the chapter",
+      "word_count": "integer, approximate word count"
+    }
+  ],
+  "total_chapters": "integer, total number of chapters in the module"
+}
+```
+
+### GET /sections/{chapter_id}
+Retrieve a list of sections for a specific chapter.
+
+#### Parameters
+- `chapter_id`: Path parameter, the ID of the chapter to retrieve sections for
+
+#### Response
+```json
+{
+  "chapter": {
+    "id": "string, chapter identifier",
+    "title": "string, chapter title"
+  },
+  "sections": [
+    {
+      "id": "string, unique section identifier",
+      "title": "string, section title",
+      "path": "string, full path to the section (module/chapter/section)",
+      "parent_section_id": "string or null, ID of parent section if nested",
+      "word_count": "integer, approximate word count"
+    }
+  ],
+  "total_sections": "integer, total number of sections in the chapter"
+}
+```
+
+### GET /content/{section_path}
+Retrieve the content of a specific section.
+
+#### Parameters
+- `section_path`: Path parameter, the full path to the section (e.g., "module-1/chapter-1/introduction")
+
+#### Response
+```json
+{
+  "section": {
+    "id": "string, section identifier",
+    "title": "string, section title",
+    "path": "string, full path to the section",
+    "module": "string, parent module name",
+    "chapter": "string, parent chapter title"
+  },
+  "content": "string, the actual text content of the section",
+  "metadata": {
+    "word_count": "integer, word count of the content",
+    "token_count": "integer, token count of the content",
+    "last_indexed": "string, ISO 8601 timestamp of last indexing"
+  }
+}
+```
+
+### POST /search
+Search textbook content based on a query.
+
+#### Request
+```json
+{
+  "query": "string, search query text",
+  "top_k": "integer, optional, number of results to return (default: 5)",
+  "module_filter": "string, optional, limit search to specific module",
+  "chapter_filter": "string, optional, limit search to specific chapter"
+}
+```
+
+#### Response
+```json
+{
+  "query": "string, the original search query",
+  "results": [
+    {
+      "id": "string, content chunk identifier",
+      "content": "string, the text content of the chunk",
+      "module_name": "string, name of the module",
+      "chapter_title": "string, title of the chapter",
+      "section_path": "string, full path to the section",
+      "token_count": "integer, number of tokens in the chunk",
+      "similarity_score": "float, similarity score between 0.0 and 1.0",
+      "metadata": "object, additional metadata about the content chunk"
+    }
+  ],
+  "total_results": "integer, total number of results found",
+  "search_time_ms": "integer, time taken to perform the search"
+}
+```
+
+## Data Models
+
+### TextbookModule
+- `name`: Unique identifier for the module (e.g., "module-1")
+- `title`: Full title of the module (e.g., "The Robotic Nervous System (ROS 2)")
+- `description`: Brief description of the module content
+- `chapter_count`: Number of chapters in the module
+
+### TextbookChapter
+- `id`: Unique identifier for the chapter
+- `title`: Title of the chapter
+- `description`: Brief description of the chapter content
+- `section_count`: Number of sections in the chapter
+- `word_count`: Approximate word count of the chapter
+
+### TextbookSection
+- `id`: Unique identifier for the section
+- `title`: Title of the section
+- `path`: Full path to the section (e.g., "module-1/chapter-1/introduction")
+- `parent_section_id`: ID of parent section if nested, null otherwise
+- `word_count`: Approximate word count of the section
+
+### SearchRequest
+- `query`: The search query text
+- `top_k`: Optional, number of results to return (default: 5, max: 20)
+- `module_filter`: Optional, limit search to specific module
+- `chapter_filter`: Optional, limit search to specific chapter
+
+### SearchResponse
+- `query`: The original search query
+- `results`: Array of content chunks matching the query
+- `total_results`: Total number of results found
+- `search_time_ms`: Time taken to perform the search in milliseconds
+
+## Error Handling
+
+### Standard Error Format
+```json
+{
+  "error": {
+    "code": "string, error code",
+    "message": "string, human-readable error message",
+    "details": "object, additional error details if applicable"
+  }
+}
+```
+
+### Common Error Codes
+- `MODULE_NOT_FOUND`: Requested module does not exist
+- `CHAPTER_NOT_FOUND`: Requested chapter does not exist
+- `SECTION_NOT_FOUND`: Requested section does not exist
+- `SEARCH_ERROR`: Error performing search operation
+- `INVALID_PARAMETER`: Invalid parameter provided in request

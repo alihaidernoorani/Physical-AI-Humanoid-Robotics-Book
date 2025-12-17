@@ -1,0 +1,130 @@
+# Chat API Contract
+
+## Overview
+The Chat API provides RAG (Retrieval-Augmented Generation) functionality for the Physical AI & Humanoid Robotics textbook. It processes user queries against textbook content to generate grounded responses.
+
+## Base URL
+`/api/v1/chat`
+
+## Authentication
+All endpoints require authentication via API key in header:
+```
+Authorization: Bearer {api_key}
+```
+
+## Endpoints
+
+### POST /query
+Process a user query using RAG and generate a response.
+
+#### Request
+```json
+{
+  "query_text": "string, the user's query",
+  "session_id": "string, unique identifier for the chat session",
+  "mode": "enum, 'full_text' or 'selected_text'",
+  "selected_text": "string, optional text selected by user for selected_text mode"
+}
+```
+
+#### Response
+```json
+{
+  "id": "string, unique identifier for the response",
+  "session_id": "string, the session identifier",
+  "query_id": "string, identifier for the corresponding query",
+  "response_text": "string, the generated response",
+  "citations": "array of strings, paths to sources used",
+  "grounding_confidence": "float, confidence score between 0.0 and 1.0",
+  "generated_at": "string, ISO 8601 timestamp",
+  "response_metadata": {
+    "context_count": "integer, number of context chunks used",
+    "mode": "string, the chat mode used"
+  }
+}
+```
+
+#### Error Responses
+- `400 Bad Request`: Invalid request parameters
+- `401 Unauthorized`: Missing or invalid authentication
+- `500 Internal Server Error`: Server-side error during processing
+
+### GET /session/{session_id}
+Retrieve information about a specific chat session.
+
+#### Response
+```json
+{
+  "id": "string, session identifier",
+  "user_id": "string or null, user identifier if authenticated",
+  "created_at": "string, ISO 8601 timestamp",
+  "updated_at": "string, ISO 8601 timestamp",
+  "metadata": "object, additional session metadata"
+}
+```
+
+### POST /session
+Create a new chat session.
+
+#### Request
+```json
+{
+  "user_id": "string or null, optional user identifier"
+}
+```
+
+#### Response
+```json
+{
+  "id": "string, new session identifier",
+  "user_id": "string or null, user identifier if provided",
+  "created_at": "string, ISO 8601 timestamp",
+  "updated_at": "string, ISO 8601 timestamp"
+}
+```
+
+## Data Models
+
+### ChatMode
+Enumeration of available chat modes:
+- `full_text`: Search across entire textbook content
+- `selected_text`: Use only selected text as context
+
+### QueryRequest
+Request object for chat queries:
+- `query_text`: Required string, the user's query
+- `session_id`: Required string, session identifier
+- `mode`: Required ChatMode enum value
+- `selected_text`: Optional string, text selected by user
+
+### QueryResponse
+Response object for chat queries:
+- `id`: Unique response identifier
+- `session_id`: Session identifier
+- `query_id`: Corresponding query identifier
+- `response_text`: Generated response text
+- `citations`: Array of source paths used
+- `grounding_confidence`: Confidence score (0.0-1.0)
+- `generated_at`: Timestamp of response generation
+- `response_metadata`: Additional metadata object
+
+## Error Handling
+
+### Standard Error Format
+```json
+{
+  "error": {
+    "code": "string, error code",
+    "message": "string, human-readable error message",
+    "details": "object, additional error details if applicable"
+  }
+}
+```
+
+### Common Error Codes
+- `INVALID_QUERY`: Query text is empty or invalid
+- `SESSION_NOT_FOUND`: Session ID does not exist
+- `EMBEDDING_ERROR`: Error generating embeddings
+- `RETRIEVAL_ERROR`: Error retrieving context
+- `GENERATION_ERROR`: Error generating response
+- `GROUNDING_INSUFFICIENT`: Insufficient context to answer query

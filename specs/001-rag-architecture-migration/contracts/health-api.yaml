@@ -1,0 +1,80 @@
+# Health Check API Contract
+
+## Overview
+The Health Check API provides endpoints to verify the operational status of the RAG chatbot system and its dependencies.
+
+## Base URL
+`/api/v1/health`
+
+## Endpoints
+
+### GET /
+Check the overall health status of the system.
+
+#### Response
+```json
+{
+  "status": "string, overall system status ('healthy', 'degraded', or 'unhealthy')",
+  "timestamp": "string, ISO 8601 timestamp of the check",
+  "services": {
+    "database": {
+      "status": "string, database connection status",
+      "response_time_ms": "integer, response time in milliseconds"
+    },
+    "vector_db": {
+      "status": "string, vector database connection status",
+      "response_time_ms": "integer, response time in milliseconds"
+    },
+    "embedding_service": {
+      "status": "string, embedding service status",
+      "response_time_ms": "integer, response time in milliseconds"
+    },
+    "inference_service": {
+      "status": "string, inference service status",
+      "response_time_ms": "integer, response time in milliseconds"
+    }
+  },
+  "details": {
+    "version": "string, application version",
+    "uptime": "integer, seconds since last restart",
+    "active_sessions": "integer, number of active chat sessions"
+  }
+}
+```
+
+### GET /ready
+Check if the system is ready to handle requests (lightweight check).
+
+#### Response
+```json
+{
+  "status": "string, readiness status ('ready' or 'not_ready')",
+  "timestamp": "string, ISO 8601 timestamp of the check"
+}
+```
+
+### GET /live
+Check if the system is alive (basic connectivity check).
+
+#### Response
+```json
+{
+  "status": "string, liveness status ('alive' or 'dead')",
+  "timestamp": "string, ISO 8601 timestamp of the check"
+}
+```
+
+## Response Status Codes
+
+- `200 OK`: System is healthy/ready/alive
+- `503 Service Unavailable`: System is not healthy/ready/alive
+
+## Health Status Meanings
+
+- `healthy`: All services are operational and responding within expected timeframes
+- `degraded`: System is operational but some services may be slower than usual or have reduced capacity
+- `unhealthy`: One or more critical services are not responding or failing
+- `ready`: System has completed initialization and is ready to accept requests
+- `not_ready`: System is still initializing or has failed to initialize properly
+- `alive`: System process is running and responding to requests
+- `dead`: System process is not responding

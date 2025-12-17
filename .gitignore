@@ -18,6 +18,12 @@ docs/api/
 docs/blog/*/assets/
 blog/*/assets/
 
+# Frontend build artifacts (after migration)
+frontend/build/
+frontend/.docusaurus
+frontend/.cache-loader
+frontend/.cache/
+
 # Environment variables
 .env*
 !.env.example
@@ -62,5 +68,47 @@ coverage/
 *.tmp
 *.temp
 *.bak
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.env/
+.venv/
+venv/
+env/
+ENV/
+
+# Backend specific
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.venv/
+backend/venv/
+backend/env/
+backend/ENV/
+backend/dist/
+backend/build/
+
+# FastAPI
+*.db
+*.db-journal
+
+# Qdrant
+.qdrant/
+qdrant_data/
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo

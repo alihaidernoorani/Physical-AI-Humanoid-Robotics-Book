@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: RAG API
+  version: 1.0.0
+  description: API for RAG (Retrieval-Augmented Generation) functionality
+servers:
+  - url: http://localhost:8000
+    description: Development server
+
+paths:
+  /api/rag/search:
+    post:
+      summary: Semantic search in knowledge base
+      description: Perform semantic search in the textbook knowledge base using vector embeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: Search query
+                  example: "How does inverse kinematics work in robotic arms?"
+                top_k:
+                  type: integer
+                  description: Number of results to return
+                  default: 5
+                  example: 5
+                filters:
+                  type: object
+                  description: Filters to apply to the search
+                  properties:
+                    module:
+                      type: string
+                      description: Filter by specific module
+                      example: "The Robotic Nervous System (ROS 2)"
+                    chapter:
+                      type: string
+                      description: Filter by specific chapter
+                      example: "Chapter 3: ROS 2 Architecture"
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Document ID
+                        content:
+                          type: string
+                          description: Content of the retrieved document
+                        score:
+                          type: number
+                          description: Similarity score
+                          format: float
+                        metadata:
+                          type: object
+                          description: Document metadata
+                          properties:
+                            module:
+                              type: string
+                              description: Module name
+                            chapter:
+                              type: string
+                              description: Chapter name
+                            subsection:
+                              type: string
+                              description: Subsection name
+                            source_type:
+                              type: string
+                              description: Type of source
+                            source_origin:
+                              type: string
+                              description: Original source location
+                  query_embedding:
+                    type: array
+                    items:
+                      type: number
+                      format: float
+                    description: Embedding vector of the query
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Query is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Search service unavailable"
+
+  /api/rag/embeddings:
+    post:
+      summary: Generate embeddings
+      description: Generate vector embeddings for text content using Cohere
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - texts
+              properties:
+                texts:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of texts to generate embeddings for
+                  example: ["Text about ROS 2 architecture", "Information about robotic kinematics"]
+                model:
+                  type: string
+                  description: Embedding model to use
+                  default: "cohere/embed-multilingual-v3.0"
+                  example: "cohere/embed-multilingual-v3.0"
+      responses:
+        '200':
+          description: Embeddings generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  embeddings:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: number
+                        format: float
+                      description: Array of embedding vectors
+                  model:
+                    type: string
+                    description: Model used for embeddings
+                  total_tokens:
+                    type: integer
+                    description: Total tokens processed
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Texts array is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Embedding service unavailable"
+
+  /api/rag/index:
+    post:
+      summary: Index content
+      description: Index new content into the vector database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - metadata
+              properties:
+                content:
+                  type: string
+                  description: Content to index
+                  example: "Detailed explanation of robotic path planning algorithms..."
+                metadata:
+                  type: object
+                  required: [module, chapter, subsection, source_type, source_origin]
+                  properties:
+                    module:
+                      type: string
+                      description: Module name
+                      example: "Vision-Language-Action (VLA)"
+                    chapter:
+                      type: string
+                      description: Chapter name
+                      example: "Chapter 5: Computer Vision in Robotics"
+                    subsection:
+                      type: string
+                      description: Subsection name
+                      example: "Object Detection Techniques"
+                    source_type:
+                      type: string
+                      description: Type of source
+                      example: "textbook"
+                    source_origin:
+                      type: string
+                      description: Original source location
+                      example: "docs/module4/chapter5.md"
+                chunk_size:
+                  type: integer
+                  description: Size of text chunks for indexing
+                  default: 500
+                  example: 500
+      responses:
+        '200':
+          description: Content indexed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  indexed_count:
+                    type: integer
+                    description: Number of chunks indexed
+                  document_ids:
+                    type: array
+                    items:
+                      type: string
+                    description: IDs of indexed documents
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Content and metadata are required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Indexing service unavailable"

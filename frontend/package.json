@@ -28,6 +28,7 @@
     "@docusaurus/preset-classic": "3.9.2",
     "@docusaurus/theme-classic": "^3.9.2",
     "@mdx-js/react": "^3.0.0",
+    "axios": "^1.13.2",
     "better-auth": "^1.4.6",
     "clsx": "^2.0.0",
     "infima": "^0.2.0-alpha.45",

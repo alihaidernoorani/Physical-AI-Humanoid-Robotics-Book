@@ -24,7 +24,7 @@ const ChatKit: React.FC<ChatKitProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState<boolean>(showChat);
+  const [isVisible, setIsVisible] = useState<boolean>(true); // Always default to visible
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,9 +43,13 @@ const ChatKit: React.FC<ChatKitProps> = ({
       }
 
       // Load visibility state from localStorage
+      // Only apply saved visibility if it exists, otherwise keep default (true)
       const savedVisibility = localStorage.getItem('chatkit_visibility');
       if (savedVisibility !== null) {
         setIsVisible(savedVisibility === 'true');
+      } else {
+        // If no saved visibility state exists, ensure it stays visible
+        setIsVisible(true);
       }
 
       setInitialLoadComplete(true);
@@ -178,7 +182,7 @@ const ChatKit: React.FC<ChatKitProps> = ({
           onClick={toggleChat}
           aria-label="Open chat"
         >
-          💬 Chat
+          💬
         </button>
       )}
     </div>

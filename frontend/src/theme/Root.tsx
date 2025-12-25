@@ -7,7 +7,7 @@ export default function Root({children}) {
   return (
     <>
       {children}
-      <BrowserOnly fallback={<div style={{display: 'none'}} />}>
+      <BrowserOnly fallback={null}>
         {() => <ChatLoader />}
       </BrowserOnly>
     </>

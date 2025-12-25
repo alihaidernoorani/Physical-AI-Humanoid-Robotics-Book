@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 10000; /* Increased z-index to ensure it's above other elements */
   width: 350px;
   height: 500px;
   display: flex;
@@ -10,6 +10,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   overflow: hidden;
+  pointer-events: auto; /* Ensure the widget receives pointer events */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 .chatkit-wrapper {
@@ -19,6 +23,7 @@
   flex-direction: column;
   background: white;
   border: 1px solid #ddd;
+  box-sizing: border-box;
 }
 
 .chatkit-header {
@@ -34,6 +39,7 @@
   margin: 0;
   font-size: 1rem;
   color: #333;
+  font-weight: 500;
 }
 
 .chatkit-toggle-btn {
@@ -47,6 +53,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
+  padding: 0;
 }
 
 .chatkit-toggle-btn:hover {
@@ -69,11 +77,17 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 10000; /* Increased z-index to ensure it's above other elements */
+  transition: all 0.2s ease;
+  pointer-events: auto; /* Ensure the button receives pointer events */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 .chatkit-open-btn:hover {
   background: #0056b3;
+  transform: scale(1.05);
 }
 
 .chatkit-visible {
@@ -84,6 +98,12 @@
   display: none;
 }
 
+/* Ensure the widget doesn't interfere with page content */
+.chatkit-container *,
+.chatkit-open-btn * {
+  box-sizing: border-box;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .chatkit-container {
@@ -91,6 +111,7 @@
     height: 400px;
     bottom: 15px;
     right: 15px;
+    z-index: 10000;
   }
 
   .chatkit-open-btn {
@@ -99,5 +120,23 @@
     font-size: 20px;
     bottom: 15px;
     right: 15px;
+    z-index: 10000;
+  }
+}
+
+/* Ensure the chat widget doesn't block important page elements on smaller screens */
+@media (max-width: 480px) {
+  .chatkit-container {
+    width: calc(100% - 30px);
+    height: 50vh;
+    max-height: 400px;
+    bottom: 80px; /* Position above the open button */
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+
+  .chatkit-open-btn {
+    bottom: 15px;
   }
 }

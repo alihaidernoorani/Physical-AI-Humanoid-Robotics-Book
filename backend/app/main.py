@@ -17,7 +17,7 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific frontend URL
+    allow_origins=["https://alihaidernoorani.github.io", "https://alihaidernoorani.github.io/Physical-AI-Humanoid-Robotics-Book", "http://localhost:3000", "http://localhost:3001", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

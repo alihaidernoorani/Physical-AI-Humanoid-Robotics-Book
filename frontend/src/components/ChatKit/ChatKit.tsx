@@ -23,8 +23,19 @@ const ChatKit: React.FC<ChatKitProps> = ({
   showChat = true
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [currentSessionId, setCurrentSessionId] = useState<string | null>(sessionId);
-  const [isVisible, setIsVisible] = useState(showChat);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(() => {
+    // Check if we already have a session ID in localStorage
+    if (sessionId) return sessionId;
+    return localStorage.getItem('chat_session_id') || null;
+  });
+  const [isVisible, setIsVisible] = useState(() => {
+    // Check if visibility state is stored in localStorage
+    const savedVisibility = localStorage.getItem('chatkit_visibility');
+    if (savedVisibility !== null) {
+      return savedVisibility === 'true';
+    }
+    return showChat;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,7 +48,9 @@ const ChatKit: React.FC<ChatKitProps> = ({
             timestamp: new Date().toISOString(),
             metadata: { type: 'global-chat' }
           });
-          setCurrentSessionId(sessionData.session_id);
+          const newSessionId = sessionData.session_id;
+          setCurrentSessionId(newSessionId);
+          localStorage.setItem('chat_session_id', newSessionId);
         } catch (err) {
           console.error('Error creating session:', err);
           setError('Failed to initialize chat session');
@@ -46,11 +59,21 @@ const ChatKit: React.FC<ChatKitProps> = ({
     };
 
     initializeSession();
+
+    // Cleanup function to handle component unmount
+    return () => {
+      // Optionally save current messages to localStorage for persistence
+      if (messages.length > 0) {
+        localStorage.setItem('chat_messages', JSON.stringify(messages));
+      }
+    };
   }, []);
 
   // Toggle chat visibility
   const toggleChat = () => {
-    setIsVisible(!isVisible);
+    const newState = !isVisible;
+    setIsVisible(newState);
+    localStorage.setItem('chatkit_visibility', newState.toString());
   };
 
   // Handle sending a message to the backend

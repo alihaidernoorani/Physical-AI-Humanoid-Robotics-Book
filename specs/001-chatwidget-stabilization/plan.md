@@ -7,7 +7,7 @@
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Implement a Docusaurus theme wrapper using Root.tsx to host the global ChatWidget while ensuring SSG (Static Site Generation) build success. Remove the @theme/Layout override and replace it with a ChatLoader component that uses useState and useEffect to lazily load ChatKit code only after browser hydration, preventing the "RangeError: Maximum call stack size exceeded" during SSG builds.
 
 ## Technical Context
 
@@ -18,7 +18,7 @@
 **Target Platform**: Web application (GitHub Pages frontend, Hugging Face Space backend)
 **Project Type**: Web application (frontend/backend architecture)
 **Performance Goals**: <10s response time for 90% of chat queries, sub-200ms UI interactions
-**Constraints**: GitHub Pages deployment (static hosting), CORS restrictions, cross-origin requests
+**Constraints**: GitHub Pages deployment (static hosting), CORS restrictions, cross-origin requests, SSG build compatibility
 **Scale/Scope**: Single textbook website with global ChatWidget, multiple concurrent users
 
 ## Constitution Check
@@ -34,18 +34,6 @@
 - Backend Architecture: Must implement FastAPI backend with RAG chatbot, Qdrant vector database, and translation/personalization endpoints
 - Personalization & Translation: Urdu toggle and personalization must function on every chapter
 - Change Control: Module names, structure, and hierarchy are immutable - no autonomous scope expansion allowed
-
-### Compliance Analysis
-
-- ✅ Scientific Accuracy: ChatWidget will use RAG to provide accurate, source-grounded responses
-- ✅ Academic Clarity: UI will be designed for undergraduate-level users with clear feedback
-- ✅ Reproducibility: ChatWidget implementation will be well-documented and follow standard React patterns
-- ✅ Ethical & Safety: ChatWidget will include appropriate error handling and user feedback
-- ✅ Module Structure Compliance: ChatWidget will work across all textbook modules
-- ✅ Frontend Architecture: Using Docusaurus React components as designed
-- ✅ Backend Architecture: Using existing FastAPI backend with RAG integration
-- ✅ Personalization & Translation: ChatWidget will be integrated with existing toggle systems
-- ✅ Change Control: Implementation will not modify existing module structure
 
 ## Project Structure
 
@@ -74,8 +62,9 @@ backend/
 frontend/
 ├── src/
 │   ├── theme/
-│   │   └── Root.tsx     # Current ChatKit mounting location (to be moved)
+│   │   └── Root.tsx     # ChatWidget hosting location (theme wrapper)
 │   ├── components/
+│   │   ├── ChatLoader/  # SSG-safe ChatKit loader component
 │   │   └── ChatKit/     # ChatWidget components
 │   │       ├── ChatKit.tsx
 │   │       ├── ChatWindow/
@@ -85,7 +74,7 @@ frontend/
 └── docusaurus.config.ts # Docusaurus configuration
 ```
 
-**Structure Decision**: This is a web application with frontend (Docusaurus/React) and backend (FastAPI) components. The ChatKit component is currently mounted in Root.tsx and needs to be moved to the Docusaurus Layout component for better stability. The API service needs to be configured with the correct backend URL for production deployment.
+**Structure Decision**: This is a web application with frontend (Docusaurus/React) and backend (FastAPI) components. The ChatKit component will be hosted in Root.tsx instead of Layout.tsx to prevent circular dependencies. A ChatLoader component will be created to handle lazy loading of ChatKit with proper SSG safety using useState and useEffect hooks. The API service needs to be configured with the correct backend URL for production deployment.
 
 ## Complexity Tracking
 

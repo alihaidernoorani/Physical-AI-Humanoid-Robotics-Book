@@ -16,7 +16,10 @@
       "Bash(python3 -m py_compile main.py)",
       "Bash(python3 -m py_compile src/*.py src/api/*.py src/api/v1/*.py src/services/*.py src/utils/*.py src/middleware/*.py)",
       "Bash(python -m pytest tests/integration/test_backend_frontend_integration.py -v)",
-      "Bash(python3 -m pytest tests/integration/test_backend_frontend_integration.py -v)"
+      "Bash(python3 -m pytest tests/integration/test_backend_frontend_integration.py -v)",
+      "Bash(mkdir -p /mnt/c/Users/DELL/Desktop/Physical-AI-Humanoid-Robotics-Textbook/frontend/src/components/ChatLoader)",
+      "Bash(npx docusaurus build --out-dir build-test)",
+      "Bash(git rev-parse --is-inside-work-tree)"
     ]
   }
 }

@@ -99,27 +99,28 @@ This research document addresses the requirements for stabilizing the global Cha
 
 ## Decision: Implementation Approach
 
-### Approach Selected: Incremental Migration
-1. Update API configuration to production backend
-2. Move ChatKit from Root.tsx to Layout component
-3. Update CSS for proper positioning and layering
-4. Test communication with deployed backend
-5. Validate UI behavior in deployed environment
+### Approach Selected: SSG-Safe Theme Wrapper
+1. Keep ChatKit in Root.tsx (correct location for global components)
+2. Remove @theme/Layout override to prevent circular dependencies
+3. Create ChatLoader component with useState/useEffect for lazy loading
+4. Use dynamic imports to prevent SSG evaluation of browser APIs
+5. Implement BrowserOnly pattern with proper useEffect hooks
 
 ### Rationale:
-- Low risk approach that addresses each issue systematically
-- Allows for testing at each stage
-- Maintains existing functionality while improving stability
+- Addresses "RangeError: Maximum call stack size exceeded" during SSG builds
+- Prevents circular dependencies that occur with Layout.tsx override
+- Ensures browser-specific code only executes after hydration
+- Maintains global availability of ChatWidget across all pages
 
 ## Alternatives Considered
 
-### Alternative 1: Complete rewrite of ChatKit
-- Rejected: High risk, unnecessary complexity
-- Current implementation is solid, just needs configuration fixes
+### Alternative 1: Layout.tsx Override (Previous Approach)
+- Rejected: Causes circular dependencies and SSG build failures
+- Creates "RangeError: Maximum call stack size exceeded" during builds
 
-### Alternative 2: Keep in Root.tsx with CSS fixes only
-- Rejected: Root.tsx is not the appropriate location for global UI components
-- Layout component is more semantically correct
+### Alternative 2: Direct BrowserOnly with require() (Previous Approach)
+- Rejected: Causes infinite recursion during SSG processing
+- Still evaluates browser APIs during static generation
 
 ## Dependencies and Best Practices
 

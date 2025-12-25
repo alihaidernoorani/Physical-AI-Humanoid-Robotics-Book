@@ -33,7 +33,7 @@ and backend must allow cross-origin requests from the frontend origin."
 
 ### User Story 1 - Access and Interact with ChatWidget (Priority: P1)
 
-A user browsing the Physical AI Humanoid Robotics textbook website needs to access the ChatWidget to ask questions about the content. The user should be able to open the widget, type a query, and receive relevant responses from the RAG backend.
+A user browsing the Physical AI Humanoid Robotics textbook website needs to access the ChatWidget to ask questions about the content. The user should be able to open the widget, type a query, and receive relevant responses from the RAG backend. The ChatWidget must be loaded via `src/theme/Root.tsx` to prevent circular dependencies and ensure SSG build success.
 
 **Why this priority**: This is the core functionality that enables users to get help with understanding the textbook content, which is essential for the educational value of the site.
 
@@ -43,12 +43,13 @@ A user browsing the Physical AI Humanoid Robotics textbook website needs to acce
 
 1. **Given** a user is on any page of the textbook website, **When** they click the ChatWidget button, **Then** the widget opens and displays properly
 2. **Given** the ChatWidget is open, **When** the user types a question and submits it, **Then** the query is sent to the backend RAG API and a response is displayed
+3. **Given** the site is being built for static hosting, **When** the SSG build process runs, **Then** it completes successfully without circular dependency errors
 
 ---
 
 ### User Story 2 - Experience Loading and Error States (Priority: P2)
 
-A user interacting with the ChatWidget should see appropriate feedback when the system is processing their request or when errors occur. This ensures a good user experience even during network delays or system issues.
+A user interacting with the ChatWidget should see appropriate feedback when the system is processing their request or when errors occur. This ensures a good user experience even during network delays or system issues. The ChatWidget must use dynamic imports wrapped in useEffect inside BrowserOnly to ensure SSG build success.
 
 **Why this priority**: Provides essential feedback to users about system status, preventing confusion when responses take time or when issues occur.
 
@@ -58,12 +59,13 @@ A user interacting with the ChatWidget should see appropriate feedback when the 
 
 1. **Given** the ChatWidget is processing a user query, **When** the backend is responding, **Then** a "thinking..." or loading indicator is displayed
 2. **Given** the ChatWidget encounters an error during communication, **When** the error occurs, **Then** an appropriate error message is displayed to the user
+3. **Given** the site is being built for static hosting, **When** the SSG build process runs, **Then** it completes successfully without call stack overflow errors
 
 ---
 
 ### User Story 3 - Consistent Widget Behavior Across All Pages (Priority: P3)
 
-A user should experience the same ChatWidget functionality regardless of which page of the textbook they are viewing. The widget should render correctly and maintain its functionality across all content pages.
+A user should experience the same ChatWidget functionality regardless of which page of the textbook they are viewing. The widget should render correctly and maintain its functionality across all content pages. The ChatWidget must be loaded via Root.tsx instead of Layout.tsx to prevent circular dependency issues.
 
 **Why this priority**: Ensures consistent user experience across the entire website, which is important for usability and prevents user confusion.
 
@@ -73,6 +75,7 @@ A user should experience the same ChatWidget functionality regardless of which p
 
 1. **Given** a user is on any page of the textbook website, **When** they interact with the ChatWidget, **Then** the widget functions identically to other pages
 2. **Given** the user navigates between different pages, **When** the ChatWidget is open, **Then** it continues to function properly
+3. **Given** the site is being built for static hosting, **When** the SSG build process runs, **Then** it completes successfully without Layout.tsx circular dependency issues
 
 ---
 
@@ -83,6 +86,9 @@ A user should experience the same ChatWidget functionality regardless of which p
 - What occurs when a user submits a very long query or special characters?
 - How does the widget behave when the user rapidly sends multiple queries?
 - What happens if the user's browser has JavaScript disabled or limited?
+- What happens if the SSG build process encounters circular dependencies due to Layout.tsx usage?
+- How does the system handle dynamic imports failing during client-side rendering?
+- What occurs if the Root.tsx implementation causes performance issues during hydration?
 
 ## Requirements *(mandatory)*
 
@@ -103,6 +109,9 @@ A user should experience the same ChatWidget functionality regardless of which p
 - **FR-008**: Backend service MUST allow cross-origin requests from the deployed frontend origin
 - **FR-009**: ChatWidget MUST maintain its state and functionality when users navigate between different pages of the textbook
 - **FR-010**: ChatWidget responses MUST be relevant to the Physical AI Humanoid Robotics textbook content via the RAG functionality
+- **FR-011**: ChatKit widget MUST be loaded via `src/theme/Root.tsx` to prevent circular dependencies
+- **FR-012**: ChatKit component MUST be loaded using a dynamic `import()` wrapped in a `useEffect` inside a `BrowserOnly` container to ensure SSG build passes
+- **FR-013**: ChatKit widget MUST NOT be loaded via `Layout.tsx` to prevent circular dependency issues
 
 ### Key Entities *(include if feature involves data)*
 

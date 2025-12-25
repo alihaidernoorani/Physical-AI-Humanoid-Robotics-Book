@@ -1,0 +1,258 @@
+# API Contracts: ChatWidget Backend Communication
+
+## Overview
+This document defines the API contracts for communication between the frontend ChatWidget and the backend RAG API.
+
+## 1. Chat Message API
+
+### POST /api/v1/chat
+Send a chat message to the RAG backend and receive a response.
+
+**Request:**
+```json
+{
+  "query": "string (required) - The user's query message",
+  "session_id": "string (required) - The current chat session ID",
+  "context": {
+    "current_page": "string (optional) - Current page context",
+    "referrer": "string (optional) - Referring page"
+  }
+}
+```
+
+**Response (Success):**
+```json
+{
+  "answer": "string (required) - The response from the RAG system",
+  "citations": "string[] (optional) - Array of source citations",
+  "session_id": "string (optional) - Confirms the session ID",
+  "metadata": {
+    "processing_time": "number (optional) - Time taken to process in ms",
+    "sources_used": "number (optional) - Number of sources referenced"
+  }
+}
+```
+
+**Response (Error):**
+```json
+{
+  "error": "string - Error message",
+  "status_code": "number - HTTP status code",
+  "details": "object (optional) - Additional error details"
+}
+```
+
+**Headers:**
+- Content-Type: application/json
+- Authorization: Bearer {token} (if required)
+
+**Validation:**
+- query must not be empty
+- session_id must be valid
+- Request body must be valid JSON
+
+### GET /api/v1/chat/history/{sessionId}
+Retrieve the chat history for a specific session.
+
+**Path Parameters:**
+- sessionId: string - The session ID to retrieve history for
+
+**Response (Success):**
+```json
+{
+  "session_id": "string - The session ID",
+  "messages": [
+    {
+      "id": "string|number - Message ID",
+      "text": "string - Message content",
+      "sender": "'user' | 'bot' | 'system' - Message sender",
+      "timestamp": "string - ISO 8601 timestamp",
+      "citations": "string[] (optional) - Source citations"
+    }
+  ],
+  "metadata": {
+    "total_messages": "number - Total number of messages in session"
+  }
+}
+```
+
+**Response (Error):**
+```json
+{
+  "error": "string - Error message",
+  "status_code": "number - HTTP status code"
+}
+```
+
+## 2. Session Management API
+
+### POST /api/v1/chat/session
+Create a new chat session.
+
+**Request:**
+```json
+{
+  "timestamp": "string (required) - ISO 8601 creation timestamp",
+  "metadata": {
+    "type": "string (required) - Session type ('global-chat', etc.)",
+    "pageContext": "string (optional) - Context of the page where session started"
+  }
+}
+```
+
+**Response (Success):**
+```json
+{
+  "session_id": "string - The newly created session ID",
+  "timestamp": "string - Session creation timestamp",
+  "status": "'success' - Operation status",
+  "metadata": {
+    "expires_at": "string (optional) - ISO 8601 expiration time"
+  }
+}
+```
+
+**Response (Error):**
+```json
+{
+  "error": "string - Error message",
+  "status_code": "number - HTTP status code"
+}
+```
+
+**Validation:**
+- timestamp must be valid ISO 8601 string
+- metadata.type must be specified
+
+## 3. Health Check API
+
+### GET /api/v1/health
+Check the health status of the backend API.
+
+**Response (Success):**
+```json
+{
+  "status": "'healthy' - System health status",
+  "timestamp": "string - ISO 8601 timestamp of check",
+  "services": {
+    "rag": "boolean - Whether RAG service is available",
+    "qdrant": "boolean - Whether vector database is available",
+    "models": "boolean - Whether AI models are available"
+  },
+  "version": "string - API version"
+}
+```
+
+**Response (Error):**
+```json
+{
+  "status": "'unhealthy' - System health status",
+  "error": "string - Error message",
+  "timestamp": "string - ISO 8601 timestamp of check"
+}
+```
+
+## 4. Error Handling Standards
+
+### Common Error Responses
+All API endpoints should return consistent error responses:
+
+```json
+{
+  "error": "string - Human-readable error message",
+  "status_code": "number - HTTP status code",
+  "error_code": "string - Machine-readable error code",
+  "details": "object (optional) - Additional error details"
+}
+```
+
+### HTTP Status Codes
+- 200: Success
+- 201: Created (for POST requests)
+- 400: Bad Request (validation errors)
+- 401: Unauthorized (if authentication required)
+- 404: Not Found
+- 422: Unprocessable Entity (validation failed)
+- 429: Too Many Requests (rate limiting)
+- 500: Internal Server Error
+- 503: Service Unavailable (backend services down)
+
+## 5. CORS Configuration
+
+### Allowed Origins
+- Production: `https://alihaidernoorani.github.io`
+- Development: `http://localhost:3000`
+
+### Allowed Methods
+- GET, POST, PUT, DELETE, OPTIONS
+
+### Allowed Headers
+- Content-Type
+- Authorization
+- X-Requested-With
+
+## 6. Request/Response Examples
+
+### Example: Send Chat Message
+**Request:**
+```
+POST /api/v1/chat
+Content-Type: application/json
+
+{
+  "query": "What is ROS 2?",
+  "session_id": "sess_12345",
+  "context": {
+    "current_page": "/docs/ros2-nervous-system/intro"
+  }
+}
+```
+
+**Response:**
+```
+200 OK
+Content-Type: application/json
+
+{
+  "answer": "ROS 2 (Robot Operating System 2) is a flexible framework for writing robot software...",
+  "citations": [
+    "ROS 2 Documentation",
+    "Research Paper: 'ROS 2: The Next Generation'"
+  ],
+  "session_id": "sess_12345",
+  "metadata": {
+    "processing_time": 1250,
+    "sources_used": 2
+  }
+}
+```
+
+### Example: Create Session
+**Request:**
+```
+POST /api/v1/chat/session
+Content-Type: application/json
+
+{
+  "timestamp": "2025-12-25T10:30:00Z",
+  "metadata": {
+    "type": "global-chat",
+    "pageContext": "/docs/intro"
+  }
+}
+```
+
+**Response:**
+```
+201 Created
+Content-Type: application/json
+
+{
+  "session_id": "sess_67890",
+  "timestamp": "2025-12-25T10:30:00Z",
+  "status": "success",
+  "metadata": {
+    "expires_at": "2025-12-26T10:30:00Z"
+  }
+}
+```

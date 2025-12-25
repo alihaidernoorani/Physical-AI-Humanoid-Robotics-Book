@@ -1,6 +1,10 @@
-// Base API configuration
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://alihaidernoorani-deploy-docusaurus-book.hf.space/api';
+// Detect if we are running locally or in production
+const isLocal = typeof window !== 'undefined' && 
+                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
+const API_BASE_URL = isLocal 
+  ? 'http://localhost:8000/api' 
+  : (process.env.REACT_APP_API_BASE_URL || 'https://alihaidernoorani-deploy-docusaurus-book.hf.space/api');
 // Helper function to make API requests
 const makeRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;

@@ -23,26 +23,39 @@ const ChatKit: React.FC<ChatKitProps> = ({
   showChat = true
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [currentSessionId, setCurrentSessionId] = useState<string | null>(() => {
-    // Check if we already have a session ID in localStorage
-    if (sessionId) return sessionId;
-    return localStorage.getItem('chat_session_id') || null;
-  });
-  const [isVisible, setIsVisible] = useState(() => {
-    // Check if visibility state is stored in localStorage
-    const savedVisibility = localStorage.getItem('chatkit_visibility');
-    if (savedVisibility !== null) {
-      return savedVisibility === 'true';
-    }
-    return showChat;
-  });
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(showChat);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load initial state from localStorage after component mounts
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Load session ID from localStorage
+      if (!sessionId) {
+        const savedSessionId = localStorage.getItem('chat_session_id');
+        if (savedSessionId) {
+          setCurrentSessionId(savedSessionId);
+        }
+      } else {
+        setCurrentSessionId(sessionId);
+      }
+
+      // Load visibility state from localStorage
+      const savedVisibility = localStorage.getItem('chatkit_visibility');
+      if (savedVisibility !== null) {
+        setIsVisible(savedVisibility === 'true');
+      }
+
+      setInitialLoadComplete(true);
+    }
+  }, [sessionId]);
 
   // Initialize session if not provided
   useEffect(() => {
     const initializeSession = async () => {
-      if (!currentSessionId) {
+      if (!currentSessionId && initialLoadComplete) {
         try {
           const sessionData = await chatService.createSession({
             timestamp: new Date().toISOString(),
@@ -58,7 +71,9 @@ const ChatKit: React.FC<ChatKitProps> = ({
       }
     };
 
-    initializeSession();
+    if (initialLoadComplete) {
+      initializeSession();
+    }
 
     // Cleanup function to handle component unmount
     return () => {
@@ -67,13 +82,15 @@ const ChatKit: React.FC<ChatKitProps> = ({
         localStorage.setItem('chat_messages', JSON.stringify(messages));
       }
     };
-  }, []);
+  }, [currentSessionId, initialLoadComplete]);
 
   // Toggle chat visibility
   const toggleChat = () => {
     const newState = !isVisible;
     setIsVisible(newState);
-    localStorage.setItem('chatkit_visibility', newState.toString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('chatkit_visibility', newState.toString());
+    }
   };
 
   // Handle sending a message to the backend

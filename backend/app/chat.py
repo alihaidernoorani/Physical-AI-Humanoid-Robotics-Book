@@ -255,7 +255,7 @@ def health_check():
         }
     
 
-@router.post("/session")
+@router.post("/chat/session")
 async def create_session(request: Dict[str, Any] = None):
     """
     Creates a new chat session ID.
@@ -272,7 +272,7 @@ async def create_session(request: Dict[str, Any] = None):
         logger.error(f"Error creating session: {str(e)}")
         raise HTTPException(status_code=500, detail="Could not create session")
 
-@router.get("/history/{session_id}")
+@router.get("/chat/history/{session_id}")
 async def get_chat_history(session_id: str):
     """
     Returns history for a specific session.

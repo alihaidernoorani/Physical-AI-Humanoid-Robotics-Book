@@ -68,9 +68,12 @@ const ChatKit: React.FC<ChatKitProps> = ({
           const newSessionId = sessionData.session_id;
           setCurrentSessionId(newSessionId);
           localStorage.setItem('chat_session_id', newSessionId);
+          setError(null); // Clear any previous errors on successful session creation
         } catch (err) {
           console.error('Error creating session:', err);
-          setError('Failed to initialize chat session');
+          // Don't set an error here as we want the UI to remain functional
+          // even if session creation fails - use a fallback session ID
+          setCurrentSessionId(`fallback-session-${Date.now()}`);
         }
       }
     };
@@ -99,7 +102,7 @@ const ChatKit: React.FC<ChatKitProps> = ({
 
   // Handle sending a message to the backend
   const handleSendMessage = async (message: string) => {
-    if (!message.trim() || isLoading || !currentSessionId) return;
+    if (!message.trim() || isLoading) return;
 
     try {
       setIsLoading(true);
@@ -115,22 +118,35 @@ const ChatKit: React.FC<ChatKitProps> = ({
 
       setMessages(prev => [...prev, userMessage]);
 
-      // Send to backend API
-      const response = await chatService.sendMessage({
-        query: message,
-        session_id: currentSessionId
-      });
+      // Only send to backend if we have a valid session ID (not fallback)
+      if (currentSessionId && !currentSessionId.startsWith('fallback-session-')) {
+        // Send to backend API
+        const response = await chatService.sendMessage({
+          query: message,
+          session_id: currentSessionId
+        });
 
-      // Add bot response
-      const botMessage: ChatMessage = {
-        id: Date.now() + 1,
-        text: response.response || response.answer || 'No response received',
-        sender: 'bot',
-        timestamp: new Date().toISOString(),
-        citations: response.citations || []
-      };
+        // Add bot response
+        const botMessage: ChatMessage = {
+          id: Date.now() + 1,
+          text: response.response || response.answer || 'No response received',
+          sender: 'bot',
+          timestamp: new Date().toISOString(),
+          citations: response.citations || []
+        };
 
-      setMessages(prev => [...prev, botMessage]);
+        setMessages(prev => [...prev, botMessage]);
+      } else {
+        // If using fallback session, simulate a response
+        const botMessage: ChatMessage = {
+          id: Date.now() + 1,
+          text: 'I\'m currently unable to connect to the backend service. This is a fallback mode where responses are simulated locally.',
+          sender: 'system',
+          timestamp: new Date().toISOString()
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+      }
 
     } catch (err) {
       console.error('Error sending message:', err);

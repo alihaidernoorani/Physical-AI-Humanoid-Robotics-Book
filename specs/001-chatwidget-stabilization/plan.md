@@ -84,3 +84,23 @@ frontend/
 |-----------|------------|-------------------------------------|
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
 | [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+
+## Production Issue Correction: GitHub Pages Deployment Failure
+
+### Context
+During production deployment to GitHub Pages, the ChatKit widget fails to load despite working correctly in local development. The issue manifests as a "ReferenceError: process is not defined" error in the browser console, causing the widget to be invisible to users. This occurs because Node.js-specific globals like `process.env` are accessible during development but not available in the production browser environment.
+
+### Root Cause Summary
+The failure stems from browser-incompatible environment variable handling in the API service layer. Specifically, the `frontend/src/services/api.js` file contains references to `process.env.REACT_APP_API_BASE_URL` which are available during local development (thanks to Webpack's Node.js polyfills) but not in the production build deployed to GitHub Pages. This creates a runtime error that prevents the ChatKit component from initializing.
+
+### Strategic Adjustment
+To address this issue, the implementation strategy must shift to browser-safe configuration patterns:
+1. Replace Node.js-style environment variable access with browser-compatible environment detection
+2. Implement hardened import mechanisms that gracefully handle loading failures
+3. Use explicit browser environment checks instead of Node.js globals
+4. Ensure all configuration values are resolved at build time or through browser-safe methods
+
+### Implementation Approach
+Rather than introducing new features, this corrective phase will refactor the existing environment configuration and error handling to be production-safe. The core functionality remains unchanged, but the configuration mechanism will be hardened to work reliably in both development and production environments.
+
+**Note**: This represents a corrective implementation phase to fix a production-only failure, not the introduction of new functionality. The original project scope and architecture remain unchanged.

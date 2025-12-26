@@ -253,3 +253,41 @@ def health_check():
             },
             "timestamp": datetime.utcnow().isoformat()
         }
+    
+
+@router.post("/session")
+async def create_session(request: Dict[str, Any] = None):
+    """
+    Creates a new chat session ID.
+    """
+    try:
+        # Generate a new session using your existing agent_config
+        session_id = agent_config.create_conversation()
+        return {
+            "session_id": session_id,
+            "status": "created",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error creating session: {str(e)}")
+        raise HTTPException(status_code=500, detail="Could not create session")
+
+@router.get("/history/{session_id}")
+async def get_chat_history(session_id: str):
+    """
+    Returns history for a specific session.
+    """
+    try:
+        # Retrieve history from your agent_config or DB
+        history = agent_config.get_conversation(session_id)
+        if not history:
+            return {"history": [], "session_id": session_id}
+        
+        return {
+            "session_id": session_id,
+            "history": history,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error fetching history: {str(e)}")
+        return {"history": [], "session_id": session_id} # Return empty rather than crashing

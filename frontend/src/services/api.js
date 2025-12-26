@@ -4,10 +4,10 @@ const isLocal = typeof window !== 'undefined' &&
 
 // Use browser-safe environment detection instead of Node.js globals
 const API_BASE_URL = isLocal
-  ? 'http://localhost:8000/api'
+  ? 'http://localhost:8000/api/v1'
   : (typeof window !== 'undefined' && window.ENV && window.ENV.REACT_APP_API_BASE_URL)
     ? window.ENV.REACT_APP_API_BASE_URL
-    : 'https://alihaidernoorani-deploy-docusaurus-book.hf.space/api';
+    : 'https://alihaidernoorani-deploy-docusaurus-book.hf.space/api/v1';
 // Helper function to make API requests
 const makeRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;

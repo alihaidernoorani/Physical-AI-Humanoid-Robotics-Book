@@ -148,3 +148,25 @@
 - [ ] T035 Update any necessary documentation for the new integration pattern
 - [ ] T036 Perform final validation of all acceptance criteria
 - [ ] T037 Create PHR documenting the complete implementation
+
+## Phase 10: Production Issue Fix - GitHub Pages Deployment
+
+**Goal**: Address the production-only failure where ChatKit widget is visible on localhost but not on GitHub Pages due to Node.js globals in browser bundle.
+
+**Independent Test Criteria**:
+- `npm run build` produces a working build that functions on GitHub Pages
+- No "ReferenceError: process is not defined" errors in production
+- ChatKit widget renders correctly on GitHub Pages deployment
+- Widget functionality works even when backend API is unreachable
+
+**Implementation Tasks**:
+
+- [X] T038 [P10] Replace all process.env references in frontend code with browser-compatible environment detection
+- [X] T039 [P10] Update API service to use browser-safe base URL configuration instead of Node.js globals
+- [X] T040 [P10] Implement explicit browser environment checks instead of relying on Node.js polyfills
+- [X] T041 [P10] Add error boundaries to ChatLoader to prevent silent failures during dynamic imports
+- [X] T042 [P10] Ensure ChatLoader displays error state when dynamic import fails
+- [X] T043 [P10] Modify ChatKit to render UI elements before backend connection is established
+- [X] T044 [P10] Implement fallback UI state when backend API calls fail during initialization
+- [X] T045 [P10] Verify Docusaurus SSG compatibility is preserved after browser-safe changes
+- [X] T046 [P10] Test GitHub Pages deployment to confirm widget visibility in production

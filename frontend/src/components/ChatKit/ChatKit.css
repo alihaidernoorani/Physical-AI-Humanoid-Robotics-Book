@@ -1,21 +1,44 @@
+/* ChatKit Modern UI - Claude-like aesthetic */
+/* Uses BEM naming convention for Docusaurus compatibility */
+
+/* CSS Custom Properties for theming */
 .chatkit-container {
+  --chatkit-primary: #D97706;  /* Warm amber accent */
+  --chatkit-primary-hover: #B45309;
+  --chatkit-primary-light: #FEF3C7;
+  --chatkit-bg-primary: #FFFFFF;
+  --chatkit-bg-secondary: #F9FAFB;
+  --chatkit-bg-tertiary: #F3F4F6;
+  --chatkit-text-primary: #111827;
+  --chatkit-text-secondary: #6B7280;
+  --chatkit-text-muted: #9CA3AF;
+  --chatkit-border: #E5E7EB;
+  --chatkit-border-light: #F3F4F6;
+  --chatkit-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --chatkit-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --chatkit-radius: 16px;
+  --chatkit-radius-sm: 8px;
+  --chatkit-transition: 0.2s ease;
+
   position: fixed;
   min-width: 60px;
   min-height: 60px;
   bottom: 20px;
   right: 20px;
-  z-index: 10000; /* Increased z-index to ensure it's above other elements */
+  z-index: 10000;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   opacity: 1;
   visibility: visible;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  pointer-events: auto; /* Ensure the widget receives pointer events */
+  box-shadow: var(--chatkit-shadow);
+  border-radius: var(--chatkit-radius);
+  pointer-events: auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .chatkit-wrapper {
@@ -23,15 +46,17 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
-  border: 1px solid #ddd;
+  background: var(--chatkit-bg-primary);
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .chatkit-header {
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #eee;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, var(--chatkit-bg-primary) 0%, var(--chatkit-bg-secondary) 100%);
+  border-bottom: 1px solid var(--chatkit-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -39,70 +64,76 @@
 
 .chatkit-header h3 {
   margin: 0;
-  font-size: 1rem;
-  color: #333;
-  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--chatkit-text-primary);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .chatkit-toggle-btn {
-  background: none;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 28px;
-  height: 28px;
+  background: var(--chatkit-bg-tertiary);
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius-sm);
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease;
+  transition: all var(--chatkit-transition);
   padding: 0;
+  color: var(--chatkit-text-secondary);
 }
 
 .chatkit-toggle-btn:hover {
-  background: #f1f1f1;
+  background: var(--chatkit-border);
+  color: var(--chatkit-text-primary);
 }
 
 .chatkit-open-btn {
-  background: #007bff;
+  background: var(--chatkit-primary);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   font-size: 24px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--chatkit-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 10000; /* Increased z-index to ensure it's above other elements */
-  transition: all 0.2s ease;
-  pointer-events: auto; /* Ensure the button receives pointer events */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  z-index: 10000;
+  transition: all var(--chatkit-transition);
+  pointer-events: auto;
+  font-family: inherit;
 }
 
 .chatkit-open-btn:hover {
-  background: #0056b3;
+  background: var(--chatkit-primary-hover);
   transform: scale(1.05);
+  box-shadow: 0 12px 28px -5px rgba(217, 119, 6, 0.3);
+}
+
+.chatkit-open-btn:active {
+  transform: scale(0.98);
 }
 
 .chatkit-visible {
- width: 350px;
-  height: 500px;
-  display: flex; /* Keep the window layout intact */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Show shadow when open */
+  width: 380px;
+  height: 520px;
+  display: flex;
+  box-shadow: var(--chatkit-shadow);
 }
 
 .chatkit-hidden {
-  box-shadow: none; /* Hide container shadow when minimized */
-  background: transparent; /* Ensure no white box behind the bubble */
-  border: none;     /* Ensure no border behind the bubble */
+  box-shadow: none;
+  background: transparent;
+  border: none;
 }
 
 /* Ensure the widget doesn't interfere with page content */
@@ -114,11 +145,14 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .chatkit-container {
-    width: 300px;
-    height: 400px;
     bottom: 15px;
     right: 15px;
     z-index: 10000;
+  }
+
+  .chatkit-visible {
+    width: 320px;
+    height: 440px;
   }
 
   .chatkit-open-btn {
@@ -131,19 +165,26 @@
   }
 }
 
-/* Ensure the chat widget doesn't block important page elements on smaller screens */
+/* Mobile full-width design */
 @media (max-width: 480px) {
   .chatkit-container {
-    width: calc(100% - 30px);
-    height: 50vh;
-    max-height: 400px;
-    bottom: 80px; /* Position above the open button */
+    width: calc(100% - 24px);
+    height: 55vh;
+    max-height: 440px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     right: auto;
   }
 
+  .chatkit-visible {
+    width: 100%;
+    height: 100%;
+  }
+
   .chatkit-open-btn {
     bottom: 15px;
+    width: 52px;
+    height: 52px;
   }
 }

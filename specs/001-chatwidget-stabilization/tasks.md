@@ -170,3 +170,96 @@
 - [X] T044 [P10] Implement fallback UI state when backend API calls fail during initialization
 - [X] T045 [P10] Verify Docusaurus SSG compatibility is preserved after browser-safe changes
 - [X] T046 [P10] Test GitHub Pages deployment to confirm widget visibility in production
+
+## Phase 11: Database Schema Alignment - Neon Postgres
+
+**Goal**: Fix the ChatKit backend session creation failures caused by schema mismatch between backend code and Neon Postgres database.
+
+**Independent Test Criteria**:
+- `/api/v1/chat/session` endpoint returns 200 with valid session_id
+- No "column does not exist" errors in backend logs
+- ChatKit widget exits fallback mode and functions normally
+- Message storage and retrieval works correctly
+
+**Root Cause**: Neon database was manually initialized with incomplete schema missing `updated_at` column on `conversations` table.
+
+### Critical Tasks (Must Complete)
+
+- [ ] T047 [P11] Execute ALTER TABLE to add `updated_at` column to `conversations` table in Neon console
+- [ ] T048 [P11] Execute ALTER TABLE to add `metadata` column to `conversations` table in Neon console
+- [ ] T049 [P11] Verify `conversations` table schema matches backend expectations (id, created_at, updated_at, metadata)
+- [ ] T050 [P11] Execute CREATE TABLE IF NOT EXISTS for `messages` table with all required columns in Neon console
+- [ ] T051 [P11] Create index `idx_messages_session_id` on messages(session_id) for query performance
+- [ ] T052 [P11] Run schema verification queries to confirm all tables and columns exist
+
+### Verification Tasks (Must Complete)
+
+- [ ] T053 [P11] Test `/api/v1/chat/session` endpoint returns 200 with valid session_id
+- [ ] T054 [P11] Verify backend logs show no "column does not exist" errors
+- [ ] T055 [P11] Test message insertion via `/api/v1/chat` endpoint succeeds
+- [ ] T056 [P11] Verify ChatKit frontend exits fallback mode after backend fix
+- [ ] T057 [P11] Test full chat flow: session creation → message send → response received
+
+### Restart and Deployment Tasks
+
+- [ ] T058 [P11] Restart Hugging Face Spaces backend to pick up fresh DB connection
+- [ ] T059 [P11] Clear any cached error states in frontend by hard refresh
+- [ ] T060 [P11] Verify end-to-end chat functionality on live GitHub Pages deployment
+
+### Optional Hardening Tasks (Prevent Future Failures)
+
+- [X] T061 [P11] [P] Add schema validation function to backend/app/agent.py to check tables exist at startup
+- [X] T062 [P11] [P] Implement connection health check in _init_db_connection() method
+- [X] T063 [P11] [P] Add graceful error response when DB is unavailable instead of raising exception
+- [X] T064 [P11] [P] Create backend/scripts/init_schema.sql with full schema for reproducible deployments
+- [ ] T065 [P11] [P] Add schema migration documentation to backend/README.md
+
+## SQL Migration Script Reference
+
+Execute this in Neon Postgres console (tasks T047-T051):
+
+```sql
+-- T047: Add updated_at column
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
+
+-- T048: Add metadata column
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;
+
+-- T050: Create messages table
+CREATE TABLE IF NOT EXISTS messages (
+    id VARCHAR(36) PRIMARY KEY,
+    session_id VARCHAR(36) REFERENCES conversations(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT NOW(),
+    citations JSONB DEFAULT '[]'::jsonb,
+    selected_text TEXT DEFAULT ''
+);
+
+-- T051: Create index
+CREATE INDEX IF NOT EXISTS idx_messages_session_id ON messages(session_id);
+```
+
+## Verification Queries Reference
+
+Execute these to verify schema (task T052):
+
+```sql
+-- Verify conversations table structure
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'conversations';
+
+-- Verify messages table structure
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'messages';
+
+-- Test insert (then delete)
+INSERT INTO conversations (id, created_at, updated_at, metadata)
+VALUES ('test-verify-001', NOW(), NOW(), '{}');
+
+DELETE FROM conversations WHERE id = 'test-verify-001';
+```

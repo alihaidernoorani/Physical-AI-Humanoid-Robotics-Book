@@ -151,3 +151,102 @@ Model for session creation response
 - Session IDs should be treated as sensitive information
 - No PII should be transmitted in messages without explicit user consent
 - API requests should include appropriate authentication if required
+
+---
+
+## 5. Database Schema (Neon Postgres)
+
+### Table: conversations
+
+Stores chat session metadata for the ChatKit protocol.
+
+**Schema:**
+```sql
+CREATE TABLE conversations (
+    id VARCHAR(36) PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    metadata JSONB DEFAULT '{}'::jsonb
+);
+```
+
+**Fields:**
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | VARCHAR(36) | PRIMARY KEY | UUID session identifier |
+| created_at | TIMESTAMP | NOT NULL, DEFAULT NOW() | Session creation time |
+| updated_at | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last activity time |
+| metadata | JSONB | DEFAULT '{}' | Additional session metadata |
+
+**Indexes:**
+- Primary key index on `id`
+
+### Table: messages
+
+Stores individual messages within chat sessions.
+
+**Schema:**
+```sql
+CREATE TABLE messages (
+    id VARCHAR(36) PRIMARY KEY,
+    session_id VARCHAR(36) NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT NOW(),
+    citations JSONB DEFAULT '[]'::jsonb,
+    selected_text TEXT DEFAULT ''
+);
+
+CREATE INDEX idx_messages_session_id ON messages(session_id);
+```
+
+**Fields:**
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | VARCHAR(36) | PRIMARY KEY | UUID message identifier |
+| session_id | VARCHAR(36) | FOREIGN KEY, NOT NULL | References conversations.id |
+| role | VARCHAR(20) | NOT NULL, CHECK | 'user', 'assistant', or 'system' |
+| content | TEXT | NOT NULL | Message content |
+| timestamp | TIMESTAMP | DEFAULT NOW() | Message creation time |
+| citations | JSONB | DEFAULT '[]' | Array of citation references |
+| selected_text | TEXT | DEFAULT '' | User-selected text context |
+
+**Indexes:**
+- Primary key index on `id`
+- Index on `session_id` for efficient session message retrieval
+
+### Entity Relationship Diagram
+
+```
+┌─────────────────────┐       ┌─────────────────────┐
+│   conversations     │       │     messages        │
+├─────────────────────┤       ├─────────────────────┤
+│ id (PK)             │───┐   │ id (PK)             │
+│ created_at          │   │   │ session_id (FK)     │───┐
+│ updated_at          │   └──>│ role                │   │
+│ metadata            │       │ content             │   │
+└─────────────────────┘       │ timestamp           │   │
+                              │ citations           │   │
+                              │ selected_text       │   │
+                              └─────────────────────┘   │
+                                                        │
+                              1:N relationship          │
+                              (one conversation has     │
+                               many messages)           │
+```
+
+### Migration Strategy
+
+For the current schema mismatch issue, use ALTER TABLE:
+
+```sql
+-- Fix missing updated_at column
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
+
+-- Fix missing metadata column
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;
+```
+
+This preserves existing data while aligning the schema with backend expectations.

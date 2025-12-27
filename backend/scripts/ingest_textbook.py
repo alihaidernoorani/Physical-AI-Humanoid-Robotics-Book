@@ -2,7 +2,7 @@
 """
 Textbook Content Ingestion Script
 
-Ingests markdown content from the docs/ directory into Qdrant vector database
+Ingests MDX/markdown content from the frontend/docs/ directory into Qdrant vector database
 using Cohere embeddings with proper input_type parameters.
 
 Usage:
@@ -404,9 +404,9 @@ def main():
     if args.docs_path:
         docs_path = Path(args.docs_path)
     else:
-        # Default: look for docs/ relative to project root
+        # Default: look for frontend/docs/ relative to project root
         project_root = Path(__file__).parent.parent.parent
-        docs_path = project_root / "docs"
+        docs_path = project_root / "frontend" / "docs"
 
     if not docs_path.exists():
         logger.error(f"Docs directory not found: {docs_path}")
@@ -427,9 +427,9 @@ def main():
         embedder = None
         ingester = None
 
-    # Find markdown files
+    # Find MDX/markdown files
     files = find_markdown_files(docs_path, args.module)
-    logger.info(f"Found {len(files)} markdown files")
+    logger.info(f"Found {len(files)} MDX/markdown files")
 
     if not files:
         logger.warning("No files to process")

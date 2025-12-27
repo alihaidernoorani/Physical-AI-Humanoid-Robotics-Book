@@ -3,8 +3,18 @@ import logging
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 import cohere
-from cohere.errors import ApiError
 from .config import settings
+
+# Cohere SDK v4+ uses cohere.core.api_error.ApiError or similar
+# For compatibility, we catch the base exception and handle gracefully
+try:
+    from cohere.core.api_error import ApiError
+except ImportError:
+    try:
+        from cohere import CohereAPIError as ApiError
+    except ImportError:
+        # Fallback: use a generic exception wrapper
+        ApiError = Exception
 
 logger = logging.getLogger(__name__)
 

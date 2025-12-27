@@ -122,7 +122,7 @@ const ChatKit: React.FC<ChatKitProps> = ({
       if (currentSessionId && !currentSessionId.startsWith('fallback-session-')) {
         // Send to backend API
         const response = await chatService.sendMessage({
-          query: message,
+          message: message,
           session_id: currentSessionId
         });
 

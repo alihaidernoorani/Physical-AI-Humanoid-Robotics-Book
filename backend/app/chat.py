@@ -7,6 +7,7 @@ import asyncio
 from .agent import agent_config
 from .rag import rag_service
 from .config import settings
+from .services.db_manager import get_db_manager
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,8 @@ class PersonalizeRequest:
 @router.post("/chat")
 async def chat_endpoint(request: Dict[str, Any]):
     """
-    Main chat endpoint with RAG functionality
+    Main chat endpoint with RAG functionality.
+    Validates message length and sanitizes input.
     """
     start_time = datetime.utcnow()
 
@@ -40,10 +42,33 @@ async def chat_endpoint(request: Dict[str, Any]):
         selected_text = request.get("selected_text", "")
         user_preferences = request.get("user_preferences", {})
 
+        # Validate message is present
         if not message:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Message is required"
+            )
+
+        # Validate message is a string
+        if not isinstance(message, str):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Message must be a string"
+            )
+
+        # Strip whitespace and validate length
+        message = message.strip()
+        if not message:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Message cannot be empty"
+            )
+
+        # Validate message length (max 2000 characters per config)
+        if len(message) > settings.max_message_length:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Message exceeds maximum length of {settings.max_message_length} characters"
             )
 
         logger.info(f"Processing chat request: {message[:50]}...")
@@ -226,21 +251,31 @@ async def personalize_endpoint(request: Dict[str, Any]):
 @router.get("/health")
 def health_check():
     """
-    Health check endpoint
+    Health check endpoint with proper database health verification
     """
     try:
         # Check each service
         agent_healthy = True  # Agent service is initialized at startup
         rag_healthy = rag_service.health_check()
 
-        all_healthy = all([agent_healthy, rag_healthy])
+        # Check database health using DatabaseManager
+        db_manager = get_db_manager()
+        db_health = db_manager.health_check()
+        db_healthy = db_health.get("healthy", False)
+
+        all_healthy = all([agent_healthy, rag_healthy, db_healthy])
 
         return {
             "status": "healthy" if all_healthy else "unhealthy",
             "services": {
                 "agent": agent_healthy,
                 "rag": rag_healthy,
-                "neon_db": True  # Assuming DB is healthy if we can reach this endpoint
+                "neon_db": db_healthy
+            },
+            "database": {
+                "healthy": db_healthy,
+                "message": db_health.get("message", ""),
+                "pool_status": db_health.get("pool_status", "")
             },
             "timestamp": datetime.utcnow().isoformat()
         }

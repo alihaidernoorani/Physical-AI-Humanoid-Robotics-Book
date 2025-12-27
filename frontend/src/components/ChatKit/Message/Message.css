@@ -1,13 +1,29 @@
+/* Message Component - Modern Claude-like aesthetic */
+/* Uses BEM naming convention for Docusaurus compatibility */
+
 .message {
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  max-width: 90%;
+  max-width: 88%;
+  animation: messageSlideIn 0.25s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message--user {
   align-self: flex-end;
   margin-left: auto;
+  flex-direction: row-reverse;
 }
 
 .message--bot {
@@ -21,70 +37,170 @@
 
 .message__content {
   flex: 1;
+  min-width: 0;
 }
 
 .message__text {
   padding: 12px 16px;
   border-radius: 18px;
-  line-height: 1.5;
+  line-height: 1.55;
   word-wrap: break-word;
   white-space: pre-wrap;
+  font-size: 0.9375rem;
 }
 
+/* User message - warm amber accent (primary color) */
 .message--user .message__text {
-  background: #007bff;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
   color: white;
-  border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2);
 }
 
+/* Bot message - clean, light background */
 .message--bot .message__text {
-  background: #f1f0f0;
-  color: #333;
-  border-bottom-left-radius: 4px;
+  background: #F3F4F6;
+  color: #1F2937;
+  border-bottom-left-radius: 6px;
+  border: 1px solid #E5E7EB;
 }
 
+/* System message - subtle warning style */
 .message--system .message__text {
-  background: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
   text-align: center;
-  padding: 8px 16px;
-  border-radius: 18px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
 }
 
+/* Citations section */
 .message__citations {
-  margin-top: 8px;
-  padding: 8px;
-  background: rgba(0, 123, 255, 0.1);
-  border-radius: 8px;
-  font-size: 0.85em;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #FFFBEB;
+  border-radius: 10px;
+  border: 1px solid #FDE68A;
+  font-size: 0.8125rem;
 }
 
 .message__citations summary {
   cursor: pointer;
-  color: #007bff;
-  font-weight: 500;
-  margin-bottom: 4px;
+  color: #D97706;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.message__citations summary:hover {
+  color: #B45309;
+}
+
+.message__citations summary::before {
+  content: "📚";
+  font-size: 0.875em;
 }
 
 .message__citations ul {
   margin: 0;
   padding-left: 20px;
-  list-style: disc;
+  list-style: none;
 }
 
 .message__citations li {
-  margin: 4px 0;
-  color: #666;
+  margin: 6px 0;
+  color: #6B7280;
+  position: relative;
+  padding-left: 12px;
 }
 
+.message__citations li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #D97706;
+}
+
+/* Metadata (timestamp) */
 .message__meta {
   margin-top: 4px;
-  font-size: 0.75em;
-  color: #999;
-  align-self: flex-end;
+  font-size: 0.6875rem;
+  color: #9CA3AF;
+  padding: 0 4px;
 }
 
 .message--user .message__meta {
-  color: #adb5bd;
+  color: #9CA3AF;
+  text-align: right;
+}
+
+/* Typing indicator animation */
+.message__typing {
+  display: flex;
+  gap: 4px;
+  padding: 14px 18px;
+  background: #F3F4F6;
+  border-radius: 18px;
+  border-bottom-left-radius: 6px;
+  border: 1px solid #E5E7EB;
+}
+
+.message__typing-dot {
+  width: 8px;
+  height: 8px;
+  background: #9CA3AF;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.message__typing-dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.message__typing-dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.message__typing-dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes typingBounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Error message styling */
+.message--error .message__text {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+/* Retry button for error messages */
+.message__retry {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  color: #4B5563;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.message__retry:hover {
+  background: #E5E7EB;
+  color: #1F2937;
 }

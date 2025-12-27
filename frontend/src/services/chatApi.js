@@ -1,10 +1,13 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
 
 class ChatApi {
-  static async chat(query, mode = 'full_text', selectedText = null, sessionId = null) {
+  static async chat(message, mode = 'full_text', selectedText = null, sessionId = null) {
+    // Use 'message' field as per API contract, but also include 'query' for backwards compatibility
     const requestBody = {
-      query,
+      message,  // Primary field per API contract
+      query: message,  // Backwards compatibility
       mode,
+      retrieval_mode: mode === 'full_text' ? 'full-book' : 'per-page',
     };
 
     if (selectedText) {
@@ -25,7 +28,8 @@ class ChatApi {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
       }
 
       return await response.json();
@@ -38,6 +42,7 @@ class ChatApi {
   static async retrieveContext(query, topK = 5) {
     const requestBody = {
       query,
+      message: query,  // Also send as message for compatibility
       top_k: topK
     };
 
@@ -51,12 +56,48 @@ class ChatApi {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
       }
 
       return await response.json();
     } catch (error) {
       console.error('Error in retrieve context API call:', error);
+      throw error;
+    }
+  }
+
+  static async createSession() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating session:', error);
+      throw error;
+    }
+  }
+
+  static async getHistory(sessionId) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat/history/${sessionId}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching history:', error);
       throw error;
     }
   }

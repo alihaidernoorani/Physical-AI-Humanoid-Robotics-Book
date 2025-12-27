@@ -31,6 +31,15 @@ class Settings(BaseSettings):
     # API Configuration
     allowed_origins: str = os.getenv("ALLOWED_ORIGINS", "*")
 
+    # RAG Configuration
+    relevance_threshold: float = float(os.getenv("RELEVANCE_THRESHOLD", "0.7"))
+    max_message_length: int = int(os.getenv("MAX_MESSAGE_LENGTH", "2000"))
+
+    # Database Connection Pool Configuration
+    db_pool_size: int = int(os.getenv("DB_POOL_SIZE", "5"))
+    db_max_overflow: int = int(os.getenv("DB_MAX_OVERFLOW", "10"))
+    db_pool_recycle: int = int(os.getenv("DB_POOL_RECYCLE", "3600"))
+
     model_config = {"env_file": ".env"}
 
 # Create a singleton instance

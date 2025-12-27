@@ -37,3 +37,6 @@ python-jose[cryptography]>=3.3.0
 
 # Rate Limiting
 slowapi>=0.1.9
+
+# Retry Logic
+tenacity>=8.2.0

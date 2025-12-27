@@ -1,62 +1,134 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ChatApi from '../../services/chatApi';
 import './ChatWindow.css';
+
+// Constants for validation
+const MAX_MESSAGE_LENGTH = 2000;
+
+// Generate unique temporary ID to prevent React key collisions
+const generateTempId = () => `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [chatMode, setChatMode] = useState('full_text'); // 'full_text' or 'selected_text'
+  const [chatMode, setChatMode] = useState('full_text');
   const [selectedText, setSelectedText] = useState('');
+  const [validationError, setValidationError] = useState('');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  const scrollToBottom = () => {
+  // Auto-scroll to bottom when messages change
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
+
+  // Input validation
+  const validateInput = (text) => {
+    if (!text || !text.trim()) {
+      return 'Please enter a message';
+    }
+    if (text.length > MAX_MESSAGE_LENGTH) {
+      return `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters allowed.`;
+    }
+    return null;
+  };
+
+  // Handle input change with validation
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+
+    // Clear validation error when user starts typing
+    if (validationError) {
+      setValidationError('');
+    }
+
+    // Show warning if approaching limit
+    if (value.length > MAX_MESSAGE_LENGTH) {
+      setValidationError(`Message too long (${value.length}/${MAX_MESSAGE_LENGTH})`);
+    }
+  };
+
+  // Retry handler for failed messages
+  const handleRetry = async (failedMessage) => {
+    // Remove the error message
+    setMessages(prev => prev.filter(m => m.id !== failedMessage.id));
+
+    // Re-submit the original message
+    setInputValue(failedMessage.originalText || '');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
 
-    // Add user message to chat
+    // Validate input
+    const error = validateInput(inputValue);
+    if (error) {
+      setValidationError(error);
+      return;
+    }
+
+    if (isLoading) return;
+
+    const messageText = inputValue.trim();
+
+    // Generate unique temporary ID for optimistic update
+    const tempUserId = generateTempId();
+
+    // OPTIMISTIC UPDATE: Add user message immediately before API call
     const userMessage = {
-      id: Date.now(),
-      text: inputValue,
+      id: tempUserId,
+      text: messageText,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      status: 'sent'
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
+    setValidationError('');
     setIsLoading(true);
 
     try {
       // Call the backend API
-      const response = await ChatApi.chat(inputValue, chatMode, selectedText);
+      const response = await ChatApi.chat(messageText, chatMode, selectedText);
+
+      // Generate unique ID for bot response
+      const botId = generateTempId();
 
       const botMessage = {
-        id: Date.now() + 1,
+        id: botId,
         text: response.response,
         sender: 'bot',
         citations: response.citations || [],
         confidence: response.grounding_confidence,
-        timestamp: new Date()
+        timestamp: new Date(),
+        status: 'received'
       };
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
+      console.error('Chat error:', error);
+
+      // Generate unique ID for error message
+      const errorId = generateTempId();
+
       const errorMessage = {
-        id: Date.now() + 1,
-        text: 'Sorry, I encountered an error processing your request. Please try again.',
+        id: errorId,
+        text: 'Sorry, I encountered an error processing your request.',
         sender: 'bot',
         error: true,
-        timestamp: new Date()
+        canRetry: true,
+        originalText: messageText,
+        timestamp: new Date(),
+        status: 'error'
       };
+
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -64,12 +136,10 @@ const ChatWindow = () => {
   };
 
   const handleTextSelection = () => {
-    const selectedText = window.getSelection().toString().trim();
-    if (selectedText) {
-      setSelectedText(selectedText);
+    const selected = window.getSelection().toString().trim();
+    if (selected) {
+      setSelectedText(selected);
       setChatMode('selected_text');
-      // Optionally show a notification that text has been captured
-      console.log('Selected text captured:', selectedText);
     }
   };
 
@@ -108,7 +178,7 @@ const ChatWindow = () => {
           messages.map((message) => (
             <div
               key={message.id}
-              className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
+              className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}${message.error ? ' error-message' : ''}`}
             >
               <div className="message-content">
                 <p>{message.text}</p>
@@ -122,9 +192,14 @@ const ChatWindow = () => {
                     <small>Confidence: {(message.confidence * 100).toFixed(1)}%</small>
                   </div>
                 )}
-                {message.error && (
-                  <div className="error">
-                    <small>Error occurred - please try again</small>
+                {message.error && message.canRetry && (
+                  <div className="error-actions">
+                    <button
+                      className="retry-button"
+                      onClick={() => handleRetry(message)}
+                    >
+                      Try Again
+                    </button>
                   </div>
                 )}
               </div>
@@ -146,15 +221,27 @@ const ChatWindow = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="chat-input-form">
-        <input
-          ref={inputRef}
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder={chatMode === 'selected_text' ? "Ask about selected text..." : "Ask a question about the textbook..."}
-          disabled={isLoading}
-        />
-        <button type="submit" disabled={isLoading || !inputValue.trim()}>
+        <div className="input-wrapper">
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder={chatMode === 'selected_text' ? "Ask about selected text..." : "Ask a question about the textbook..."}
+            disabled={isLoading}
+            maxLength={MAX_MESSAGE_LENGTH + 100}
+          />
+          {validationError && (
+            <div className="validation-error">{validationError}</div>
+          )}
+          <div className="char-count">
+            {inputValue.length}/{MAX_MESSAGE_LENGTH}
+          </div>
+        </div>
+        <button
+          type="submit"
+          disabled={isLoading || !inputValue.trim() || inputValue.length > MAX_MESSAGE_LENGTH}
+        >
           {isLoading ? 'Sending...' : 'Send'}
         </button>
       </form>

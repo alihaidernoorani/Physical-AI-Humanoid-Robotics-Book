@@ -1,44 +1,87 @@
+/* ErrorDisplay Component - Modern Claude-like aesthetic */
+/* Uses BEM naming convention for Docusaurus compatibility */
+
 .error-display {
-  padding: 16px;
-  margin: 8px 0;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
-  color: #721c24;
+  padding: 14px 16px;
+  margin: 0;
+  background: #FEF2F2;
+  border-bottom: 1px solid #FECACA;
+  color: #991B1B;
+  animation: errorSlideIn 0.2s ease-out;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .error-display__content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
 }
 
 .error-display__icon {
-  font-size: 1.5em;
+  width: 20px;
+  height: 20px;
+  background: #DC2626;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
   flex-shrink: 0;
 }
 
+.error-display__icon::after {
+  content: "!";
+}
+
+.error-display__message {
+  flex: 1;
+  min-width: 0;
+}
+
 .error-display__message h4 {
-  margin: 0 0 4px 0;
-  font-size: 1em;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #991B1B;
 }
 
 .error-display__message p {
-  margin: 0;
-  font-size: 0.9em;
+  margin: 4px 0 0 0;
+  font-size: 0.8125rem;
+  color: #B91C1C;
+  line-height: 1.4;
 }
 
 .error-display__retry-button {
-  margin-left: auto;
-  padding: 6px 12px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 6px 14px;
+  background: #FFFFFF;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.85em;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .error-display__retry-button:hover {
-  background: #c82333;
+  background: #FEF2F2;
+  border-color: #DC2626;
+}
+
+.error-display__retry-button:active {
+  transform: scale(0.98);
 }

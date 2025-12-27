@@ -1,27 +1,45 @@
+/* MessageList Component - Modern Claude-like aesthetic */
+/* Uses BEM naming convention for Docusaurus compatibility */
+
 .message-list {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-height: 400px;
+  gap: 12px;
+  background: #FFFFFF;
+  scroll-behavior: smooth;
 }
 
+/* Custom scrollbar styling */
 .message-list::-webkit-scrollbar {
   width: 6px;
 }
 
 .message-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
   border-radius: 3px;
 }
 
 .message-list::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: #E5E7EB;
   border-radius: 3px;
 }
 
 .message-list::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
+  background: #D1D5DB;
+}
+
+/* Firefox scrollbar */
+.message-list {
+  scrollbar-width: thin;
+  scrollbar-color: #E5E7EB transparent;
+}
+
+/* Scroll anchor for auto-scroll */
+.message-list__anchor {
+  height: 1px;
+  margin: 0;
+  padding: 0;
 }

@@ -1,55 +1,138 @@
+/* MessageInput Component - Modern Claude-like aesthetic */
+/* Uses BEM naming convention for Docusaurus compatibility */
+
 .message-input {
   padding: 16px;
-  border-top: 1px solid #eee;
-  background: #f8f9fa;
+  border-top: 1px solid #E5E7EB;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%);
 }
 
 .message-input__container {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-end;
 }
 
 .message-input textarea {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 18px;
+  border: 1px solid #E5E7EB;
+  border-radius: 20px;
   resize: none;
   font-family: inherit;
-  font-size: 1em;
+  font-size: 0.9375rem;
+  line-height: 1.5;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #FFFFFF;
+  color: #1F2937;
+  min-height: 44px;
+  max-height: 120px;
+}
+
+.message-input textarea::placeholder {
+  color: #9CA3AF;
 }
 
 .message-input textarea:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: #D97706;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
 }
 
 .message-input textarea:disabled {
-  background: #f8f9fa;
-  color: #6c757d;
+  background: #F9FAFB;
+  color: #9CA3AF;
   cursor: not-allowed;
 }
 
 .message-input__send-button {
-  padding: 12px 20px;
-  background: #007bff;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
   color: white;
   border: none;
-  border-radius: 18px;
+  border-radius: 50%;
   cursor: pointer;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
 }
 
 .message-input__send-button:hover:not(:disabled) {
-  background: #0056b3;
+  background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+}
+
+.message-input__send-button:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .message-input__send-button:disabled {
-  background: #6c757d;
+  background: #E5E7EB;
+  color: #9CA3AF;
   cursor: not-allowed;
-  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* Send icon (arrow) */
+.message-input__send-button::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.message-input__send-button:disabled::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239CA3AF'%3E%3Cpath d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/%3E%3C/svg%3E");
+}
+
+/* Character counter */
+.message-input__counter {
+  font-size: 0.6875rem;
+  color: #9CA3AF;
+  text-align: right;
+  margin-top: 4px;
+  padding-right: 4px;
+}
+
+.message-input__counter--warning {
+  color: #D97706;
+}
+
+.message-input__counter--error {
+  color: #DC2626;
+}
+
+/* Validation error message */
+.message-input__error {
+  font-size: 0.75rem;
+  color: #DC2626;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: #FEE2E2;
+  border-radius: 8px;
+  border: 1px solid #FECACA;
+}
+
+/* Loading state */
+.message-input--loading .message-input__send-button::after {
+  animation: sendPulse 1s infinite;
+}
+
+@keyframes sendPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: RAG Chatbot API
+  version: 2.0.0
+  description: API contract for the Physical AI Textbook RAG Chatbot
+
+servers:
+  - url: /api
+    description: API base path
+
+paths:
+  /chat:
+    post:
+      summary: Send a chat message and receive RAG-grounded response
+      operationId: chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Invalid request (empty message, message too long)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /chat/session:
+    post:
+      summary: Create a new chat session
+      operationId: createSession
+      responses:
+        '200':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+
+  /chat/history/{session_id}:
+    get:
+      summary: Get chat history for a session
+      operationId: getChatHistory
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: User's question
+        selected_text:
+          type: string
+          maxLength: 5000
+          description: Optional selected text for per-page mode
+        session_id:
+          type: string
+          format: uuid
+          description: Optional session ID for conversation continuity
+        retrieval_mode:
+          type: string
+          enum: [full-book, per-page]
+          default: full-book
+          description: RAG retrieval mode
+
+    ChatResponse:
+      type: object
+      required:
+        - response
+        - session_id
+        - timestamp
+      properties:
+        response:
+          type: string
+          description: Bot's response text
+        session_id:
+          type: string
+          format: uuid
+          description: Session identifier
+        citations:
+          type: array
+          items:
+            type: string
+          description: Chunk IDs used for response
+        grounding_confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Confidence score for response grounding
+        response_time_ms:
+          type: number
+          description: Response generation time in milliseconds
+        timestamp:
+          type: string
+          format: date-time
+
+    SessionResponse:
+      type: object
+      required:
+        - session_id
+        - status
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [created]
+        timestamp:
+          type: string
+          format: date-time
+
+    HistoryResponse:
+      type: object
+      required:
+        - session_id
+        - history
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        timestamp:
+          type: string
+          format: date-time
+
+    ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        citations:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - services
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy, degraded]
+        services:
+          type: object
+          properties:
+            agent:
+              type: boolean
+            rag:
+              type: boolean
+            neon_db:
+              type: boolean
+        timestamp:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: User-friendly error message

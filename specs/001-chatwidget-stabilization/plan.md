@@ -1,25 +1,27 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: ChatWidget Stabilization
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-chatwidget-stabilization` | **Date**: 2025-12-27 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-chatwidget-stabilization/spec.md`
 
-**Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Note**: This plan covers Phase 11 - Database Schema Alignment to fix the production ChatKit session creation failures.
 
 ## Summary
 
-Implement a Docusaurus theme wrapper using Root.tsx to host the global ChatWidget while ensuring SSG (Static Site Generation) build success. Remove the @theme/Layout override and replace it with a ChatLoader component that uses useState and useEffect to lazily load ChatKit code only after browser hydration, preventing the "RangeError: Maximum call stack size exceeded" during SSG builds.
+Fix the ChatKit backend database schema mismatch that causes session creation failures on Hugging Face Spaces. The Neon Postgres database was manually initialized with an incomplete schema missing the `updated_at` column on the `conversations` table, causing "column does not exist" errors and triggering fallback mode in the frontend.
+
+**Technical Approach**: Use ALTER TABLE statements to add missing columns while preserving existing data, then add backend safeguards to prevent future schema-related crashes.
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.0+ (frontend), Python 3.11+ (backend)
-**Primary Dependencies**: React 18+, Docusaurus 3.9+, FastAPI 0.104+, Qdrant vector database
-**Storage**: Qdrant vector database for RAG, Neon Postgres for metadata
-**Testing**: Jest for frontend, pytest for backend
-**Target Platform**: Web application (GitHub Pages frontend, Hugging Face Space backend)
-**Project Type**: Web application (frontend/backend architecture)
-**Performance Goals**: <10s response time for 90% of chat queries, sub-200ms UI interactions
-**Constraints**: GitHub Pages deployment (static hosting), CORS restrictions, cross-origin requests, SSG build compatibility
-**Scale/Scope**: Single textbook website with global ChatWidget, multiple concurrent users
+**Language/Version**: Python 3.11 (backend), TypeScript (frontend)
+**Primary Dependencies**: FastAPI, psycopg2, Docusaurus, React
+**Storage**: Neon Postgres (cloud), Qdrant (vector DB)
+**Testing**: pytest, manual verification via Neon console
+**Target Platform**: Hugging Face Spaces (backend), GitHub Pages (frontend)
+**Project Type**: Web application (frontend + backend)
+**Performance Goals**: Session creation < 500ms, 90% query success rate
+**Constraints**: No data loss during migration, maintain backward compatibility
+**Scale/Scope**: Single-tenant deployment, ~100 daily users
 
 ## Constitution Check
 
@@ -40,7 +42,7 @@ Implement a Docusaurus theme wrapper using Root.tsx to host the global ChatWidge
 ### Documentation (this feature)
 
 ```text
-specs/001-chatwidget-stabilization/
+specs/[###-feature]/
 ├── plan.md              # This file (/sp.plan command output)
 ├── research.md          # Phase 0 output (/sp.plan command)
 ├── data-model.md        # Phase 1 output (/sp.plan command)
@@ -50,31 +52,51 @@ specs/001-chatwidget-stabilization/
 ```
 
 ### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
+
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
-├── app/
-│   ├── main.py          # FastAPI app with CORS configuration
-│   ├── chat.py          # Chat API endpoints
-│   └── agent.py         # RAG agent implementation
-└── requirements.txt
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
 
 frontend/
 ├── src/
-│   ├── theme/
-│   │   └── Root.tsx     # ChatWidget hosting location (theme wrapper)
 │   ├── components/
-│   │   ├── ChatLoader/  # SSG-safe ChatKit loader component
-│   │   └── ChatKit/     # ChatWidget components
-│   │       ├── ChatKit.tsx
-│   │       ├── ChatWindow/
-│   │       └── ChatKit.css
+│   ├── pages/
 │   └── services/
-│       └── api.js       # API service with backend URL configuration
-└── docusaurus.config.ts # Docusaurus configuration
+└── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: This is a web application with frontend (Docusaurus/React) and backend (FastAPI) components. The ChatKit component will be hosted in Root.tsx instead of Layout.tsx to prevent circular dependencies. A ChatLoader component will be created to handle lazy loading of ChatKit with proper SSG safety using useState and useEffect hooks. The API service needs to be configured with the correct backend URL for production deployment.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
@@ -85,22 +107,84 @@ frontend/
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
 | [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
 
-## Production Issue Correction: GitHub Pages Deployment Failure
+---
 
-### Context
-During production deployment to GitHub Pages, the ChatKit widget fails to load despite working correctly in local development. The issue manifests as a "ReferenceError: process is not defined" error in the browser console, causing the widget to be invisible to users. This occurs because Node.js-specific globals like `process.env` are accessible during development but not available in the production browser environment.
+## Phase 11: Database Schema Alignment
 
-### Root Cause Summary
-The failure stems from browser-incompatible environment variable handling in the API service layer. Specifically, the `frontend/src/services/api.js` file contains references to `process.env.REACT_APP_API_BASE_URL` which are available during local development (thanks to Webpack's Node.js polyfills) but not in the production build deployed to GitHub Pages. This creates a runtime error that prevents the ChatKit component from initializing.
+### Problem Statement
 
-### Strategic Adjustment
-To address this issue, the implementation strategy must shift to browser-safe configuration patterns:
-1. Replace Node.js-style environment variable access with browser-compatible environment detection
-2. Implement hardened import mechanisms that gracefully handle loading failures
-3. Use explicit browser environment checks instead of Node.js globals
-4. Ensure all configuration values are resolved at build time or through browser-safe methods
+The ChatKit backend on Hugging Face Spaces is failing to create chat sessions due to a schema mismatch between the backend code expectations and the actual Neon Postgres database schema.
 
-### Implementation Approach
-Rather than introducing new features, this corrective phase will refactor the existing environment configuration and error handling to be production-safe. The core functionality remains unchanged, but the configuration mechanism will be hardened to work reliably in both development and production environments.
+**Observed Errors**:
+- `relation "conversations" does not exist` (initial state)
+- `column "updated_at" of relation "conversations" does not exist` (current state)
 
-**Note**: This represents a corrective implementation phase to fix a production-only failure, not the introduction of new functionality. The original project scope and architecture remain unchanged.
+**Root Cause**: The Neon database was manually initialized with an incomplete schema.
+
+### Design Decision: ALTER vs DROP/RECREATE
+
+**Decision**: Use ALTER TABLE to add missing columns
+
+**Rationale**:
+1. Preserves any existing conversation data
+2. Lower risk than DROP/RECREATE
+3. Idempotent (safe to run multiple times)
+4. No downtime required
+
+**Alternatives Rejected**:
+- DROP and recreate: Would lose existing data
+- Backend code change: Would break ChatKit protocol compliance
+
+### Schema Migration Plan
+
+Execute the following SQL in Neon Postgres console:
+
+```sql
+-- Add missing columns to conversations table
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
+
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;
+
+-- Ensure messages table exists
+CREATE TABLE IF NOT EXISTS messages (
+    id VARCHAR(36) PRIMARY KEY,
+    session_id VARCHAR(36) REFERENCES conversations(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT NOW(),
+    citations JSONB DEFAULT '[]'::jsonb,
+    selected_text TEXT DEFAULT ''
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_session_id ON messages(session_id);
+```
+
+### Backend Safeguards (Recommended Follow-up)
+
+Add schema validation at backend startup:
+
+1. **Schema validation**: Check required tables and columns exist
+2. **Connection health**: Validate connection state before queries
+3. **Graceful degradation**: Return error response if DB unavailable (not crash)
+
+### Implementation Tasks
+
+1. **T047 [P11]**: Execute schema migration SQL in Neon console
+2. **T048 [P11]**: Verify session creation succeeds via API test
+3. **T049 [P11]**: Verify ChatKit exits fallback mode on frontend
+4. **T050 [P11]**: (Optional) Add schema validation to backend startup
+
+### Success Criteria
+
+1. `/api/v1/chat/session` endpoint returns 200 with valid session_id
+2. No "column does not exist" errors in backend logs
+3. ChatKit widget functions normally without fallback mode
+4. Message storage and retrieval works correctly
+
+### Artifacts Generated
+
+- `specs/001-chatwidget-stabilization/research.md` - Phase 11 research findings
+- `specs/001-chatwidget-stabilization/data-model.md` - Database schema documentation
+- `specs/001-chatwidget-stabilization/contracts/schema-migration.sql` - SQL migration script

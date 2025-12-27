@@ -12,7 +12,6 @@ class Settings(BaseSettings):
     qdrant_api_key: str = os.getenv("QDRANT_API_KEY", "")
     qdrant_collection_name: str = os.getenv("QDRANT_COLLECTION_NAME", "textbook_rag")
     cluster_id: str = os.getenv("CLUSTER_ID", "")
-    neon_db_url: str = os.getenv("NEON_DB_URL", "")
 
     # Cohere Configuration
     cohere_api_key: str = os.getenv("COHERE_API_KEY", "")

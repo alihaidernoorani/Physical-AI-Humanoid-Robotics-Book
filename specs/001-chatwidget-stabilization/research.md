@@ -149,3 +149,100 @@ This research document addresses the requirements for stabilizing the global Cha
 - Thorough testing in staging environment before production
 - Maintain backward compatibility during migration
 - Implement fallback error handling
+
+---
+
+## Phase 11: Database Schema Alignment (2025-12-27)
+
+### Problem Statement
+
+The ChatKit backend on Hugging Face Spaces is failing to create chat sessions due to a schema mismatch between the backend code expectations and the actual Neon Postgres database schema.
+
+**Observed Errors**:
+- `relation "conversations" does not exist` (initial state)
+- `column "updated_at" of relation "conversations" does not exist` (current state)
+
+### Backend Schema Requirements (from agent.py)
+
+The backend code expects two tables:
+
+#### Table: `conversations`
+Required columns based on backend code analysis (agent.py lines 86-91):
+- `id`: VARCHAR(36) PRIMARY KEY - Session identifier
+- `created_at`: TIMESTAMP - Creation timestamp
+- `updated_at`: TIMESTAMP - Last update timestamp
+- `metadata`: JSONB - Optional metadata storage
+
+**Decision**: The `conversations` table must have all four columns to match the INSERT statement in `create_conversation()` method.
+
+#### Table: `messages`
+Required columns based on backend code analysis (agent.py lines 139-152):
+- `id`: VARCHAR(36) PRIMARY KEY - Message identifier
+- `session_id`: VARCHAR(36) FOREIGN KEY - References conversations.id
+- `role`: VARCHAR(20) NOT NULL - 'user', 'assistant', or 'system'
+- `content`: TEXT NOT NULL - Message content
+- `timestamp`: TIMESTAMP - Message timestamp
+- `citations`: JSONB - Array of citation references
+- `selected_text`: TEXT - User-selected text context
+
+### Current Database State Analysis
+
+**Finding**: The Neon database was initialized manually with an incomplete schema missing:
+- The `updated_at` column on `conversations` table
+- Potentially missing columns on `messages` table
+
+### Alternatives Considered
+
+| Option | Description | Verdict |
+|--------|-------------|---------|
+| A. ALTER existing tables | Add missing columns with defaults | **Recommended** - Preserves existing data |
+| B. DROP and recreate | Drop tables and create fresh | Not recommended - Loses data |
+| C. Backend code change | Remove `updated_at` usage | Not recommended - Breaks ChatKit protocol |
+
+### Transaction Cascade Issue
+
+When a query fails (e.g., missing column), Postgres marks the transaction as aborted. Any subsequent queries in the same transaction will fail with:
+```
+current transaction is aborted, commands ignored until end of transaction block
+```
+
+**Decision**: The backend already has `self.db_connection.rollback()` in exception handlers. Connection pooling should be verified.
+
+### Recommended SQL Migration
+
+```sql
+-- Fix conversations table (add missing column)
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
+
+-- Ensure conversations has correct columns
+ALTER TABLE conversations
+ADD COLUMN IF NOT EXISTS metadata JSONB DEFAULT '{}'::jsonb;
+
+-- Ensure messages table exists with correct schema
+CREATE TABLE IF NOT EXISTS messages (
+    id VARCHAR(36) PRIMARY KEY,
+    session_id VARCHAR(36) REFERENCES conversations(id) ON DELETE CASCADE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content TEXT NOT NULL,
+    timestamp TIMESTAMP DEFAULT NOW(),
+    citations JSONB DEFAULT '[]'::jsonb,
+    selected_text TEXT DEFAULT ''
+);
+
+-- Add index for session_id lookups
+CREATE INDEX IF NOT EXISTS idx_messages_session_id ON messages(session_id);
+```
+
+### Backend Safeguards Recommended
+
+1. **Schema validation at startup**: Verify tables and columns exist
+2. **Connection health check**: Validate connection state before queries
+3. **Graceful degradation**: Return fallback response if DB unavailable
+
+### Success Criteria
+
+1. Session creation succeeds without schema errors
+2. Messages are stored and retrieved correctly
+3. No transaction-aborted cascades occur
+4. ChatKit widget exits fallback mode

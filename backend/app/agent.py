@@ -40,7 +40,7 @@ class AgentSDKConfig:
 
     def _init_db_connection(self):
         """
-        Initialize connection to Neon Postgres
+        Initialize connection to Neon Postgres with schema validation
         """
         try:
             import psycopg2
@@ -49,10 +49,78 @@ class AgentSDKConfig:
                 cursor_factory=RealDictCursor
             )
             logger.info("Connected to Neon Postgres successfully")
+
+            # Validate schema exists (T061)
+            if not self._validate_schema():
+                logger.warning("Database schema validation failed - some tables/columns may be missing")
         except Exception as e:
             logger.error(f"Failed to connect to Neon Postgres: {str(e)}")
             # For development, we can continue without DB connection
-            pass
+            self.db_connection = None
+
+    def _validate_schema(self) -> bool:
+        """
+        Validate that required database tables and columns exist (T061)
+        Returns True if schema is valid, False otherwise
+        """
+        if not self.db_connection:
+            return False
+
+        try:
+            with self.db_connection.cursor() as cursor:
+                # Check conversations table has required columns
+                cursor.execute("""
+                    SELECT column_name FROM information_schema.columns
+                    WHERE table_name = 'conversations'
+                """)
+                conv_columns = {row['column_name'] for row in cursor.fetchall()}
+                required_conv = {'id', 'created_at', 'updated_at', 'metadata'}
+
+                if not required_conv.issubset(conv_columns):
+                    missing = required_conv - conv_columns
+                    logger.error(f"Missing columns in conversations table: {missing}")
+                    return False
+
+                # Check messages table has required columns
+                cursor.execute("""
+                    SELECT column_name FROM information_schema.columns
+                    WHERE table_name = 'messages'
+                """)
+                msg_columns = {row['column_name'] for row in cursor.fetchall()}
+                required_msg = {'id', 'session_id', 'role', 'content', 'timestamp', 'citations', 'selected_text'}
+
+                if not required_msg.issubset(msg_columns):
+                    missing = required_msg - msg_columns
+                    logger.error(f"Missing columns in messages table: {missing}")
+                    return False
+
+                logger.info("Database schema validation passed")
+                return True
+
+        except Exception as e:
+            logger.error(f"Schema validation error: {str(e)}")
+            return False
+
+    def _check_connection_health(self) -> bool:
+        """
+        Check if database connection is healthy (T062)
+        Returns True if connection is usable, False otherwise
+        """
+        if not self.db_connection:
+            return False
+
+        try:
+            with self.db_connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                return True
+        except Exception as e:
+            logger.warning(f"Database connection unhealthy: {str(e)}")
+            # Try to reconnect
+            try:
+                self._init_db_connection()
+                return self.db_connection is not None
+            except Exception:
+                return False
 
     def _build_context(self, context_chunks: List[Dict], selected_text: Optional[str] = None) -> str:
         """
@@ -75,12 +143,14 @@ class AgentSDKConfig:
 
     def create_conversation(self, session_id: str = None) -> str:
         """
-        Create a new conversation thread in Neon Postgres following ChatKit protocol
+        Create a new conversation thread in Neon Postgres following ChatKit protocol.
+        Returns session_id even if DB write fails (graceful degradation - T063).
         """
         if session_id is None:
             session_id = str(uuid.uuid4())
 
-        if self.db_connection:
+        # Check connection health before attempting DB operation (T062)
+        if self.db_connection and self._check_connection_health():
             try:
                 with self.db_connection.cursor() as cursor:
                     cursor.execute(
@@ -94,8 +164,15 @@ class AgentSDKConfig:
                     logger.info(f"Created conversation: {session_id}")
             except Exception as e:
                 logger.error(f"Failed to create conversation in DB: {str(e)}")
-                self.db_connection.rollback()
-                raise
+                if self.db_connection:
+                    try:
+                        self.db_connection.rollback()
+                    except Exception:
+                        pass  # Ignore rollback errors
+                # Don't raise - return session_id anyway for graceful degradation (T063)
+                logger.warning(f"Returning session_id {session_id} without DB persistence (graceful degradation)")
+        else:
+            logger.warning(f"DB unavailable - returning session_id {session_id} without persistence")
 
         return session_id
 

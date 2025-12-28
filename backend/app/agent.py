@@ -115,6 +115,9 @@ class AgentSDKConfig:
             # Build context from chunks and selected text
             context = self._build_context(context_chunks, selected_text)
 
+            # Debug log: show context length sent to LLM
+            print(f'DEBUG: Final Context length sent to LLM: {len(context)} characters')
+
             # Prepare the user message with context
             full_message = f"{context}\n\nQuestion: {query}"
 

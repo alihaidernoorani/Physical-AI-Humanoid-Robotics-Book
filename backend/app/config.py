@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     allowed_origins: str = os.getenv("ALLOWED_ORIGINS", "*")
 
     # RAG Configuration
-    relevance_threshold: float = float(os.getenv("RELEVANCE_THRESHOLD", "0.7"))
+    relevance_threshold: float = float(os.getenv("RELEVANCE_THRESHOLD", "0.35"))
     max_message_length: int = int(os.getenv("MAX_MESSAGE_LENGTH", "2000"))
 
     # Database Connection Pool Configuration

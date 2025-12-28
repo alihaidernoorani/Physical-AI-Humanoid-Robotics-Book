@@ -176,8 +176,11 @@ class QdrantRetrievalService:
         Search for relevant chunks in the full book with relevance filtering.
         """
         try:
-            # Build filters if provided
+            # TEMPORARILY DISABLE METADATA FILTERS for debugging
+            # Remove this line to re-enable filtering after debugging
             qdrant_filters = None
+
+            # Build filters if provided (disabled above for debugging)
             if filters:
                 filter_conditions = []
                 for key, value in filters.items():
@@ -207,6 +210,9 @@ class QdrantRetrievalService:
                 query_filter=qdrant_filters,
                 with_payload=True
             )
+
+            # Debug log to see retrieval scores
+            print(f'DEBUG: Qdrant search returned {len(results)} points. Top score: {results[0].score if results else "N/A"}')
 
             # Format and filter results
             formatted_results = [self._format_result(r) for r in results]

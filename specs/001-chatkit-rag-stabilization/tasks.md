@@ -145,3 +145,41 @@ Incremental delivery with each user story being independently testable and deplo
 
 ### Success Metrics
 All measurable outcomes from spec.md must be achieved (SC-001 through SC-006).
+
+---
+
+## Phase 7: Connect Frontend to RAG Data (Debug & Fix)
+
+**Goal**: Debug and fix the frontend-to-RAG data flow with proper logging and context extraction
+
+**Input**: Backend chat endpoint analysis at backend/app/chat.py and backend/app/agent.py
+
+### Tasks
+
+- [ ] T046 [P] Audit the chat endpoint in backend/app/chat.py (line 32, @router.post("/chat"))
+- [ ] T047 [P] Add debug logging: print(f"DEBUG: Received message: {message}") after message extraction (after line 60 in chat.py)
+- [ ] T048 [P] Add debug logging: print(f"DEBUG: Retrieval Mode: {retrieval_mode}") after retrieval_mode extraction (after line 77 in chat.py)
+- [ ] T049 Verify context extraction uses correct key 'content' in backend/app/agent.py (line 52, 59) - already uses chunk.get("content", "")
+- [ ] T050 [P] Update agent instructions in backend/app/agent.py (line 29) to include threshold info
+- [ ] T051 [P] Update error return in backend/app/agent.py (line 135) to show "I found 0 results in Qdrant with score > {settings.relevance_threshold}"
+- [ ] T052 Run Python syntax validation on backend/app/chat.py
+- [ ] T053 Run Python syntax validation on backend/app/agent.py
+- [ ] T054 Test by making a chat request and verify debug output appears in terminal
+
+### Validation Commands
+
+```bash
+# Syntax check
+python3 -m py_compile backend/app/chat.py backend/app/agent.py
+
+# Test endpoint (after starting server)
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is ROS 2?"}'
+```
+
+Expected debug output in terminal:
+```
+DEBUG: Received message: What is ROS 2?
+DEBUG: Retrieval Mode: full-book
+```

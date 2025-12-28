@@ -208,6 +208,9 @@ class QdrantRetrievalService:
                 with_payload=True
             )
 
+            # Debug log to see retrieval scores
+            print(f'Retrieved {len(results)} chunks. Top score: {results[0].score if results else "N/A"}')
+
             # Format and filter results
             formatted_results = [self._format_result(r) for r in results]
             filtered_results = self._filter_by_relevance(formatted_results)

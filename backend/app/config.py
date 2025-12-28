@@ -21,6 +21,13 @@ class Settings(BaseSettings):
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
     gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
+    # OpenRouter Configuration (for Xiaomi Mimo and other models)
+    openrouter_api_key: str = os.getenv("OPENROUTER_API_KEY", "")
+    openrouter_base_url: str = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    openrouter_model: str = os.getenv("OPENROUTER_MODEL", "xiaomi/mimo-v2-flash:free")
+    openrouter_site_url: str = os.getenv("OPENROUTER_SITE_URL", "http://localhost:8000")
+    openrouter_app_title: str = os.getenv("OPENROUTER_APP_TITLE", "Textbook RAG")
+
     # Neon Postgres Configuration
     database_url: str = os.getenv("DATABASE_URL", "")
 

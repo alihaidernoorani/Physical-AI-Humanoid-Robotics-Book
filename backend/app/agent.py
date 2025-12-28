@@ -12,15 +12,19 @@ from .services.db_manager import get_db_manager
 
 logger = logging.getLogger(__name__)
 
+
 class AgentSDKConfig:
     """
-    Configuration for OpenAI Agents SDK with Gemini bridge and ChatKit protocol-compliant conversation state management
+    Configuration for OpenAI Agents SDK with OpenRouter (Xiaomi Mimo) and ChatKit protocol-compliant conversation state management
     """
     def __init__(self):
-        # Create the model configuration using LiteLLM for Gemini
+        # Configure LiteLLM for OpenRouter
+        # OpenRouter uses OpenAI-compatible API format
+        # Model identifier: openrouter/xiaomi/mimo-v2-flash:free
         self.model = LitellmModel(
-            model=f"gemini/{settings.gemini_model}",  # e.g., "gemini/gemini-2.5-flash"
-            api_key=settings.gemini_api_key
+            model=f"openrouter/{settings.openrouter_model}",
+            api_key=settings.openrouter_api_key,
+            base_url=settings.openrouter_base_url
         )
 
         # Initialize the agent
@@ -134,7 +138,14 @@ class AgentSDKConfig:
             return response_text
 
         except Exception as e:
-            logger.error(f"Error processing query with context: {str(e)}")
+            error_msg = str(e)
+            logger.error(f"Error processing query with context: {error_msg}")
+
+            # Check for OpenRouter configuration errors
+            if "openrouter" in error_msg.lower() or "api_key" in error_msg.lower():
+                logger.error("OpenRouter configuration error: Check OPENROUTER_API_KEY environment variable")
+                return "I'm having trouble connecting to the language model. Please check the API configuration."
+
             return "I could not find an answer in the book content."
 
 # Create a singleton instance

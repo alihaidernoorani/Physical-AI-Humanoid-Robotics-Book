@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  title: ChatKit RAG Chat API
+  description: API for ChatKit widget with RAG functionality
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://your-hf-space-url.hf.space
+    description: Hugging Face Space deployment
+
+paths:
+  /api/v1/chat:
+    post:
+      summary: Send a chat message and receive a response
+      description: Processes user message with RAG context and returns assistant response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The user's message to send
+                  example: "What is the title of the first chapter?"
+                session_id:
+                  type: string
+                  description: Session identifier (optional, auto-generated if not provided)
+                  example: "session-12345"
+                retrieval_mode:
+                  type: string
+                  description: RAG retrieval mode
+                  enum: [full-book, per-page]
+                  default: full-book
+                metadata_filters:
+                  type: object
+                  description: Filters for RAG retrieval
+                  example: {}
+      responses:
+        '200':
+          description: Successful response with assistant answer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    type: string
+                    description: The assistant's response
+                    example: "The title of the first chapter is Introduction to Physical AI"
+                  session_id:
+                    type: string
+                    description: Session identifier
+                    example: "session-12345"
+                  citations:
+                    type: array
+                    items:
+                      type: string
+                    description: Source citations for the response
+                    example: ["intro-chapter", "chapter-1-section-1"]
+                  response_time_ms:
+                    type: number
+                    description: Time taken to generate response in milliseconds
+                    example: 1250
+                  timestamp:
+                    type: string
+                    description: ISO 8601 timestamp of response
+                    format: date-time
+                    example: "2025-12-28T10:30:00.000Z"
+        '400':
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: Error details
+                    example: "Message is required"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    description: Error details
+                    example: "Internal server error"
+
+  /api/v1/chat/session:
+    post:
+      summary: Create a new chat session
+      description: Creates a new session and returns session ID
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Optional session configuration
+      responses:
+        '200':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session_id:
+                    type: string
+                    description: The created session identifier
+                    example: "session-67890"
+                  status:
+                    type: string
+                    description: Creation status
+                    example: "created"
+                  timestamp:
+                    type: string
+                    description: ISO 8601 timestamp of creation
+                    format: date-time
+                    example: "2025-12-28T10:30:00.000Z"
+
+  /api/v1/health:
+    get:
+      summary: Health check endpoint
+      description: Returns health status of all services
+      responses:
+        '200':
+          description: Health check successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, unhealthy]
+                    description: Overall health status
+                    example: "healthy"
+                  services:
+                    type: object
+                    properties:
+                      agent:
+                        type: boolean
+                        description: Agent service health
+                        example: true
+                      rag:
+                        type: boolean
+                        description: RAG service health
+                        example: true
+                      neon_db:
+                        type: boolean
+                        description: Database health
+                        example: true
+                  database:
+                    type: object
+                    properties:
+                      healthy:
+                        type: boolean
+                        description: Database health status
+                        example: true
+                      message:
+                        type: string
+                        description: Database status message
+                        example: "Database connection healthy"
+                      pool_status:
+                        type: string
+                        description: Connection pool status
+                        example: "..."
+                  timestamp:
+                    type: string
+                    description: ISO 8601 timestamp of check
+                    format: date-time
+                    example: "2025-12-28T10:30:00.000Z"
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique message identifier
+        text:
+          type: string
+          description: Message content
+        sender:
+          type: string
+          enum: [user, assistant, system]
+          description: Message sender type
+        timestamp:
+          type: string
+          format: date-time
+          description: Message timestamp
+        citations:
+          type: array
+          items:
+            type: string
+          description: Source citations
+        status:
+          type: string
+          description: Message status (sent, delivered, error)
+
+    Session:
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: Session identifier
+        created_at:
+          type: string
+          format: date-time
+          description: Session creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Last activity timestamp
+        metadata:
+          type: object
+          description: Session metadata

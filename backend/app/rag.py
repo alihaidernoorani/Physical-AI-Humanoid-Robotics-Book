@@ -125,7 +125,7 @@ class QdrantRetrievalService:
             api_key=settings.qdrant_api_key
         )
         self.collection_name = settings.qdrant_collection_name
-        self.relevance_threshold = settings.relevance_threshold  # Default: 0.7
+        self.relevance_threshold = settings.relevance_threshold  # Default: 0.35 (from config)
         self._create_collection_if_not_exists()
 
     def _create_collection_if_not_exists(self):

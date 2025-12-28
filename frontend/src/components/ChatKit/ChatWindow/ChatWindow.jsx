@@ -12,10 +12,15 @@ const ChatWindow = ({
   isLoading: loadingProp,
   error: errorProp
 }) => {
+  // Use messages from props as source of truth, not local state
   const [messages, setMessages] = useState(initialMessages);
-  const [isLoading, setIsLoading] = useState(loadingProp || false);
   const [error, setError] = useState(errorProp || null);
   const [connectionStatus, setConnectionStatus] = useState('connected'); // connected, connecting, disconnected
+
+  // Sync messages with parent when they change
+  useEffect(() => {
+    setMessages(initialMessages);
+  }, [initialMessages]);
 
   // Create or use session
   const [currentSessionId, setCurrentSessionId] = useState(sessionId);
@@ -57,69 +62,11 @@ const ChatWindow = ({
   };
 
   const handleSendMessage = async (message) => {
-    if (!message.trim() || isLoading) return;
+    if (!message.trim() || loadingProp) return;
 
-    // If a parent handler is provided, use it instead
+    // Always delegate to parent handler
     if (onSendMessageProp) {
       onSendMessageProp(message);
-      return;
-    }
-
-    // Add user message immediately
-    const userMessage = {
-      id: Date.now(),
-      text: message,
-      sender: 'user',
-      timestamp: new Date().toISOString()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // Set timeout for API call
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), 30000)
-      );
-
-      // Send to backend
-      const responsePromise = chatService.sendMessage({
-        query: message,
-        session_id: currentSessionId
-      });
-
-      const response = await Promise.race([responsePromise, timeoutPromise]);
-
-      // Add bot response
-      const botMessage = {
-        id: Date.now() + 1,
-        text: response.response || response.answer || 'No response',
-        sender: 'bot',
-        timestamp: new Date().toISOString(),
-        citations: response.citations || []
-      };
-
-      setMessages(prev => [...prev, botMessage]);
-    } catch (err) {
-      console.error('Error sending message:', err);
-
-      if (err.message === 'Request timeout') {
-        setError('Request timed out. Please try again.');
-      } else {
-        setError('Failed to send message. Please try again.');
-      }
-
-      // Add error message to chat
-      const errorMessage = {
-        id: Date.now() + 1,
-        text: 'Sorry, I encountered an error. Please try again.',
-        sender: 'system',
-        timestamp: new Date().toISOString()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -138,9 +85,9 @@ const ChatWindow = ({
         </div>
       </div>
 
-      {error && (
+      {(error || errorProp) && (
         <ErrorDisplay
-          error={{ message: error }}
+          error={{ message: error || errorProp }}
           onRetry={handleRetry}
         />
       )}
@@ -148,7 +95,7 @@ const ChatWindow = ({
       <MessageList messages={messages} />
       <MessageInput
         onSendMessage={handleSendMessage}
-        isLoading={isLoading}
+        isLoading={loadingProp}
       />
     </div>
   );

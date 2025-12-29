@@ -6,7 +6,6 @@ sidebar_label: "Lifecycle Nodes"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -61,12 +60,17 @@ The primary states include:
 
 There are also additional error states for handling exceptional conditions during transitions.
 
-<Diagram
-  title="Lifecycle Node State Transitions"
-  description="State transitions in lifecycle nodes"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    U[Unconfigured] -->|configure| I[Inactive]
+    I -->|activate| A[Active]
+    A -->|deactivate| I
+    I -->|cleanup| U
+    A -->|shutdown| F[Finalized]
+    I -->|shutdown| F
+    U -->|shutdown| F
+```
+*Figure: State transitions in lifecycle nodes*
 
 <Exercise
   title="Lifecycle Node Implementation"

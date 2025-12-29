@@ -3,8 +3,9 @@
  * and scoped locally.
  */
 
+/* Hero section */
 .heroBanner {
-  padding: 4rem 0;
+  padding: 4rem 0 3rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -12,10 +13,26 @@
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 2rem 1rem;
   }
 }
 
+/* T063: Hero description paragraph */
+.heroDescription {
+  font-size: 1.125rem;
+  max-width: 700px;
+  margin: 1.5rem auto 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+@media screen and (max-width: 480px) {
+  .heroDescription {
+    font-size: 1rem;
+  }
+}
+
+/* Legacy buttons - kept for compatibility */
 .buttons {
   display: flex;
   align-items: center;
@@ -50,4 +67,114 @@
     width: 48%;
     min-width: 280px;
   }
+}
+
+/* T064-T066: Module cards section */
+.modulesSection {
+  padding: 3rem 0;
+  background: var(--ifm-background-surface-color);
+}
+
+.modulesHeading {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* T065: 2x2 grid layout for module cards */
+.moduleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* T066: Mobile single-column layout */
+@media screen and (max-width: 768px) {
+  .moduleGrid {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modulesSection {
+    padding: 2rem 0;
+  }
+
+  .modulesHeading {
+    font-size: 1.5rem;
+  }
+}
+
+/* Module card styles */
+.moduleCard {
+  display: block;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  min-height: 180px;
+}
+
+.moduleCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+[data-theme='dark'] .moduleCard {
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .moduleCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.moduleCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.moduleNumber {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-color-primary);
+}
+
+.chapterCount {
+  font-size: 0.75rem;
+  color: var(--ifm-color-secondary-darker);
+}
+
+.moduleCardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: var(--ifm-heading-color);
+}
+
+.moduleCardDescription {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0;
+}
+
+[data-theme='dark'] .moduleCardDescription {
+  color: var(--ifm-color-secondary-lighter);
+}
+
+/* Touch target compliance */
+.moduleCard {
+  min-height: 44px;
 }

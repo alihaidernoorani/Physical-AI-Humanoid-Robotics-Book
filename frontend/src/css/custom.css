@@ -15,6 +15,18 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* T007: Textbook typography variables */
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 600;
+  --ifm-paragraph-margin-bottom: 1.25rem;
+
+  /* Touch targets */
+  --ifm-button-size-min: 44px;
+
+  /* Spacing rhythm */
+  --ifm-spacing-vertical: 1.5rem;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -27,4 +39,33 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* T008: Dark mode color variables - WCAG AA compliant */
+  /* Avoid pure white (#FFF) on pure black (#000) */
+  --ifm-font-color-base: #e4e4e7;
+  --ifm-background-color: #18181b;
+  --ifm-background-surface-color: #27272a;
+
+  /* Mermaid dark theme override */
+  --mermaid-bg-color: transparent;
+  --mermaid-text-color: #e4e4e7;
+
+  /* Code block backgrounds */
+  --ifm-code-background: #27272a;
+
+  /* Improved link contrast */
+  --ifm-link-color: #67e8f9;
+}
+
+/* T017: Navigation touch targets */
+.navbar__link,
+.menu__link,
+.pagination-nav__link {
+  min-height: var(--ifm-button-size-min);
+  display: flex;
+  align-items: center;
+}
+
+.menu__link {
+  padding: 0.75rem 1rem;
 }

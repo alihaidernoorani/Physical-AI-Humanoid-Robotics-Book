@@ -42,7 +42,7 @@ dependencies: ["03-ai-robot-brain/intro", "03-ai-robot-brain/01-synthetic-data-g
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Edge AI Inference
@@ -64,11 +64,15 @@ TensorRT optimization enables complex perception and decision-making models to r
 
 The TensorRT optimization process converts trained neural network models into optimized inference engines that maximize GPU utilization and minimize latency. For humanoid robots, this optimization is crucial for achieving real-time performance on perception tasks including object detection, depth estimation, and scene understanding. The optimization process includes layer fusion, kernel auto-tuning, and memory optimization techniques.
 
-<Diagram
-  title="TensorRT Optimization Process"
-  description="Diagram showing the TensorRT optimization process from trained model to optimized inference engine"
-  caption="TensorRT optimization process from trained model to optimized inference engine"
-/>
+```mermaid
+graph LR
+    TM[Trained Model] --> P[Parser]
+    P --> OPT[Optimization]
+    OPT --> Q[Quantization]
+    Q --> LF[Layer Fusion]
+    LF --> ENG[Inference Engine]
+```
+*Figure: TensorRT optimization process from trained model to optimized inference engine*
 
 Model serialization in TensorRT creates optimized inference engines that can be efficiently loaded and executed on Jetson platforms. For humanoid robots, the serialized models must maintain the accuracy required for safe operation and achieve the performance needed for real-time response. The serialization process also includes optimization for the specific Jetson hardware configuration, which maximizes performance.
 
@@ -160,9 +164,6 @@ Dynamic shape support in TensorRT enables models to handle variable input sizes.
 
 Precision optimization in TensorRT includes support for various precision formats including FP32, FP16, INT8, and sparse operations. For humanoid robots, the choice of precision format involves balancing accuracy requirements with performance gains. INT8 quantization can provide significant performance improvements with minimal accuracy loss, which makes it suitable for many robotic applications.
 
-### Diagram Descriptions
-- Diagram: Precision optimization showing different formats (FP32, FP16, INT8) and their trade-offs
-
 ### Concrete Examples
 - Example: Optimizing YOLO object detection model using TensorRT for real-time performance
 - Example: Converting depth estimation model to INT8 precision for improved inference speed
@@ -177,11 +178,17 @@ Real-time inference performance requires balancing accuracy, speed, and power co
 
 Inference pipeline optimization involves the coordination of multiple processing stages to maximize throughput while minimizing end-to-end latency. For humanoid robots, the perception pipeline must process sensor data through multiple stages including preprocessing, inference, and post-processing while maintaining real-time performance. The optimization may include parallel processing and asynchronous execution to maximize resource utilization.
 
-<Diagram
-  title="Inference Pipeline Optimization"
-  description="Diagram showing inference pipeline optimization with multiple processing stages"
-  caption="Inference pipeline optimization with multiple processing stages for real-time performance"
-/>
+```mermaid
+graph LR
+    IN[Input] --> PP[Preprocessing]
+    PP --> INF[Inference]
+    INF --> POST[Postprocessing]
+    POST --> OUT[Output]
+    MEM[Memory Pool] --> PP
+    MEM --> INF
+    MEM --> POST
+```
+*Figure: Inference pipeline optimization with multiple processing stages for real-time performance*
 
 Memory management optimization ensures efficient use of GPU memory and system RAM for real-time processing. For humanoid robots, the inference pipeline must handle multiple data streams simultaneously while maintaining consistent performance. The optimization includes memory pooling, data pre-allocation, and efficient data transfer between CPU and GPU, which minimizes overhead.
 
@@ -440,11 +447,15 @@ Model quantization reduces computational requirements and memory footprint while
 
 INT8 quantization provides significant performance improvements with minimal accuracy loss, converting 32-bit floating-point models to 8-bit integer representations. For humanoid robots, INT8 quantization can double inference throughput while reducing power consumption. The quantization process requires calibration with representative data to maintain accuracy in the reduced precision format.
 
-<Diagram
-  title="Model Quantization Process"
-  description="Diagram showing the model quantization process showing precision reduction from FP32 to INT8"
-  caption="Model quantization process showing precision reduction from FP32 to INT8"
-/>
+```mermaid
+graph LR
+    FP32[FP32 Model] --> CAL[Calibration]
+    CAL --> FP16[FP16 Conversion]
+    FP16 --> INT8[INT8 Quantization]
+    INT8 --> VAL[Validation]
+    VAL --> OPT[Optimized Model]
+```
+*Figure: Model quantization process showing precision reduction from FP32 to INT8*
 
 Post-training quantization enables quantization of pre-trained models without requiring retraining. This makes it suitable for deploying existing models on Jetson platforms. For humanoid robots, post-training quantization allows for rapid deployment of optimized models that maintain the performance characteristics of the original model. The calibration process uses representative data from the robot's operating environment.
 
@@ -580,9 +591,6 @@ Quantization-aware training incorporates quantization effects during the trainin
 
 Mixed precision quantization allows different parts of a model to use different precision formats based on their sensitivity to quantization effects. For humanoid robots, this approach can maintain high accuracy in critical parts of the model while achieving performance gains in less sensitive components. The mixed precision approach optimizes the trade-off between accuracy and performance.
 
-### Diagram Descriptions
-- Diagram: Mixed precision quantization with different formats for different model parts
-
 ### Concrete Examples
 - Example: INT8 quantization of object detection model for improved inference speed
 - Example: Post-training quantization of depth estimation model for Jetson deployment
@@ -609,11 +617,16 @@ Power consumption optimization is critical for humanoid robots requiring extende
 
 Dynamic voltage and frequency scaling (DVFS) in Jetson platforms enables power optimization that adjusts the operating frequency and voltage based on computational requirements. For humanoid robots, DVFS can reduce power consumption during periods of lower computational demand while maintaining performance when needed. The power management must consider the robot's operational patterns and performance requirements.
 
-<Diagram
-  title="Power Consumption Optimization"
-  description="Diagram showing power consumption optimization with DVFS and model pruning techniques"
-  caption="Power consumption optimization with DVFS and model pruning techniques"
-/>
+```mermaid
+graph TD
+    PWR[Power Optimization] --> DVFS[DVFS Control]
+    PWR --> PR[Model Pruning]
+    PWR --> EFF[Efficient Architecture]
+    DVFS --> PM[Power Management]
+    PR --> PM
+    EFF --> PM
+```
+*Figure: Power consumption optimization with DVFS and model pruning techniques*
 
 Model pruning techniques remove redundant or less important connections in neural networks, which reduces computational requirements and power consumption. For humanoid robots, structured pruning can maintain model accuracy while significantly reducing the computational load. The pruning process must consider the impact on safety-critical perception and control tasks.
 
@@ -864,11 +877,17 @@ Efficient model architectures such as MobileNets, EfficientNets, and other light
 
 Power monitoring and management systems enable humanoid robots to optimize their AI workload based on available power and operational requirements. The system can dynamically adjust the complexity of AI tasks, reduce frame rates, and switch to lower-precision models when power conservation is needed. For humanoid robots operating in the field, intelligent power management extends operational time.
 
-<Diagram
-  title="Power Management System"
-  description="Diagram showing power management system with AI workload optimization based on available power"
-  caption="Power management system showing AI workload optimization based on available power"
-/>
+```mermaid
+graph LR
+    BAT[Battery Monitor] --> PMS[Power Management]
+    PMS --> HIGH[High Performance]
+    PMS --> NORM[Normal Mode]
+    PMS --> LOW[Power Saving]
+    HIGH --> AI[AI Workload]
+    NORM --> AI
+    LOW --> AI
+```
+*Figure: Power management system showing AI workload optimization based on available power*
 
 ### Concrete Examples
 - Example: Using DVFS to reduce power consumption during idle periods of robot operation

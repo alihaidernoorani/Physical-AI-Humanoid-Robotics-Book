@@ -6,7 +6,7 @@ sidebar_label: "Sensor Simulation"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 
 ## Learning Objectives
 
@@ -89,12 +89,14 @@ LiDAR sensors are configured with parameters that define their scanning pattern 
 
 RGB-D camera simulation in Gazebo combines color (RGB) and depth (D) information to provide comprehensive visual perception capabilities for humanoid robots. The simulation must accurately model both the color imaging and depth sensing components, including their respective noise characteristics and limitations that affect real-world performance.
 
-<Diagram
-  title="RGB-D Camera Data Fusion"
-  description="Diagram showing how color and depth information are aligned and fused in RGB-D simulation"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    RGB[RGB Image] --> F[Fusion Module]
+    D[Depth Map] --> F
+    F --> PC[Point Cloud]
+    F --> CD[Color-Depth Aligned]
+```
+*Figure: Diagram showing how color and depth information are aligned and fused in RGB-D simulation*
 
 Color camera simulation models the optical properties of real cameras, including focal length, field of view, and lens distortion characteristics. For humanoid robots, RGB camera simulation must provide realistic color reproduction and image quality that matches the expected performance of physical cameras. The simulation includes parameters for exposure time, ISO sensitivity, and various noise sources that affect image quality in real-world conditions.
 
@@ -124,12 +126,15 @@ RGB-D cameras in simulation provide both visual and geometric information that i
 
 Inertial Measurement Unit (IMU) simulation in Gazebo provides realistic measurements of linear acceleration and angular velocity that are essential for humanoid robot balance control, motion estimation, and state estimation. The simulation must include appropriate noise models and dynamic response characteristics that accurately match physical IMU sensors to ensure realistic behavior.
 
-<Diagram
-  title="IMU Sensor Axes and Coordinate System"
-  description="Diagram showing the IMU sensor axes and coordinate system for humanoid robot balance control"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    IMU[IMU Sensor] --> X[X-Axis: Forward]
+    IMU --> Y[Y-Axis: Left]
+    IMU --> Z[Z-Axis: Up]
+    IMU --> A[Accelerometer]
+    IMU --> G[Gyroscope]
+```
+*Figure: Diagram showing the IMU sensor axes and coordinate system for humanoid robot balance control*
 
 IMU sensor modeling includes three-axis accelerometers and gyroscopes with realistic noise characteristics, including bias, drift, and random walk components. For humanoid robots, IMU simulation must accurately represent the sensor's response to the robot's dynamic motion, including the high-frequency vibrations and impacts typical of bipedal locomotion. The noise models must reflect the actual performance characteristics of physical IMU sensors used in humanoid robots to ensure accurate simulation results.
 
@@ -221,12 +226,15 @@ For humanoid robots, accurate IMU simulation is critical for balance control and
 
 Sensor noise modeling in Gazebo provides realistic imperfections that reflect the limitations of physical sensors and enable the development of robust perception and control algorithms. For humanoid robots, accurate noise modeling is essential to create algorithms that can handle the uncertainties and errors inherent in real-world sensor data.
 
-<Diagram
-  title="Sensor Noise Model Parameters"
-  description="Diagram showing different types of sensor noise and their effects on measurements"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    S[Sensor] --> B[Bias Error]
+    S --> D[Drift]
+    S --> N[Random Noise]
+    S --> Q[Quantization]
+    B & D & N & Q --> M[Measured Value]
+```
+*Figure: Diagram showing different types of sensor noise and their effects on measurements*
 
 Gaussian noise modeling represents the random measurement errors typical of most sensors using parameters that match the physical sensor characteristics. For humanoid robots, Gaussian noise models must be carefully calibrated to reflect the actual sensor performance, including factors such as signal-to-noise ratio, quantization effects, and thermal noise. The noise parameters directly impact the performance of perception and control algorithms developed in simulation.
 

@@ -1,0 +1,92 @@
+/**
+ * Mermaid Diagram Responsive Styles
+ * T004: Created for mobile-first responsive diagrams
+ */
+
+/* Base Mermaid container styles */
+.mermaid {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+}
+
+/* Ensure SVG responsiveness */
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Mobile styles for diagrams */
+@media (max-width: 480px) {
+  .mermaid {
+    font-size: 12px;
+    padding: 0.5rem 0;
+  }
+
+  /* Allow horizontal scroll for complex diagrams on mobile */
+  .mermaid svg {
+    min-width: 300px;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 481px) and (max-width: 768px) {
+  .mermaid {
+    font-size: 14px;
+  }
+}
+
+/* Diagram caption styles */
+.mermaid + p > em,
+.mermaid + em,
+p:has(> em):first-child {
+  display: block;
+  text-align: center;
+  color: var(--ifm-color-secondary-darker);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Dark mode diagram adjustments */
+[data-theme='dark'] .mermaid {
+  --mermaid-bg-color: transparent;
+}
+
+[data-theme='dark'] .mermaid svg {
+  filter: none;
+}
+
+/* Ensure diagram containers don't break layout */
+.theme-doc-markdown .mermaid {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Horizontal scroll indicator for mobile */
+@media (max-width: 480px) {
+  .mermaid {
+    position: relative;
+  }
+
+  .mermaid::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, var(--ifm-background-color));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .mermaid:hover::after {
+    opacity: 1;
+  }
+}

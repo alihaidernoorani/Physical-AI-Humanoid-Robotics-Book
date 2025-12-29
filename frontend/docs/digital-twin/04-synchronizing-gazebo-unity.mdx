@@ -6,7 +6,7 @@ sidebar_label: "Gazebo-Unity Synchronization"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 
 ## Learning Objectives
 
@@ -26,12 +26,14 @@ Bidirectional data exchange enables the transfer of state information, sensor da
 
 State synchronization involves maintaining consistent representations of robot and environment states across both simulators. This ensures that the same physical configuration is represented in both Gazebo and Unity. For humanoid robots with numerous degrees of freedom, this requires efficient transmission of joint angles, link poses, and dynamic states using appropriate update frequencies to maintain visual and physical consistency. The synchronization must account for the different physics engines and rendering pipelines used by each simulator.
 
-<Diagram
-  title="State Synchronization Between Gazebo and Unity"
-  description="Diagram showing the state synchronization process between Gazebo and Unity simulators for humanoid robot simulation"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    G[Gazebo] -->|Robot State| S[Sync Bridge]
+    S -->|Transform Data| U[Unity]
+    U -->|Sensor Feedback| S
+    S -->|Commands| G
+```
+*Figure: Diagram showing the state synchronization process between Gazebo and Unity simulators for humanoid robot simulation*
 
 Sensor data exchange enables the sharing of simulated sensor information between platforms. This allows Unity to provide high-fidelity rendering for camera sensors while Gazebo provides accurate physics-based sensor simulation. For humanoid robots, this includes the exchange of camera images, depth maps, LiDAR point clouds, and other sensor modalities between the simulators. The data exchange must maintain temporal consistency and appropriate data formats enabling seamless integration with ROS 2 sensor processing pipelines.
 
@@ -103,12 +105,16 @@ Synchronization strategies must balance accuracy, performance, and consistency w
 
 Time-based synchronization aligns the simulation time across both platforms. This ensures that both simulators advance at the same rate and maintain consistent temporal relationships. For humanoid robots, time synchronization is critical as it maintains the accuracy of dynamic behaviors such as walking. Timing relationships between different joints and control loops are essential for stable locomotion. The synchronization must handle both real-time and accelerated simulation modes while maintaining accuracy.
 
-<Diagram
-  title="Time-Based vs State-Based Synchronization"
-  description="Diagram comparing time-based and state-based synchronization approaches for Gazebo-Unity integration"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    subgraph Time-Based
+        T1[Fixed Interval] --> T2[Update All States]
+    end
+    subgraph State-Based
+        S1[State Change] --> S2[Selective Update]
+    end
+```
+*Figure: Diagram comparing time-based and state-based synchronization approaches for Gazebo-Unity integration*
 
 State-based synchronization focuses on maintaining consistent spatial and dynamic states between simulators. Updates are triggered by state changes rather than time intervals. For humanoid robots, this approach can be more efficient for scenarios where the robot is in static poses or moving slowly. Updates are only transmitted when significant state changes occur. The state-based approach must include appropriate thresholds and filtering to avoid excessive updates while maintaining accuracy.
 
@@ -176,12 +182,15 @@ For humanoid robots, performance optimization must balance the high computationa
 
 Data compression and filtering techniques reduce the bandwidth required for synchronization while maintaining the accuracy needed for realistic simulation. For humanoid robots with numerous joints and sensors, compression techniques must preserve the critical information needed for control and perception while reducing the data volume transmitted between simulators. The filtering must preserve the dynamic characteristics of humanoid robot motion while reducing noise and unnecessary detail.
 
-<Diagram
-  title="Data Compression and Filtering Pipeline"
-  description="Diagram showing the data compression and filtering pipeline for synchronization optimization between Gazebo and Unity"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    R[Raw Data] --> F[Filter]
+    F --> C[Compress]
+    C --> T[Transmit]
+    T --> D[Decompress]
+    D --> A[Apply]
+```
+*Figure: Diagram showing the data compression and filtering pipeline for synchronization optimization between Gazebo and Unity*
 
 Update frequency optimization balances the synchronization accuracy with computational performance by adjusting update rates based on the current simulation requirements. For humanoid robots, this might involve higher update rates during dynamic behaviors such as walking or manipulation and lower rates during static poses. The optimization must maintain the stability and accuracy required for realistic simulation while minimizing computational overhead.
 
@@ -247,12 +256,15 @@ Validation of synchronized simulation accuracy is critical to ensure that the sy
 
 Cross-platform validation compares the behavior and measurements from both simulators to ensure consistency and identify potential synchronization errors. For humanoid robots, this includes comparing joint positions, velocities, and forces between simulators as well as validating sensor measurements and dynamic responses. The validation must account for the inherent differences in physics engines and rendering approaches while ensuring that the overall behavior remains consistent.
 
-<Diagram
-  title="Cross-Platform Validation Workflow"
-  description="Diagram showing the cross-platform validation workflow comparing Gazebo and Unity simulation results"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    G[Gazebo Results] --> C[Compare]
+    U[Unity Results] --> C
+    C --> V{Valid?}
+    V -->|Yes| P[Pass]
+    V -->|No| D[Debug]
+```
+*Figure: Diagram showing the cross-platform validation workflow comparing Gazebo and Unity simulation results*
 
 Temporal accuracy validation ensures that timing relationships and dynamic behaviors are preserved across the synchronization process. For humanoid robots, this includes validating that walking gaits, manipulation sequences, and other time-dependent behaviors are accurately represented in both simulators. The validation must verify that the synchronization does not introduce timing artifacts that could affect control algorithm development.
 

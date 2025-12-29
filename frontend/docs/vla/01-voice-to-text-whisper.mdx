@@ -39,7 +39,7 @@ dependencies: ["04-vla/intro"]
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Voice-to-Text Integration
@@ -61,11 +61,14 @@ Whisper's robustness across different accents and speaking styles makes it well-
 
 Real-time speech recognition implementation for humanoid robots requires careful optimization of the Whisper model to achieve acceptable latency while maintaining accuracy. The implementation must balance computational requirements with the need for responsive interaction. For Jetson-based humanoid robots, this involves optimizing the model for GPU inference and implementing efficient audio processing pipelines.
 
-<Diagram
-  title="Whisper Model Optimization"
-  description="Diagram showing Whisper model optimization for real-time inference on Jetson platforms"
-  caption="Whisper model optimization for real-time inference on Jetson platforms"
-/>
+```mermaid
+graph LR
+    WM[Whisper Model] --> Q[Quantization]
+    Q --> TRT[TensorRT Optimization]
+    TRT --> GPU[GPU Inference]
+    GPU --> RT[Real-time Output]
+```
+*Figure: Whisper model optimization for real-time inference on Jetson platforms*
 
 Whisper model variants offer different trade-offs between speed and accuracy, ranging from tiny models suitable for edge deployment to large models for maximum accuracy. For humanoid robots, the choice of model variant depends on the computational resources available and the required recognition accuracy. The tiny.en or base.en models are often suitable for real-time edge deployment.
 
@@ -130,11 +133,15 @@ For humanoid robots, audio preprocessing is critical as motor noise, fan noise, 
 
 Beamforming techniques using microphone arrays can enhance the signal-to-noise ratio by focusing on the speaker's voice while suppressing background noise. For humanoid robots, beamforming can be particularly effective when the robot can estimate the speaker's location relative to the robot. The implementation must account for the robot's own movement and consider the resulting changes in acoustic conditions.
 
-<Diagram
-  title="Microphone Array Beamforming"
-  description="Diagram showing microphone array beamforming focusing on speaker while suppressing background noise"
-  caption="Microphone array beamforming focusing on speaker while suppressing background noise"
-/>
+```mermaid
+graph LR
+    MA[Microphone Array] --> BF[Beamforming]
+    BF --> SF[Signal Focus]
+    BF --> NS[Noise Suppression]
+    SF --> ENH[Enhanced Audio]
+    NS --> ENH
+```
+*Figure: Microphone array beamforming focusing on speaker while suppressing background noise*
 
 Real-time noise reduction algorithms must operate with minimal latency to maintain the responsiveness required for natural interaction. For humanoid robots, this includes adaptive noise cancellation that can adjust to changing acoustic conditions. The algorithms must distinguish between stationary background noise and transient sounds that might be relevant to the robot's operation.
 
@@ -185,9 +192,6 @@ class NoiseReduction:
 
 Audio format optimization ensures that the audio data is processed efficiently while maintaining the quality required for accurate speech recognition. For humanoid robots, this includes appropriate sampling rates, bit depths, and channel configurations that balance quality with computational efficiency. The optimization must also consider the specific requirements of the ASR system being used.
 
-### Diagram Descriptions
-- Diagram: Audio preprocessing pipeline with noise reduction and beamforming components
-
 ### Concrete Examples
 - Example: Implementing noise reduction to filter out robot motor and fan noise during speech recognition
 - Example: Using microphone array beamforming to focus on speaker's voice in noisy environment
@@ -214,11 +218,18 @@ Local ASR provides privacy and reduced latency but requires more computational r
 
 Cloud-based ASR services offer superior accuracy and continuous model updates but require reliable network connectivity and raise privacy concerns. For humanoid robots, cloud-based ASR can provide better recognition accuracy, especially for complex commands or specialized vocabularies. However, the approach introduces network latency and dependency on external services.
 
-<Diagram
-  title="Local vs Cloud ASR Comparison"
-  description="Diagram comparing local vs cloud-based ASR with privacy, latency, and accuracy trade-offs"
-  caption="Comparison of local vs cloud-based ASR with privacy, latency, and accuracy trade-offs"
-/>
+```mermaid
+graph TD
+    subgraph Local
+        L1[Low Latency] --> LP[Privacy]
+    end
+    subgraph Cloud
+        C1[High Accuracy] --> C2[Network Dependent]
+    end
+    Local --> HYB[Hybrid Approach]
+    Cloud --> HYB
+```
+*Figure: Comparison of local vs cloud-based ASR with privacy, latency, and accuracy trade-offs*
 
 Hybrid approaches combine local and cloud-based ASR to leverage the benefits of both approaches. For humanoid robots, this might involve using local ASR for simple commands and safety-critical functions while using cloud services for complex language understanding or specialized domains. The hybrid approach requires careful management of data flow and consistency.
 
@@ -270,9 +281,6 @@ class HybridASR:
 
 Edge optimization techniques enable sophisticated ASR models to run efficiently on humanoid robot platforms. This includes model quantization, pruning, and specialized inference engines that maximize performance on resource-constrained hardware. For Jetson-based robots, TensorRT optimization can significantly improve ASR performance.
 
-### Diagram Descriptions
-- Diagram: Hybrid ASR approach combining local and cloud services for different use cases
-
 ### Concrete Examples
 - Example: Local ASR for safety-critical commands like "stop" or "emergency" to ensure immediate response
 - Example: Cloud-based ASR for complex vocabulary or specialized domains requiring high accuracy
@@ -299,11 +307,14 @@ ROS 2 messaging integration allows speech recognition results to trigger appropr
 
 Custom message types for speech recognition results provide structured data including the recognized text, confidence scores, timestamps, and metadata about the recognition process. For humanoid robots, these messages enable downstream systems to make informed decisions about how to handle the recognized commands based on confidence levels and other quality indicators.
 
-<Diagram
-  title="ROS 2 Messaging Architecture"
-  description="Diagram showing ROS 2 messaging architecture with voice-to-text publisher and multiple subscribers"
-  caption="ROS 2 messaging architecture with voice-to-text publisher and multiple subscribers"
-/>
+```mermaid
+graph LR
+    VTT[Voice-to-Text Node] --> PUB[Publisher]
+    PUB --> S1[Language Understanding]
+    PUB --> S2[Action Planning]
+    PUB --> S3[Logging System]
+```
+*Figure: ROS 2 messaging architecture with voice-to-text publisher and multiple subscribers*
 
 Publisher-subscriber patterns enable multiple robot components to receive speech recognition results simultaneously. For humanoid robots, this allows the language understanding system, attention mechanisms, and other components to respond to voice input in parallel. The pattern also supports the distribution of recognition results to monitoring and logging systems.
 
@@ -375,9 +386,6 @@ if __name__ == '__main__':
 />
 
 Service-based interfaces provide synchronous access to speech recognition capabilities for components that require immediate results. For humanoid robots, this might include safety systems that need to respond immediately to specific voice commands or emergency situations. The service interface must maintain low latency and provides reliable recognition results.
-
-### Diagram Descriptions
-- Diagram: Custom message structure with recognized text, confidence scores, and metadata
 
 ### Concrete Examples
 - Example: Voice recognition node publishing commands to language understanding and action planning nodes

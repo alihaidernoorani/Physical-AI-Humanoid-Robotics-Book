@@ -6,7 +6,6 @@ sidebar_label: "URDF Kinematic Modeling"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -149,12 +148,19 @@ Leg kinematic chains in humanoid robots mirror human lower extremity anatomy and
 
 Proper modeling of these chains is essential for achieving stable bipedal locomotion. The hip joint provides the primary support for the robot's weight, while the knee and ankle joints provide the necessary motion for walking and balance.
 
-<Diagram
-  title="Humanoid Robot Kinematic Chain"
-  description="Structure of a humanoid robot with torso, arms, and legs"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    T[Torso] --> H[Head]
+    T --> LA[Left Arm]
+    T --> RA[Right Arm]
+    T --> LL[Left Leg]
+    T --> RL[Right Leg]
+    LA --> LH[Left Hand]
+    RA --> RH[Right Hand]
+    LL --> LF[Left Foot]
+    RL --> RF[Right Foot]
+```
+*Figure: Structure of a humanoid robot with torso, arms, and legs*
 
 ## Visual and Collision Properties
 

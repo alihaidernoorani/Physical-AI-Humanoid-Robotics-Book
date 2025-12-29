@@ -40,7 +40,7 @@ dependencies: ["01-ros2-nervous-system", "02-digital-twin", "03-ai-robot-brain"]
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Module 4: Vision-Language-Action (VLA)
@@ -64,11 +64,14 @@ The VLA architecture encompasses three interconnected components: vision systems
 
 Multimodal reasoning in VLA systems enables humanoid robots to combine visual information with linguistic context to understand complex commands and environmental situations. The system must be able to connect visual observations with language descriptions, allowing robots to identify objects, locations, and relationships mentioned in natural language commands. This capability is essential for robots operating in dynamic human environments.
 
-<Diagram
-  title="VLA Architecture"
-  description="Diagram showing vision, language, and action components integration in the VLA system"
-  caption="VLA architecture showing vision, language, and action components integration"
-/>
+```mermaid
+graph LR
+    V[Vision] --> MR[Multimodal Reasoning]
+    L[Language] --> MR
+    MR --> A[Action]
+    A --> EX[Execution]
+```
+*Figure: VLA architecture showing vision, language, and action components integration*
 
 The end-to-end nature of VLA systems requires robust integration across multiple software layers from low-level sensor processing to high-level task planning. For humanoid robots, this integration must handle the complexity of real-world environments while maintaining the safety and reliability required for human-robot interaction. The system must also be adaptable to different operational contexts and user requirements.
 
@@ -98,11 +101,14 @@ Automatic Speech Recognition (ASR) systems for humanoid robots must be optimized
 
 Automatic Speech Recognition (ASR) systems for humanoid robots must be optimized for real-time performance while maintaining accuracy in noisy environments. The system must handle the acoustic challenges of robot operation, including motor noise, fan noise, and environmental sounds that can affect speech recognition quality. For humanoid robots, the ASR system must also consider the robot's own movement and vibrations which can affect microphone input.
 
-<Diagram
-  title="Voice-to-Text Pipeline"
-  description="Diagram showing the voice-to-text pipeline from microphone input to text output for robotic commands"
-  caption="Voice-to-text pipeline from microphone input to text output for robotic commands"
-/>
+```mermaid
+graph LR
+    MIC[Microphone] --> NR[Noise Reduction]
+    NR --> ASR[Speech Recognition]
+    ASR --> TXT[Text Output]
+    TXT --> CMD[Command Processing]
+```
+*Figure: Voice-to-text pipeline from microphone input to text output for robotic commands*
 
 Real-time voice processing requires efficient audio capture, noise reduction, and speech recognition pipelines that can operate with minimal latency. For humanoid robots, low-latency voice processing is essential for natural interaction and responsive behavior. The system must also handle continuous listening modes and wake-word detection, which balances responsiveness with privacy considerations.
 
@@ -149,9 +155,6 @@ class RobotASR:
 />
 
 Context-aware speech recognition adapts to the specific operational context of the humanoid robot. This includes the vocabulary and commands typically used in robotic applications. The system can be enhanced with robot-specific language models that improve recognition accuracy for command-related vocabulary and reduce false positives from environmental sounds.
-
-### Diagram Descriptions
-- Diagram: ASR system with noise reduction and wake-word detection components
 
 ### Concrete Examples
 - Example: Human says "Move to the living room" - ASR converts to text for processing
@@ -232,16 +235,17 @@ class TaskDecomposer:
 
 Semantic grounding connects the abstract concepts in natural language commands to concrete robot actions and environmental objects. The system must understand spatial relationships, object properties, and action affordances to properly ground language in the robot's operational context. This grounding is essential for robots to execute commands accurately in diverse environments.
 
-<Diagram
-  title="Semantic Grounding"
-  description="Diagram showing semantic grounding connecting language concepts to robot actions and objects"
-  caption="Semantic grounding connecting language concepts to robot actions and objects"
-/>
+```mermaid
+graph TD
+    LC[Language Concepts] --> SG[Semantic Grounding]
+    ENV[Environment] --> SG
+    SG --> OBJ[Objects]
+    SG --> ACT[Actions]
+    SG --> REL[Relations]
+```
+*Figure: Semantic grounding connecting language concepts to robot actions and objects*
 
 Plan generation and validation ensure that the decomposed task sequences are feasible and safe for execution by the humanoid robot. The system must verify that the planned actions are within the robot's capabilities, do not violate safety constraints, and are appropriate for the current environmental context. The validation process may involve simulation or safety checks before execution.
-
-### Diagram Descriptions
-- Diagram: LLM task decomposition showing high-level command to action sequence mapping
 
 ### Concrete Examples
 - Example: LLM decomposes "Set the table for dinner" into specific navigation and manipulation tasks
@@ -269,11 +273,14 @@ Language grounding connects natural language understanding with the robot's acti
 
 Action server integration involves mapping the outputs of language processing systems to specific ROS 2 action interfaces. For humanoid robots, this includes navigation actions, manipulation actions, perception actions, and other robot capabilities. These are exposed through the ROS 2 action framework. The mapping must be robust and handle variations in command phrasing and robot state.
 
-<Diagram
-  title="Language to Action Mapping"
-  description="Diagram showing the language grounding pipeline from natural language to ROS 2 action servers"
-  caption="Language grounding pipeline from natural language to ROS 2 action servers"
-/>
+```mermaid
+graph LR
+    NL[Natural Language] --> PARSE[Parser]
+    PARSE --> MAP[Action Mapping]
+    MAP --> AS[Action Server]
+    AS --> EX[Execution]
+```
+*Figure: Language grounding pipeline from natural language to ROS 2 action servers*
 
 Dynamic action composition enables the creation of complex behaviors that combine multiple simple actions based on language commands. For humanoid robots, this might involve combining navigation, manipulation, and perception actions to achieve complex goals. The composition system must handle action sequencing, error recovery, and resource management.
 
@@ -345,9 +352,6 @@ class LanguageGrounding:
 />
 
 Feedback and monitoring systems provide real-time status updates that enable human operators to monitor and intervene in robot behavior. The system must provide clear feedback about the robot's understanding of commands and shows progress toward task completion. For humanoid robots, this feedback is crucial and maintains trust and enables safe human-robot collaboration.
-
-### Diagram Descriptions
-- Diagram: Action composition showing multiple simple actions combined into complex behavior
 
 ### Concrete Examples
 - Example: "Go to the kitchen and bring me a bottle" triggers navigation and manipulation action sequence

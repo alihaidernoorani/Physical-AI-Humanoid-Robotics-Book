@@ -6,7 +6,7 @@ sidebar_label: "Rigid Body Dynamics"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 
 ## Learning Objectives
 
@@ -123,12 +123,17 @@ Proper center of mass modeling ensures that balance control algorithms developed
 
 For humanoid robots, the center of mass location changes dynamically as limbs move through their range of motion. This dynamic behavior requires careful consideration during both simulation setup and control system design to ensure realistic and stable robot behavior.
 
-<Diagram
-  title="Center of Mass in Humanoid Robot"
-  description="Diagram showing how the center of mass shifts as humanoid robot limbs move, affecting balance and stability"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    subgraph Standing
+        S_CoM[Center of Mass] --> S_Base[Base of Support]
+    end
+    subgraph Walking
+        W_CoM[Shifted CoM] --> W_Foot[Single Foot Support]
+    end
+    Standing -->|Limb Movement| Walking
+```
+*Figure: Diagram showing how the center of mass shifts as humanoid robot limbs move, affecting balance and stability*
 
 Inertia tensors describe how mass is distributed throughout each link and how the robot responds to applied torques, making them critical for realistic simulation of motion dynamics in humanoid robots.
 

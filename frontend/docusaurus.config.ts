@@ -14,6 +14,12 @@ const config = {
     v4: true,
   },
 
+  // Mermaid configuration
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   url: 'https://alihaidernoorani.github.io',
   baseUrl: '/Physical-AI-Humanoid-Robotics-Book/',
 
@@ -52,6 +58,7 @@ const config = {
           customCss: [
             './src/css/custom.css',
             './src/css/readability.css',
+            './src/css/diagrams.css',
           ],
         },
       } satisfies Preset.Options,
@@ -114,6 +121,16 @@ const config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    mermaid: {
+      theme: {
+        light: 'default',
+        dark: 'dark',
+      },
+      options: {
+        maxTextSize: 50000,
+        securityLevel: 'loose',
+      },
     },
   } satisfies Preset.ThemeConfig,
 } satisfies Config;

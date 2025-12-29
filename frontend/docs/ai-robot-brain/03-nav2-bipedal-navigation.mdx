@@ -40,7 +40,7 @@ dependencies: ["03-ai-robot-brain/intro", "03-ai-robot-brain/01-synthetic-data-g
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Navigation for Bipedal Systems
@@ -62,11 +62,15 @@ Unlike wheeled robots, humanoid robots have complex kinematic chains with numero
 
 The global planner in Nav2 for humanoid robots must generate paths that consider the robot's dynamic capabilities and balance constraints. Traditional A* or Dijkstra planners need to be augmented with kinodynamic planning approaches that account for the humanoid robot's bipedal locomotion patterns. The planner must generate paths that maintain the robot's center of mass within its support polygon to prevent instability during navigation.
 
-<Diagram
-  title="Humanoid Robot Navigation Planning"
-  description="Diagram showing the path planning process for humanoid robots with balance constraints"
-  caption="Path planning for humanoid robots with balance constraints and dynamic stability considerations"
-/>
+```mermaid
+graph LR
+    G[Goal] --> GP[Global Planner]
+    GP --> LP[Local Planner]
+    LP --> BC[Balance Constraints]
+    BC --> FP[Footstep Planner]
+    FP --> EX[Execution]
+```
+*Figure: Path planning for humanoid robots with balance constraints and dynamic stability considerations*
 
 Local planners for humanoid robots must handle dynamic path adjustments while maintaining balance and stability. The Time Elastic Band (TEB) planner is particularly well-suited for humanoid robots. This considers both kinematic and dynamic constraints during local path optimization. The local planner must account for the robot's current momentum, balance state, and upcoming foot placements. These are during dynamic walking behaviors (Rösmann et al., 2017).
 
@@ -175,10 +179,6 @@ global_costmap:
 
 The recovery behaviors in Nav2 for humanoid robots must include specialized actions that address the unique challenges of bipedal locomotion. These include balance recovery, footstep adjustment, and dynamic stabilization maneuvers. Traditional recovery behaviors designed for wheeled robots may not be appropriate for humanoid systems. These could potentially cause falls or instability (McGann et al., 2008).
 
-### Diagram Descriptions
-- Diagram: Humanoid robot path planning with balance constraints showing center of mass and support polygon
-- Diagram: Behavior tree structure for humanoid navigation with specialized recovery behaviors
-
 ### Concrete Examples
 - Example: Implementing a humanoid-specific behavior tree with balance monitoring nodes
 - Example: Configuring TEB local planner with kinodynamic constraints for bipedal locomotion
@@ -208,11 +208,17 @@ Isaac Navigation provides hardware-accelerated SLAM, path planning, and obstacle
 
 The integration between Isaac Navigation and Nav2 follows a layered architecture. This allows specialized navigation components to be used alongside traditional Nav2 functionalities. The Isaac Navigation components handle perception and high-level planning. These are while Nav2 components manage local path planning and execution. This architecture enables the benefits of both systems. This provides robust navigation for humanoid robots (Isaac ROS, 2024).
 
-<Diagram
-  title="Isaac Navigation Integration Architecture"
-  description="Diagram showing the layered architecture between Isaac Navigation and Nav2 components"
-  caption="Isaac Navigation integration with Nav2 showing layered architecture for humanoid robot navigation"
-/>
+```mermaid
+graph TD
+    IN[Isaac Navigation] --> SLAM[GPU SLAM]
+    IN --> PP[Path Planning]
+    IN --> OD[Obstacle Detection]
+    SLAM --> N2[Nav2 Stack]
+    PP --> N2
+    OD --> N2
+    N2 --> EX[Execution]
+```
+*Figure: Isaac Navigation integration with Nav2 showing layered architecture for humanoid robot navigation*
 
 Perception pipeline integration connects Isaac ROS GEMs with navigation decision-making systems. This provides real-time sensor processing and interpretation. For humanoid robots, this includes integration with depth estimation, object detection, and semantic segmentation GEMs. These provide the environmental understanding needed for safe navigation. The integration must handle the timing requirements of both perception and navigation systems. This ensures that navigation decisions are based on current sensor information (NVIDIA, 2024).
 
@@ -246,11 +252,15 @@ The ZMP (Zero Moment Point) criterion is fundamental to stable bipedal locomotio
 
 Footstep planning is a critical component of balance-aware navigation for humanoid robots. The planned path must be converted into a sequence of footstep locations. These are that maintain stability throughout the navigation task. The footstep planner must consider terrain characteristics, obstacle locations, and the robot's kinematic constraints. This generates stable and feasible stepping sequences (Hirukawa, 2005).
 
-<Diagram
-  title="Balance-Aware Path Planning Process"
-  description="Diagram showing the balance-aware path planning process from global path to footstep sequence"
-  caption="Balance-aware path planning converting global navigation paths to stable footstep sequences for humanoid robots"
-/>
+```mermaid
+graph LR
+    GP[Global Path] --> ZMP[ZMP Validation]
+    ZMP --> FS[Footstep Sequence]
+    FS --> SM[Stability Margins]
+    SM --> WP[Walking Pattern]
+    WP --> EX[Execution]
+```
+*Figure: Balance-aware path planning converting global navigation paths to stable footstep sequences for humanoid robots*
 
 Dynamic walking patterns in humanoid robots require the generation of stable gaits that can adapt to path changes. The balance-aware path planner must coordinate with the robot's walking pattern generator. This ensures that the robot can follow the planned path while maintaining stable locomotion. This includes the ability to adjust step timing, length, and width to accommodate path deviations while maintaining balance (Takenaka et al., 2009).
 
@@ -384,10 +394,6 @@ def create_balanced_nav2_configuration():
 />
 
 Recovery behaviors in balance-aware navigation must handle the unique failure modes of bipedal locomotion including loss of balance, foot slippage, and external disturbances. For humanoid robots, recovery behaviors must quickly transition the robot to a stable configuration to avoid falls while maintaining safety for nearby humans. The behaviors must be coordinated with the robot's balance control systems to ensure smooth transitions between navigation and recovery modes.
-
-### Diagram Descriptions
-- Diagram: ZMP-based path validation showing center of mass trajectory and support polygons
-- Diagram: Footstep planning process converting global paths to stable stepping sequences
 
 ### Concrete Examples
 - Example: Implementing ZMP-based path validation for humanoid robot navigation in narrow spaces

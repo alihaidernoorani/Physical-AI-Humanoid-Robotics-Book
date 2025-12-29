@@ -6,7 +6,7 @@ sidebar_label: "Unity Environments"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 
 ## Learning Objectives
 
@@ -55,12 +55,14 @@ public class HumanoidController : MonoBehaviour
 
 The ROS-TCP-Connector component manages network communication between Unity and ROS 2. It handles message routing and protocol translation. For humanoid robots, this component must maintain low-latency communication. This ensures that sensor data and control commands are transmitted with minimal delay. The connector supports both publisher-subscriber and service-based communication patterns. This enables comprehensive integration with ROS 2 systems.
 
-<Diagram
-  title="Unity-ROS 2 Communication Architecture"
-  description="Diagram showing the communication flow between Unity and ROS 2 systems via the TCP connector"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    U[Unity] <-->|TCP| C[ROS-TCP-Connector]
+    C <-->|ROS 2 Topics| R[ROS 2 System]
+    U -->|Sensor Data| C
+    R -->|Control Commands| C
+```
+*Figure: Diagram showing the communication flow between Unity and ROS 2 systems via the TCP connector*
 
 Environment synchronization components in the Unity Robotics Package handle coordination between Unity's physics simulation and ROS 2's robot state publishing. For humanoid robots, this synchronization ensures that the visual representation of the robot and environment in Unity matches the state maintained by ROS 2 systems. The synchronization components must handle both static transforms and dynamic object states using appropriate update frequencies.
 
@@ -85,12 +87,14 @@ ROS 2 communication in Unity enables bidirectional data exchange between Unity's
 
 Message publishing from Unity to ROS 2 enables the simulation of various sensor types including cameras, LiDAR, and other perception systems. For humanoid robots, Unity can generate realistic RGB-D camera data with appropriate noise characteristics and visual effects that closely match physical sensors. The message publishing system must handle timing and synchronization requirements for real-time sensor simulation while maintaining the performance needed for interactive environments.
 
-<Diagram
-  title="Message Flow Between Unity and ROS 2"
-  description="Diagram showing the flow of messages between Unity and ROS 2 systems with publishers and subscribers"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    UP[Unity Publishers] -->|Sensor Msgs| T[ROS Topics]
+    T -->|Control Msgs| US[Unity Subscribers]
+    RP[ROS Publishers] --> T
+    RS[ROS Subscribers] --> T
+```
+*Figure: Diagram showing the flow of messages between Unity and ROS 2 systems with publishers and subscribers*
 
 Service and action communication patterns in Unity environments enable more complex interactions between Unity and ROS 2 systems. For humanoid robots, these patterns can support dynamic environment modification, scenario setup, and complex simulation management. The service communication allows ROS 2 nodes to request specific actions in the Unity environment such as spawning objects, changing lighting conditions, or modifying environmental parameters.
 
@@ -161,12 +165,15 @@ For humanoid robots, Unity's physics engine must accurately model the forces and
 
 Rigid body dynamics in Unity physics support the simulation of objects with realistic mass, friction, and collision properties that humanoid robots can interact with during manipulation tasks. For humanoid robots, Unity's physics engine must accurately model the forces and torques involved in object manipulation including grasp stability, object sliding, and dynamic interactions. The physics parameters must be carefully tuned to match the real-world properties of the objects being simulated for realistic interaction scenarios.
 
-<Diagram
-  title="Unity Physics Engine Architecture"
-  description="Diagram showing Unity's physics engine architecture with collision detection and rigid body systems"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph TD
+    PE[Physics Engine] --> CD[Collision Detection]
+    PE --> RB[Rigid Body Dynamics]
+    PE --> J[Joint Constraints]
+    CD --> BR[Broad Phase]
+    CD --> NR[Narrow Phase]
+```
+*Figure: Diagram showing Unity's physics engine architecture with collision detection and rigid body systems*
 
 Collision detection and response systems in Unity handle complex interactions between humanoid robot models and environmental objects. For humanoid robots, the collision system must efficiently handle numerous potential contacts that occur between robot limbs and environmental geometry while maintaining stable simulation behavior. The collision response must provide appropriate forces and torques that reflect realistic physical interactions for safe and effective robot operation.
 
@@ -227,12 +234,15 @@ For humanoid robot simulation, environment assets must balance visual fidelity w
 
 Architectural environment design for humanoid robots must include appropriate scale, lighting, and spatial relationships that match real-world human environments. The environments should include features such as doorways, corridors, stairs, and furniture that are arranged in realistic configurations that humanoid robots might encounter. The design must also consider the robot's sensor and mobility capabilities when creating navigation paths and interaction zones.
 
-<Diagram
-  title="Environment Asset Pipeline"
-  description="Diagram showing the pipeline from 3D modeling to Unity integration for humanoid robot simulation"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    M[3D Modeling] --> E[Export FBX/OBJ]
+    E --> I[Unity Import]
+    I --> T[Texturing]
+    T --> P[Physics Setup]
+    P --> S[Scene Integration]
+```
+*Figure: Diagram showing the pipeline from 3D modeling to Unity integration for humanoid robot simulation*
 
 Asset optimization techniques ensure that high-fidelity environments can run efficiently in real-time while maintaining the visual quality needed for realistic sensor simulation. For humanoid robots, this includes techniques such as level-of-detail (LOD) systems, occlusion culling, and texture streaming. These maintain performance without sacrificing the visual fidelity required for camera sensor simulation. The optimization must preserve the geometric accuracy needed for depth sensors and collision detection.
 

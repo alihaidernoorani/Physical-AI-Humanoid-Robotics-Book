@@ -6,7 +6,6 @@ sidebar_label: "ROS 2 Introduction"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -89,12 +88,17 @@ QoS policies are a critical feature of ROS 2 that allow you to fine-tune communi
 
 For example, IMU data critical for balance control requires reliable delivery and low latency, while camera feeds for perception might tolerate best-effort delivery with higher latency.
 
-<Diagram
-  title="ROS 2 Architecture Overview"
-  description="The core components of ROS 2 and how they interact"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    N[Nodes] --> T[Topics]
+    N --> S[Services]
+    N --> A[Actions]
+    T --> |Pub/Sub| D[DDS Middleware]
+    S --> |Request/Response| D
+    A --> |Goal/Feedback| D
+    D --> QoS[QoS Policies]
+```
+*Figure: The core components of ROS 2 and how they interact through the DDS middleware layer*
 
 ## Practical Example: Creating Your First Node
 

@@ -40,7 +40,7 @@ dependencies: ["04-vla/intro", "04-vla/01-voice-to-text-whisper", "04-vla/02-llm
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Language-Action Grounding
@@ -62,11 +62,16 @@ Language-to-action mapping connects natural language understanding to robot exec
 
 Semantic mapping connects the concepts identified in natural language commands to specific robot capabilities and environmental objects. For humanoid robots, this includes mapping spatial references ("the table near the window") to geometric locations, action references ("pick up") to specific manipulation capabilities, and object references ("the red cup") to identified objects in the robot's perception system.
 
-<Diagram
-  title="Semantic Mapping Process"
-  description="Diagram showing the semantic mapping process connecting natural language concepts to robot capabilities and environmental objects"
-  caption="Semantic mapping connects natural language concepts to robot capabilities and environmental objects"
-/>
+```mermaid
+graph LR
+    NL[Natural Language] --> SM[Semantic Mapping]
+    SM --> RC[Robot Capabilities]
+    SM --> EO[Environmental Objects]
+    RC --> AS[Action Selection]
+    EO --> AS
+    AS --> ROS[ROS 2 Actions]
+```
+*Figure: Semantic mapping connects natural language concepts to robot capabilities and environmental objects*
 
 Action selection algorithms determine which ROS 2 actions are most appropriate for executing the interpreted commands. For humanoid robots, this involves considering the robot's current state, available capabilities, environmental constraints, and safety requirements. The selection process must ensure that chosen actions are executable and safe and achieve the intended goal.
 
@@ -234,11 +239,17 @@ Action servers for language-driven tasks must handle variable command complexity
 
 Hierarchical action servers organize complex tasks into manageable subtasks that can be executed independently while maintaining overall task coordination. For humanoid robots, this might involve high-level action servers for complex behaviors (like "clean the room") that coordinate multiple lower-level action servers (navigation, manipulation, perception). The hierarchy enables flexible execution and error recovery.
 
-<Diagram
-  title="Hierarchical Action Server Architecture"
-  description="Diagram showing hierarchical action server architecture with high-level and low-level coordination"
-  caption="Hierarchical action server architecture with high-level and low-level coordination"
-/>
+```mermaid
+graph TD
+    HL[High-Level Action Server] --> ML1[Navigation Server]
+    HL --> ML2[Manipulation Server]
+    HL --> ML3[Perception Server]
+    ML1 --> LL1[Path Planning]
+    ML1 --> LL2[Motion Control]
+    ML2 --> LL3[Grasp Planning]
+    ML2 --> LL4[Arm Control]
+```
+*Figure: Hierarchical action server architecture with high-level and low-level coordination*
 
 Stateful action servers maintain context across multiple steps of complex tasks. This allows for multi-turn interactions and task resumption after interruptions. For humanoid robots, this is essential for tasks that require multiple steps that may be interrupted by environmental changes or user commands. The state management must handle both successful completion and failure scenarios.
 
@@ -439,9 +450,6 @@ if __name__ == '__main__':
 
 Asynchronous execution patterns allow action servers to handle long-running tasks and remain responsive to new commands or safety-critical interruptions. For humanoid robots, this includes the ability to preempt ongoing actions when new commands are received or when safety conditions require immediate attention. The execution pattern must balance task completion with responsiveness and safety.
 
-### Diagram Descriptions
-- Diagram: Stateful action server maintaining context across multiple task steps
-
 ### Concrete Examples
 - Example: High-level "clean the room" server coordinating navigation and manipulation servers
 - Example: Stateful server maintaining task context when interrupted by user command
@@ -468,11 +476,17 @@ Feedback mechanisms must provide clear information about robot understanding and
 
 Confirmation requests allow the robot to verify understanding of commands before executing potentially significant actions. For humanoid robots, this includes asking for confirmation before executing commands that involve moving to different locations, manipulating objects, or performing actions that might affect the environment. The confirmation system must balance safety with efficiency.
 
-<Diagram
-  title="Feedback Mechanisms"
-  description="Diagram showing feedback mechanisms with visual, auditory, and haptic outputs for user information"
-  caption="Feedback mechanisms with visual, auditory, and haptic outputs for user information"
-/>
+```mermaid
+graph LR
+    RS[Robot State] --> FB[Feedback System]
+    FB --> VIS[Visual Display]
+    FB --> AUD[Audio Speech]
+    FB --> HAP[Haptic Signals]
+    VIS --> USR[User]
+    AUD --> USR
+    HAP --> USR
+```
+*Figure: Feedback mechanisms with visual, auditory, and haptic outputs for user information*
 
 Progress reporting provides continuous updates on task execution and enables users to understand the robot's current state and estimated completion time. For humanoid robots, this includes reporting on intermediate steps of complex tasks such as "I'm going to the kitchen to get the cup" or "I'm cleaning the table now." The reporting system must be informative and avoids being disruptive.
 
@@ -607,9 +621,6 @@ class FeedbackConfirmationSystem:
 
 Error communication and recovery mechanisms inform users when tasks cannot be completed as requested and provide alternatives or request clarification. For humanoid robots, this includes explaining why a task failed and suggesting alternative approaches. The error communication must be clear and helpful and maintains user confidence in the system.
 
-### Diagram Descriptions
-- Diagram: Confirmation request system with verification before significant actions
-
 ### Concrete Examples
 - Example: Robot says "I'm going to the kitchen to get the cup" during task execution
 - Example: Confirmation request "Should I really clean the messy desk?" before proceeding
@@ -636,11 +647,15 @@ Multi-modal command execution combines language understanding with visual percep
 
 Visual grounding enhances language understanding by connecting linguistic references to visual observations. For humanoid robots, this enables the robot to identify specific objects mentioned in commands and matches linguistic descriptions with visual observations. The system can use color, shape, size, and location information to disambiguates object references.
 
-<Diagram
-  title="Visual Grounding Process"
-  description="Diagram showing visual grounding connecting linguistic descriptions to visual observations and object identification"
-  caption="Visual grounding connecting linguistic descriptions to visual observations and object identification"
-/>
+```mermaid
+graph LR
+    LD[Linguistic Description] --> VG[Visual Grounding]
+    VO[Visual Observations] --> VG
+    VG --> OI[Object Identification]
+    OI --> LOC[Location]
+    OI --> ATTR[Attributes]
+```
+*Figure: Visual grounding connecting linguistic descriptions to visual observations and object identification*
 
 Perceptual confirmation validates that the robot's interpretation of commands matches the current environment. For humanoid robots, this might involve confirming that a requested object is visible before attempting to manipulate it and verifies that a requested location is accessible before navigating there. The confirmation process reduces errors and improves task success rates.
 
@@ -897,9 +912,6 @@ class MultiModalIntegration:
 
 Adaptive execution adjusts action parameters based on real-time perception and environmental feedback. For humanoid robots, this includes adjusting grasp positions based on actual object poses, modifying navigation paths based on dynamic obstacles, and adapting task execution based on changing environmental conditions. The adaptive system must maintain the intended goal and accommodates environmental variations.
 
-### Diagram Descriptions
-- Diagram: Multi-modal integration showing language, vision, and action components working together
-
 ### Concrete Examples
 - Example: Robot uses vision to identify "red cup" when multiple cups are present in environment
 - Example: Adaptive execution adjusting grasp based on actual object pose vs. expected position
@@ -920,11 +932,16 @@ Adaptive execution adjusts action parameters based on real-time perception and e
 
 The language-action grounding concepts covered in this chapter are essential for completing the end-to-end autonomous humanoid system in your capstone project. The language-to-action mapping will connect your LLM-based task decomposition to your robot's action execution system, while the feedback mechanisms will provide natural interaction with users. The multi-modal integration will enable your robot to combine language understanding with visual perception for robust task execution.
 
-<Diagram
-  title="Capstone Integration Flow"
-  description="Diagram showing integration flow connecting language-action grounding to capstone project components"
-  caption="Integration flow showing language-action grounding connecting to capstone project components"
-/>
+```mermaid
+graph LR
+    VTT[Voice-to-Text] --> LLM[LLM Processing]
+    LLM --> LAG[Language-Action Grounding]
+    LAG --> ROS[ROS 2 Actions]
+    ROS --> NAV[Navigation]
+    ROS --> MAN[Manipulation]
+    ROS --> PER[Perception]
+```
+*Figure: Integration flow showing language-action grounding connecting to capstone project components*
 
 ### Concrete Examples
 - Example: Capstone project implementing "Bring me the red cup" command through language-action pipeline

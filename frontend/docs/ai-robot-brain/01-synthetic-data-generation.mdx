@@ -39,7 +39,7 @@ dependencies: ["03-ai-robot-brain/intro", "02-digital-twin/intro"]
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Synthetic Data Generation
@@ -61,11 +61,17 @@ NVIDIA Isaac Sim leverages RTX technology to generate photorealistic images with
 
 The rendering pipeline configuration in Isaac Sim leverages NVIDIA's RTX technology to generate photorealistic images with accurate lighting, shadows, and material properties. For humanoid robots operating in human environments, this photorealism is crucial for creating datasets that can effectively transfer to real-world scenarios. The pipeline must be configured to match the specifications of physical sensors used on the robot, including field of view, resolution, and noise characteristics.
 
-<Diagram
-  title="Isaac Sim Rendering Pipeline"
-  description="Diagram showing the rendering pipeline configuration in Isaac Sim for synthetic dataset generation"
-  caption="Rendering pipeline configuration in Isaac Sim for photorealistic dataset generation"
-/>
+```mermaid
+graph LR
+    S[Scene Assets] --> R[RTX Renderer]
+    R --> L[Lighting Engine]
+    L --> M[Material System]
+    M --> P[Post-Processing]
+    P --> O[Output Images]
+    R --> D[Depth Buffer]
+    D --> O
+```
+*Figure: Rendering pipeline configuration in Isaac Sim for photorealistic dataset generation*
 
 Scene configuration involves creating diverse environments that have varying lighting conditions, textures, and object arrangements representing the operational scenarios where humanoid robots will be deployed. For humanoid robots, this includes indoor environments such as homes, offices, and public spaces that have appropriate furniture, lighting, and human presence. The scene diversity must be carefully planned to ensure comprehensive coverage of operational scenarios.
 
@@ -150,11 +156,18 @@ Domain randomization improves the transferability of AI models trained on synthe
 
 Lighting randomization involves varying the position, intensity, and color temperature of light sources to simulate different times of day and lighting conditions. For humanoid robots operating in indoor environments, this includes simulating natural lighting through windows, artificial lighting from various fixtures, and dynamic lighting changes. The randomization must cover the range of lighting conditions the robot is expected to encounter.
 
-<Diagram
-  title="Domain Randomization Parameters"
-  description="Diagram showing the various domain randomization parameters including lighting, texture, and object variations"
-  caption="Domain randomization parameters showing lighting, texture, and object variations for robust AI model training"
-/>
+```mermaid
+graph TD
+    DR[Domain Randomization] --> L[Lighting]
+    DR --> T[Textures]
+    DR --> O[Objects]
+    DR --> E[Environment]
+    L --> LP[Position/Intensity/Color]
+    T --> TM[Materials/Patterns]
+    O --> OP[Placement/Orientation]
+    E --> EP[Weather/Atmosphere]
+```
+*Figure: Domain randomization parameters showing lighting, texture, and object variations for robust AI model training*
 
 Texture and material randomization varies the surface properties of objects and environments to improve model generalization. For humanoid robots, this includes randomizing the appearance of floors, walls, furniture, and other environmental elements. The randomization must maintain physical plausibility and provide sufficient variation to train robust perception models.
 
@@ -236,10 +249,6 @@ class DomainRandomizer:
 
 Environmental parameter randomization varies atmospheric conditions, camera parameters, and other environmental factors that affect sensor data. For humanoid robots, this includes simulating different weather conditions, camera settings, and sensor noise characteristics. The randomization helps train perception systems that are robust to environmental variations.
 
-### Diagram Descriptions
-- Diagram: Domain randomization parameters showing lighting, texture, and object variations
-- Diagram: Before/after comparison of scenes with and without domain randomization
-
 ### Concrete Examples
 - Example: Implementing lighting randomization for different times of day in indoor environments
 - Example: Randomizing textures for floors and walls to improve model generalization
@@ -266,11 +275,17 @@ Synthetic sensor data must accurately reflect the characteristics and limitation
 
 RGB camera data generation produces photorealistic images that have accurate color reproduction, lighting effects, and sensor noise characteristics. For humanoid robots, the RGB data must include realistic perspective, depth of field, and motion blur effects that match physical camera systems. The data generation process must also include appropriate calibration parameters and distortion models.
 
-<Diagram
-  title="Multi-Modal Sensor Data Generation"
-  description="Diagram showing multi-modal sensor data generation with RGB, depth, and LiDAR synchronization"
-  caption="Multi-modal sensor data generation with RGB, depth, and LiDAR synchronization for humanoid robot perception"
-/>
+```mermaid
+graph LR
+    SC[Scene] --> RGB[RGB Camera]
+    SC --> DS[Depth Sensor]
+    SC --> LD[LiDAR]
+    RGB --> SYNC[Synchronization]
+    DS --> SYNC
+    LD --> SYNC
+    SYNC --> FD[Fused Dataset]
+```
+*Figure: Multi-modal sensor data generation with RGB, depth, and LiDAR synchronization for humanoid robot perception*
 
 Depth sensor data generation creates accurate depth maps that have realistic noise patterns and range limitations matching physical depth sensors such as RGB-D cameras. For humanoid robots, the depth data must accurately represent distances, surface normals, and object boundaries that are critical for navigation and manipulation tasks. The noise characteristics must reflect the actual performance of physical sensors.
 
@@ -326,10 +341,6 @@ lidar_interface.set_lidar_parameters(
 
 Multi-modal sensor fusion data generation creates synchronized datasets from multiple sensor types to support perception systems that combine different sensor modalities. For humanoid robots, this includes synchronized RGB, depth, and LiDAR data that maintains temporal and spatial consistency across modalities. The fused datasets enable training of perception systems that leverage multiple sensor inputs.
 
-### Diagram Descriptions
-- Diagram: Multi-modal sensor data generation with RGB, depth, and LiDAR synchronization
-- Diagram: Sensor noise modeling showing realistic limitations and characteristics
-
 ### Concrete Examples
 - Example: Generating synchronized RGB and depth data for humanoid object recognition
 - Example: Creating LiDAR point clouds with realistic noise for indoor navigation
@@ -356,11 +367,16 @@ Synthetic data generation in Isaac Sim can automatically generate accurate label
 
 Semantic segmentation annotation provides pixel-level labels for different object classes and environmental elements in RGB images. For humanoid robots, this includes labeling furniture, obstacles, walkable surfaces, and other elements that are relevant to navigation and interaction. The synthetic generation ensures perfect alignment between images and labels without the errors common in manual annotation.
 
-<Diagram
-  title="Semantic Segmentation Annotation"
-  description="Diagram showing semantic segmentation with pixel-level labels for different object classes"
-  caption="Semantic segmentation showing pixel-level labels for different object classes in humanoid robot environments"
-/>
+```mermaid
+graph LR
+    I[Input Image] --> SS[Semantic Segmentation]
+    SS --> F[Floor Class]
+    SS --> W[Wall Class]
+    SS --> FU[Furniture Class]
+    SS --> OB[Obstacle Class]
+    F & W & FU & OB --> LI[Labeled Image]
+```
+*Figure: Semantic segmentation showing pixel-level labels for different object classes in humanoid robot environments*
 
 Instance segmentation annotation provides unique identifiers for individual objects within scenes to enable object tracking and manipulation planning. For humanoid robots, this includes labeling individual pieces of furniture, objects of interest, and obstacles the robot might need to interact with or avoid. The instance labels must maintain consistency across multiple frames for tracking applications.
 
@@ -416,10 +432,6 @@ class SemanticSegmentationConfig:
 />
 
 Pose estimation annotation provides accurate 6-DOF pose information for objects and environmental features. For humanoid robots, this includes the precise location and orientation of objects that might need to be manipulated, as well as environmental features that serve as landmarks for navigation. The pose accuracy in synthetic data is typically much higher compared to what can be achieved with manual annotation.
-
-### Diagram Descriptions
-- Diagram: Semantic segmentation showing pixel-level labels for different object classes
-- Diagram: 3D bounding box annotation with position, orientation, and dimension information
 
 ### Concrete Examples
 - Example: Automatic semantic segmentation for furniture and obstacle detection in indoor scenes

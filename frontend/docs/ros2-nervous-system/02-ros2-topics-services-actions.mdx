@@ -6,7 +6,6 @@ sidebar_label: "Advanced Communication"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -71,12 +70,16 @@ History policies determine how many messages are stored for delivery:
 - **Keep-all**: Stores all messages until delivered (memory intensive but ensures no data loss)
 - **Keep-last**: Stores only the most recent messages (balances memory usage with data availability)
 
-<Diagram
-  title="QoS Policy Effects"
-  description="How different QoS policies affect message delivery characteristics"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    P[Publisher] --> R{Reliability}
+    R -->|Reliable| G[Guaranteed Delivery]
+    R -->|Best Effort| F[Fast but May Lose]
+    P --> D{Durability}
+    D -->|Volatile| N[No Late-Join Data]
+    D -->|Transient| L[Late-Join Gets Latest]
+```
+*Figure: How different QoS policies affect message delivery characteristics*
 
 <Exercise
   title="QoS Configuration Exercise"
@@ -195,12 +198,14 @@ The action architecture includes three distinct communication channels:
 - **Feedback**: Continuous updates on the progress of the operation, enabling other systems to coordinate appropriately
 - **Result**: The final outcome of the operation, including any relevant data or status information
 
-<Diagram
-  title="Action Communication Pattern"
-  description="Three-channel communication for long-running operations"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    C[Action Client] -->|1. Send Goal| S[Action Server]
+    S -->|2. Accept/Reject| C
+    S -->|3. Feedback Loop| C
+    S -->|4. Final Result| C
+```
+*Figure: Three-channel communication for long-running operations*
 
 <Callout type="tip" title="When to Use Actions">
 Use actions for long-running operations that need to provide feedback and allow for interruption, such as navigation, manipulation, or complex motion sequences."

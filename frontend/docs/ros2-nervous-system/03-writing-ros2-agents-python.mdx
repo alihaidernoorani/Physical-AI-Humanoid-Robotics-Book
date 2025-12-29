@@ -6,7 +6,6 @@ sidebar_label: "Python ROS Agents"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -323,12 +322,17 @@ The lifecycle node state machine includes the following states:
 
 There are defined transitions between states that ensure proper resource allocation and deallocation.
 
-<Diagram
-  title="Lifecycle Node States"
-  description="State transitions in lifecycle nodes"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    U[Unconfigured] -->|configure| I[Inactive]
+    I -->|activate| A[Active]
+    A -->|deactivate| I
+    I -->|cleanup| U
+    A -->|shutdown| F[Finalized]
+    I -->|shutdown| F
+    U -->|shutdown| F
+```
+*Figure: State transitions in lifecycle nodes*
 
 <Exercise
   title="Lifecycle Node Implementation"

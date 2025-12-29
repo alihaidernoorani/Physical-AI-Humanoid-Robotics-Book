@@ -6,7 +6,6 @@ sidebar_label: "ROS2 Nodes"
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
 
 ## Learning Objectives
 
@@ -81,12 +80,13 @@ QoS policies are a critical feature of ROS 2 topics that allow fine-tuning of co
 
 These can be configured based on the specific requirements of each data stream.
 
-<Diagram
-  title="Topic Communication Pattern"
-  description="Publisher-subscriber model with multiple subscribers receiving the same published data"
-  width="600"
-  height="300"
-/>
+```mermaid
+graph LR
+    P[Publisher Node] -->|Topic| S1[Subscriber 1]
+    P -->|Topic| S2[Subscriber 2]
+    P -->|Topic| S3[Subscriber 3]
+```
+*Figure: Publisher-subscriber model with multiple subscribers receiving the same published data*
 
 The pub/sub pattern is particularly beneficial for humanoid robots. It naturally supports the broadcast nature of sensor data. A single joint state publisher can provide information to multiple subscribers including controllers, visualizers, and logging nodes. This reduces system complexity and eliminates the need for multiple direct connections between components.
 
@@ -123,12 +123,12 @@ Service-based communication is appropriate for operations that require guarantee
 
 The synchronous nature of services ensures that the requesting node receives a definitive response, which is important for safety-critical operations. However, services are not suitable for continuous data streams or operations that might take extended periods to complete, as the blocking nature of service calls means that the client node waits for the response.
 
-<Diagram
-  title="Service Communication Pattern"
-  description="Client-server model with request-response interaction"
-  width="600"
-  height="300"
-/>
+```mermaid
+graph LR
+    C[Client Node] -->|Request| S[Service Server]
+    S -->|Response| C
+```
+*Figure: Client-server model with request-response interaction*
 
 ## Action-Based Communication
 
@@ -148,12 +148,13 @@ Use actions for long-running operations that need to provide feedback and allow 
 
 The action architecture is particularly valuable for humanoid robot behaviors. It provides a standardized interface for complex operations while allowing for interruption and recovery. For example, a walking action might provide continuous feedback about the robot's current step phase, allowing other systems to coordinate appropriately. If the robot detects a dangerous situation, it can preempt the walking action and execute an emergency behavior.
 
-<Diagram
-  title="Action Communication Pattern"
-  description="Client-server model with goal, feedback, and result communication"
-  width="700"
-  height="400"
-/>
+```mermaid
+graph LR
+    AC[Action Client] -->|Goal| AS[Action Server]
+    AS -->|Feedback| AC
+    AS -->|Result| AC
+```
+*Figure: Client-server model with goal, feedback, and result communication*
 
 <Quiz
   question="Which communication pattern is most appropriate for a humanoid robot's walking behavior that needs to provide continuous feedback and allow for interruption?"

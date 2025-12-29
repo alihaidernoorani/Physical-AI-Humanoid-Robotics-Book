@@ -38,7 +38,7 @@ dependencies: ["01-ros2-nervous-system"]
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Module 2: The Digital Twin (Gazebo & Unity)
@@ -111,10 +111,6 @@ For humanoid robots, collision systems must handle complex multi-body interactio
 
 Sensor simulation provides the interface between the virtual environment and the robot's perception systems. It generates synthetic sensor data that mimics real-world sensors. For humanoid robots, this includes simulation of cameras, LiDAR, IMUs, force/torque sensors, and other sensing modalities. The accuracy of sensor simulation is crucial. This develops robust perception and navigation systems that can transfer from simulation to reality.
 
-### Diagram Descriptions
-- Diagram: Core simulation components showing physics engine, collision detection, and sensor simulation
-- Diagram: Rigid body dynamics in humanoid robot with multiple contact points
-
 ### Concrete Examples
 - Example: Balancing simulation speed vs accuracy for humanoid walking gait development
 - Example: Implementing collision detection for humanoid robot self-collision avoidance
@@ -123,11 +119,15 @@ Sensor simulation provides the interface between the virtual environment and the
 
 Gazebo serves as the primary physics simulation environment for robotics applications. It provides accurate rigid body dynamics, sensor simulation, and realistic environmental modeling. For humanoid robots, Gazebo offers sophisticated contact modeling, multi-body dynamics, and integration with ROS 2. This enables seamless simulation of complex robot behaviors. The physics engine in Gazebo is based on ODE, Bullet, and DART. These provide multiple options for different simulation requirements.
 
-<Diagram
-  title="Gazebo-Unity Integration Architecture"
-  description="Architecture showing how Gazebo handles physics simulation while Unity handles high-fidelity rendering for humanoid robot simulation"
-  caption="Gazebo provides physics simulation while Unity offers high-fidelity rendering for perception systems"
-/>
+```mermaid
+graph LR
+    G[Gazebo] -->|Physics Data| B[ROS 2 Bridge]
+    B -->|Rendering Data| U[Unity]
+    G -->|Sensor Data| R[Robot Controller]
+    U -->|Camera Feed| R
+    R -->|Control Commands| G
+```
+*Figure: Architecture showing how Gazebo handles physics simulation while Unity handles high-fidelity rendering for humanoid robot simulation*
 
 Unity provides high-fidelity rendering and visualization capabilities. These complement the physics simulation of Gazebo. This is particularly for perception and human-robot interaction studies. For humanoid robots, Unity's advanced rendering pipeline enables realistic sensor simulation for cameras and depth sensors. This is crucial for developing perception systems that can operate in real-world environments. Unity's real-time rendering capabilities also support immersive human-robot interaction studies.
 
@@ -138,10 +138,6 @@ Hybrid simulation approaches leverage both Gazebo's physics accuracy and Unity's
 </Callout>
 
 ROS 2 plugins and bridges facilitate communication between simulation environments and robot control systems. This enables seamless integration of simulation with real-world robot development. For humanoid robots, these integration tools allow control algorithms developed in simulation to be directly applied to physical robots. This reduces the gap between simulation and reality. The plugin architecture supports various communication patterns and data formats. These accommodate different simulation requirements.
-
-### Diagram Descriptions
-- Diagram: Gazebo-Unity integration architecture showing physics and rendering separation
-- Diagram: ROS 2 plugin communication between simulation environments and robot control
 
 ### Concrete Examples
 - Example: Using Gazebo for physics simulation and Unity for camera sensor rendering

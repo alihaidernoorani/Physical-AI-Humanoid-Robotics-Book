@@ -1,4 +1,17 @@
-/* Enhanced typography and readability styles */
+/* T009: Enhanced typography and readability styles - mobile-first base */
+/* Base styles optimized for all viewports */
+.markdown,
+.theme-doc-markdown {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.markdown p,
+.theme-doc-markdown p {
+  margin-bottom: 1.25rem;
+}
+
+/* Legacy class support */
 .textbook-content {
   font-size: 18px !important;
   line-height: 1.7 !important;
@@ -6,6 +19,31 @@
 
 .textbook-content p {
   margin-bottom: 1.5em !important;
+}
+
+/* T013: Overflow handling for code blocks */
+pre,
+.prism-code {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* T014: Overflow handling for tables */
+table,
+.table-wrapper {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* T015: Image max-width */
+.markdown img,
+.theme-doc-markdown img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Enhanced callout styles for Key Takeaways */
@@ -79,6 +117,159 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
+}
+
+/* T010: Mobile breakpoint styles - 480px and below */
+@media (max-width: 480px) {
+  .markdown,
+  .theme-doc-markdown {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .markdown h1,
+  .theme-doc-markdown h1 {
+    font-size: 1.75rem;
+  }
+
+  .markdown h2,
+  .theme-doc-markdown h2 {
+    font-size: 1.5rem;
+  }
+
+  .markdown h3,
+  .theme-doc-markdown h3 {
+    font-size: 1.25rem;
+  }
+
+  /* Reduce padding on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Ensure code blocks don't overflow */
+  pre {
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+}
+
+/* T010: Extra small mobile - 320px minimum */
+@media (max-width: 320px) {
+  .markdown,
+  .theme-doc-markdown {
+    font-size: 14px;
+  }
+
+  .markdown h1,
+  .theme-doc-markdown h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* T011: Touch target minimum size styles - 44px */
+button,
+.button,
+a.button,
+.navbar__link,
+.menu__link,
+.pagination-nav__link,
+input[type="submit"],
+input[type="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Ensure interactive elements are easily tappable */
+.menu__link {
+  padding: 0.75rem 1rem;
+}
+
+.navbar__link {
+  padding: 0.5rem 1rem;
+}
+
+/* T058: Heading hierarchy styles - textbook visual hierarchy */
+.markdown h1,
+.theme-doc-markdown h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ifm-color-primary);
+}
+
+.markdown h2,
+.theme-doc-markdown h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary-darker);
+}
+
+.markdown h3,
+.theme-doc-markdown h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown h4,
+.theme-doc-markdown h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* T059: Section whitespace styles */
+.markdown section,
+.theme-doc-markdown section {
+  margin-bottom: 2rem;
+}
+
+.markdown > *:first-child,
+.theme-doc-markdown > *:first-child {
+  margin-top: 0;
+}
+
+/* T060: Callout/definition distinct styles */
+.admonition {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admonition-heading {
+  font-weight: 600;
+}
+
+/* Key definition highlight style */
+.markdown strong,
+.theme-doc-markdown strong {
+  color: var(--ifm-color-primary-darker);
+}
+
+[data-theme='dark'] .markdown strong,
+[data-theme='dark'] .theme-doc-markdown strong {
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* T061: Chapter title prominent styles */
+.theme-doc-markdown > h1:first-of-type {
+  font-size: 2.5rem;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+/* Module intro pages get special treatment */
+.theme-doc-markdown[data-page-type="intro"] > h1:first-of-type {
+  font-size: 2.75rem;
+  border-bottom-width: 3px;
 }
 
 /* RTL layout support for Urdu */

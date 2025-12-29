@@ -43,7 +43,7 @@ dependencies: ["04-vla/intro", "04-vla/01-voice-to-text-whisper", "04-vla/02-llm
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # Capstone: End-to-End Autonomous Humanoid
@@ -65,11 +65,30 @@ Complete system integration combines all course modules into a unified autonomou
 
 System architecture design for the integrated humanoid robot must account for the complex interactions between all components while maintaining modularity and maintainability. The architecture should provide clear interfaces between subsystems, enable independent development and testing of components, and support the real-time performance requirements of autonomous operation. For humanoid robots, the architecture must also handle the safety-critical nature of human-robot interaction.
 
-<Diagram
-  title="Integrated System Architecture"
-  description="Diagram showing the integrated system architecture connecting all modules: ROS 2, Digital Twin, AI-Brain, and VLA"
-  caption="Integrated system architecture connecting all modules: ROS 2, Digital Twin, AI-Brain, and VLA"
-/>
+```mermaid
+graph TD
+    subgraph VLA[Vision-Language-Action]
+        V2T[Voice-to-Text]
+        LLM[LLM Processing]
+        LAG[Language Grounding]
+    end
+    subgraph AI[AI-Robot Brain]
+        PER[Perception]
+        NAV[Navigation]
+        CTRL[Control]
+    end
+    subgraph ROS[ROS 2 Nervous System]
+        MSG[Messaging]
+        ACT[Action Servers]
+    end
+    DT[Digital Twin]
+    V2T --> LLM --> LAG
+    LAG --> ACT
+    PER --> NAV --> CTRL
+    CTRL --> ACT
+    MSG --> DT
+```
+*Figure: Integrated system architecture connecting all modules: ROS 2, Digital Twin, AI-Brain, and VLA*
 
 Data flow integration connects the various processing pipelines including voice-to-text, language understanding, task decomposition, navigation planning, perception processing, and action execution. The integration must handle the timing constraints of real-time operation while providing appropriate buffering and synchronization between components. For humanoid robots, the data flow must support both high-bandwidth sensor data and high-frequency control commands.
 
@@ -254,11 +273,16 @@ The end-to-end pipeline processes voice commands through the entire chain of pro
 
 Voice command processing begins with speech recognition and flows through language understanding to task decomposition, then to action planning and execution. Each stage must maintain appropriate timing and data integrity while handling the uncertainties and variations inherent in natural language and real-world operation. The pipeline must also provide appropriate feedback and error handling throughout the process.
 
-<Diagram
-  title="End-to-End Pipeline Flow"
-  description="Diagram showing the end-to-end pipeline flow from voice command to action execution"
-  caption="End-to-end pipeline flow from voice command to action execution"
-/>
+```mermaid
+graph LR
+    VC[Voice Command] --> ASR[Speech Recognition]
+    ASR --> NLU[Language Understanding]
+    NLU --> TD[Task Decomposition]
+    TD --> AP[Action Planning]
+    AP --> AE[Action Execution]
+    AE --> FB[Feedback]
+```
+*Figure: End-to-end pipeline flow from voice command to action execution*
 
 State management across the pipeline maintains context and coherence throughout complex multi-step interactions. For humanoid robots, this includes tracking the robot's current state, the progress of ongoing tasks, and the context of the human-robot interaction. The state management system must handle interruptions, task switching, and context recovery to maintain natural interaction.
 
@@ -642,11 +666,14 @@ Comprehensive system validation is essential for integrated autonomous humanoid 
 
 Unit and integration testing validates individual components and their interactions within the larger system. For the integrated humanoid system, this includes testing the voice recognition pipeline, language understanding module, task decomposition system, navigation planning, and action execution individually and in combination. The testing must cover normal operation, edge cases, and failure scenarios.
 
-<Diagram
-  title="System Validation Process"
-  description="Diagram showing the system validation process with unit, integration, simulation, and real-world testing"
-  caption="System validation process with unit, integration, simulation, and real-world testing"
-/>
+```mermaid
+graph LR
+    UT[Unit Tests] --> IT[Integration Tests]
+    IT --> SV[Simulation Validation]
+    SV --> RW[Real-World Testing]
+    RW --> DEP[Deployment]
+```
+*Figure: System validation process with unit, integration, simulation, and real-world testing*
 
 Simulation-based validation uses the digital twin environment to test the complete system in a wide variety of scenarios before deployment to physical hardware. For humanoid robots, simulation allows for testing in diverse environments, with various obstacles and situations that might be difficult or dangerous to recreate in physical testing. The simulation must accurately model the physical and behavioral characteristics of the real robot.
 
@@ -1059,11 +1086,17 @@ Performance optimization must balance competing demands of different subsystems 
 
 Multi-module debugging addresses the complexity of debugging integrated systems where problems may arise from interactions between components rather than individual component failures. For humanoid robots, this requires sophisticated logging, monitoring, and diagnostic tools that can trace problems across the entire system. The debugging infrastructure must support both development and operational environments.
 
-<Diagram
-  title="Multi-Module Debugging System"
-  description="Diagram showing the multi-module debugging system with logging, monitoring, and diagnostic tools"
-  caption="Multi-module debugging system with logging, monitoring, and diagnostic tools"
-/>
+```mermaid
+graph TD
+    SYS[System Components] --> LOG[Logging]
+    SYS --> MON[Monitoring]
+    SYS --> DIAG[Diagnostics]
+    LOG --> AN[Analysis Tools]
+    MON --> AN
+    DIAG --> AN
+    AN --> DBG[Debug Output]
+```
+*Figure: Multi-module debugging system with logging, monitoring, and diagnostic tools*
 
 Resource contention management resolves conflicts between different subsystems competing for shared resources such as CPU, GPU, memory, and communication bandwidth. For humanoid robots, this includes managing the trade-offs between perception accuracy, planning complexity, and control frequency. The resource management must adapt to changing operational conditions while maintaining system stability.
 

@@ -39,7 +39,7 @@ dependencies: ["04-vla/intro", "04-vla/01-voice-to-text-whisper"]
 import Callout from '@site/src/components/Callout';
 import Quiz from '@site/src/components/Quiz';
 import Exercise from '@site/src/components/Exercise';
-import Diagram from '@site/src/components/Diagram';
+
 import Toggle from '@site/src/components/Toggle';
 
 # LLM-Based Task Decomposition
@@ -61,11 +61,16 @@ Natural Language Understanding for robotics connects linguistic concepts to phys
 
 Semantic parsing in robotic NLU converts natural language commands into structured representations that can be processed by the robot's planning and execution systems. For humanoid robots, this involves mapping linguistic elements to robot-specific concepts including navigation goals, manipulation targets, and environmental objects. The parsing must handle the ambiguity and variability inherent in natural language while maintaining precision for robot execution.
 
-<Diagram
-  title="Semantic Parsing in Robotics"
-  description="Diagram showing the conversion of natural language commands to structured robot-executable representations"
-  caption="Semantic parsing converts natural language commands into structured representations for robot execution"
-/>
+```mermaid
+graph LR
+    NL[Natural Language] --> SP[Semantic Parser]
+    SP --> SR[Structured Representation]
+    SR --> CAP[Robot Capabilities]
+    SR --> ENV[Environment Objects]
+    CAP --> EX[Executable Commands]
+    ENV --> EX
+```
+*Figure: Semantic parsing converts natural language commands into structured representations for robot execution*
 
 Ontology-based understanding provides structured knowledge about the robot's environment, capabilities, and the relationships between objects and actions. For humanoid robots, this includes knowledge about object affordances (what can be done with objects), spatial relationships (where objects are located and how to navigate to them), and task constraints (what actions are possible given the robot's physical limitations).
 
@@ -169,11 +174,16 @@ Task decomposition breaks high-level natural language commands into sequences of
 
 Hierarchical task planning creates multi-level action hierarchies that allow complex tasks to be decomposed into manageable subtasks. For humanoid robots, this might involve high-level goals (clean the room), mid-level tasks (pick up trash, wipe surfaces), and low-level actions (navigate to location, grasp object). The hierarchy enables flexible execution and error recovery.
 
-<Diagram
-  title="Hierarchical Task Planning"
-  description="Diagram showing task decomposition hierarchy from high-level commands to low-level actions"
-  caption="Hierarchical task planning showing decomposition from high-level commands to low-level actions"
-/>
+```mermaid
+graph TD
+    HL[High-Level Goal] --> ML1[Mid-Level Task 1]
+    HL --> ML2[Mid-Level Task 2]
+    ML1 --> LL1[Low-Level Action 1]
+    ML1 --> LL2[Low-Level Action 2]
+    ML2 --> LL3[Low-Level Action 3]
+    ML2 --> LL4[Low-Level Action 4]
+```
+*Figure: Hierarchical task planning showing decomposition from high-level commands to low-level actions*
 
 Constraint-based decomposition ensures that task sequences respect physical, temporal, and safety constraints. For humanoid robots, this includes considerations such as the robot's reach limits, balance constraints during manipulation, and safety requirements for human-robot interaction. The decomposition must generate feasible action sequences that can be executed safely.
 
@@ -269,9 +279,6 @@ class ConstraintBasedPlanner:
 
 Plan validation and simulation verify that the decomposed task sequences are executable and safe before execution. For humanoid robots, this may involve simulating the action sequence in a virtual environment using kinematic models to verify that the planned actions are physically possible. The validation process helps prevent execution failures and safety violations.
 
-### Diagram Descriptions
-- Diagram: Constraint-based planning with reach limits, balance, and safety considerations
-
 ### Concrete Examples
 - Example: "Clean the room" decomposed into navigation, object detection, and manipulation tasks
 - Example: Plan validation checking if robot can physically reach objects before execution
@@ -298,11 +305,14 @@ Context-aware interpretation considers the robot's current state, environment, a
 
 Spatial context understanding enables the robot to interpret location references such as "over there" or "near the table" based on the robot's current perception of the environment. For humanoid robots, this requires integration of spatial reasoning with natural language processing that connects linguistic spatial references to geometric locations in the robot's coordinate system.
 
-<Diagram
-  title="Spatial Context Understanding"
-  description="Diagram showing spatial context connecting linguistic references to geometric locations"
-  caption="Spatial context connecting linguistic references to geometric locations in robot's coordinate system"
-/>
+```mermaid
+graph LR
+    LR[Linguistic Reference] --> SC[Spatial Context]
+    ENV[Environment Perception] --> SC
+    SC --> GL[Geometric Location]
+    GL --> RS[Robot Coordinate System]
+```
+*Figure: Spatial context connecting linguistic references to geometric locations in robot's coordinate system*
 
 Temporal context maintains awareness of time-dependent aspects of commands and the sequence of actions. For humanoid robots, this includes understanding temporal references like "before lunch" or "when you finish cleaning" and maintains context across multiple interactions in a task sequence. The temporal context enables more natural and flexible command interpretation.
 
@@ -390,9 +400,6 @@ class ContextAwareInterpreter:
 
 Social context considers the presence and behavior of humans in the environment when interpreting commands. For humanoid robots operating in human environments, this includes understanding commands that reference specific people ("bring John his coffee") and should be executed with consideration for human activities and preferences.
 
-### Diagram Descriptions
-- Diagram: Context-aware interpretation showing current state, environment, and task history
-
 ### Concrete Examples
 - Example: Human says "pick up that" - robot uses spatial context to identify specific object
 - Example: Robot considers ongoing tasks when interpreting new commands in sequence
@@ -419,11 +426,15 @@ Robust error handling must address language understanding errors, task planning 
 
 Clarification request generation enables the robot to ask for additional information when commands are ambiguous or when environmental conditions are unclear. For humanoid robots, this includes asking questions like "Which book do you mean?" or "Should I wait until you move?" The clarification system must determine when additional information is needed and asks for it in a natural way.
 
-<Diagram
-  title="Clarification Request System"
-  description="Diagram showing the clarification request system with natural language interaction"
-  caption="Clarification request system with natural language interaction for ambiguous commands"
-/>
+```mermaid
+graph TD
+    CMD[Ambiguous Command] --> AN[Analysis]
+    AN --> CR[Clarification Request]
+    CR --> UR[User Response]
+    UR --> RS[Resolved Command]
+    RS --> EX[Execution]
+```
+*Figure: Clarification request system with natural language interaction for ambiguous commands*
 
 Fallback mechanisms provide alternative execution strategies when primary task decomposition fails. For humanoid robots, this might involve simplifying complex commands, executing partial tasks, or requesting human assistance. The fallback system must maintain safety and provides the best possible service given the limitations.
 
@@ -542,9 +553,6 @@ class ErrorHandlingSystem:
 />
 
 Uncertainty quantification helps the system understand and communicate the confidence level of task interpretations and decompositions. For humanoid robots, this enables the system to defer to human operators when uncertainty is high and proceeds with lower-confidence interpretations when appropriate. The uncertainty management system must balance robustness with responsiveness.
-
-### Diagram Descriptions
-- Diagram: Error handling flow with different failure types and recovery strategies
 
 ### Concrete Examples
 - Example: Robot asks "Which book do you mean?" when command is ambiguous

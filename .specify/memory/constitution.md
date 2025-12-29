@@ -1,14 +1,14 @@
 <!--
 SYNC IMPACT REPORT:
-Version change: 1.1.0 → 1.2.0
-Added sections: Internal verification requirements, RAG grounding enforcement, metadata requirements
-Modified sections: Content Verification & Plagiarism Standards, Book Format & Deployment, Content Constraints, Backend Architecture
-Removed sections: Reader-facing citation requirements
+Version change: 1.2.0 → 1.3.0
+Added sections: Visual Standards & Diagrams, Typography & Readability, Landing Page Requirements
+Modified sections: Visual & Accessibility Standards (expanded), Frontend (Docusaurus) (added diagram constraints)
+Removed sections: None
 Templates requiring updates:
-- .specify/templates/plan-template.md ✅ updated
-- .specify/templates/spec-template.md ✅ updated
-- .specify/templates/tasks-template.md ✅ updated
-- .specify/templates/commands/*.md ⚠ pending
+- .specify/templates/plan-template.md ✅ updated (already aligned - Constitution Check covers visual standards)
+- .specify/templates/spec-template.md ✅ updated (already aligned)
+- .specify/templates/tasks-template.md ✅ updated (already aligned)
+- .specify/templates/commands/*.md ⚠ pending (no command files found)
 Follow-up TODOs: None
 -->
 # Physical AI & Humanoid Robotics Textbook Constitution
@@ -52,17 +52,73 @@ These module names must be used verbatim in:
 ### Book Format & Deployment
 Book Format: Docusaurus-based. Deployment: GitHub Pages. Minimum Length: 20–30 full chapters. Each chapter must meet specific requirements: Learning objectives, Key definitions, Examples & illustrations, Summary, Glossary entries where needed. No citations sections or bibliographies visible to readers.
 
+### Landing Page Requirements
+An introductory landing page is MANDATORY for the book. The landing page MUST include:
+- Clear book title and subtitle
+- Module overview cards linking to each of the four modules
+- Visual hierarchy emphasizing textbook identity (not API documentation)
+- Accessible navigation to all major sections
+- Responsive design optimized for all screen sizes
+
+### Visual Standards & Diagrams
+All diagrams MUST follow these mandatory rules:
+
+**Mermaid-First Policy:**
+- All diagrams MUST be rendered using native Mermaid syntax in MDX/Markdown
+- Custom diagram rendering components are PROHIBITED unless explicitly justified in writing
+- Every diagram MUST have a visible visual representation (rendered Mermaid code block)
+- Every diagram MUST have an accompanying caption describing its purpose
+
+**Prohibited Content:**
+- Diagram metadata without actual rendered diagrams
+- Placeholder text such as "Diagram Description:", "Figure shows:", or similar conversion artifacts
+- Descriptive-only diagram text that replaces visual content
+- Empty or commented-out diagram blocks
+- References to diagrams that do not exist in the document
+
+**Responsive Diagrams:**
+- All diagrams MUST be responsive and not overflow on mobile viewports
+- Use Mermaid's built-in responsive features
+- Test diagrams at mobile breakpoints (320px, 375px, 414px minimum)
+- Complex diagrams MUST gracefully degrade or provide alternative views for small screens
+
+### Typography & Readability
+All content MUST adhere to these readability standards:
+
+**Mobile-First Design:**
+- Typography MUST be optimized for mobile reading first
+- Body text: minimum 16px equivalent, line-height 1.5–1.7
+- Spacing MUST ensure comfortable reading on small screens
+- No horizontal overflow on any content element
+- Touch targets MUST be at least 44x44px for interactive elements
+
+**Dark-Mode Optimization:**
+- All typography MUST maintain WCAG AA contrast ratios in both light and dark modes
+- Long-form reading MUST be optimized for dark mode with reduced eye strain
+- Code blocks and diagrams MUST be legible in dark mode
+- Avoid pure white (#FFFFFF) text on pure black (#000000) backgrounds
+
+**Textbook-Style Visual Hierarchy:**
+- Use visual hierarchy appropriate for educational textbooks, not API documentation
+- Clear distinction between headings (h1 > h2 > h3)
+- Generous whitespace between sections
+- Pull quotes, callouts, and key definitions MUST be visually distinct
+- Chapter titles MUST be prominent and scannable
+
 ### Visual & Accessibility Standards
-Non-copyright diagrams preferred. Provide descriptions of all figures for accessibility. All visuals must be original or properly licensed for educational use.
+Non-copyright diagrams preferred. Provide descriptions of all figures for accessibility. All visuals must be original or properly licensed for educational use. All images and diagrams MUST have alt text for screen readers. Color MUST NOT be the only means of conveying information.
 
 ## Technical Architecture
 
 ### Frontend (Docusaurus)
-- Homepage with interactive module cards
+- Homepage with interactive module cards (MANDATORY)
 - Modules → chapters → subsections matching the course outline
 - Glossary, quizzes, exercises, diagrams
 - Reusable MDX components: callouts, quizzes, Urdu toggle, personalization toggle
 - Clean navigation and stable routing
+- Mermaid diagrams via native Docusaurus Mermaid support (no custom components)
+- Mobile-first responsive design with dark mode support
+- Textbook-style visual hierarchy throughout
 
 ### Backend (FastAPI)
 - RAG chatbot using OpenAI Agents / ChatKit
@@ -100,12 +156,25 @@ Total Word Count: 30,000–50000 words. Minimum Sources: 40+ (internal verificat
 ### Scope Boundary
 All content must strictly follow the provided course outline and verified robotics fundamentals. No speculative hardware, invented concepts, or hallucinated technologies are allowed. Module structure, titles, and hierarchy are locked.
 
+### Visual Quality Checklist
+Before any content is accepted, verify:
+- [ ] All diagrams render correctly as Mermaid (no placeholder text)
+- [ ] All diagrams have captions
+- [ ] No "Diagram Description:" or similar conversion artifacts exist
+- [ ] Content is readable on mobile (no horizontal overflow)
+- [ ] Dark mode contrast meets WCAG AA standards
+- [ ] Landing page exists and links to all modules
+- [ ] Visual hierarchy follows textbook conventions
+
 ### Acceptance Criteria
 - Zero build warnings or broken links
 - RAG chatbot answers at least 90% of seeded test questions correctly
 - Personalization and Urdu toggles work across all chapters
 - Folder structure complies with Docusaurus standards
 - Project is fully deployable to GitHub Pages and/or Vercel
+- All diagrams render as visual Mermaid (no text-only placeholders)
+- Mobile-first responsive design verified at 320px minimum width
+- Dark mode optimized for extended reading sessions
 
 ### Change Control & Failure Rules
 Module names, structure, and hierarchy are immutable. Any conflict, missing dependency, or build failure must pause execution and be reported. No autonomous scope expansion or renaming is allowed.
@@ -114,4 +183,4 @@ Module names, structure, and hierarchy are immutable. Any conflict, missing depe
 
 The constitution governs all content generation, review, editing, and verification across the full book creation process. All chapters and content must comply with these principles before acceptance. Any deviation from these principles requires explicit amendment to the constitution following the project governance process.
 
-**Version**: 1.2.0 | **Ratified**: 2025-12-07 | **Last Amended**: 2025-12-14
+**Version**: 1.3.0 | **Ratified**: 2025-12-07 | **Last Amended**: 2025-12-29

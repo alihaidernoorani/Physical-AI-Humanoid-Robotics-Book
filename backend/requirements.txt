@@ -23,7 +23,6 @@ alembic>=1.13.1
 # Utilities
 python-multipart>=0.0.6
 python-dotenv>=1.0.0
-torch==2.9.1         
 numpy>=1.24.3
 
 # Testing

@@ -1,0 +1,67 @@
+/**
+ * Dark Mode Fixes for Internal Content Components
+ * Ensures quizzes, exercises, callouts, and interactive components
+ * render correctly in dark mode with WCAG AA contrast compliance.
+ */
+
+/* Quiz Containers - Generic class fallback */
+[data-theme='dark'] .quiz-container,
+[data-theme='dark'] .quiz-component {
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-400);
+  color: var(--ifm-font-color-base);
+  border-radius: var(--radius-md);
+}
+
+/* Exercise Blocks - Generic class fallback */
+[data-theme='dark'] .exercise-block,
+[data-theme='dark'] .exercise-component {
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-400);
+  color: var(--ifm-font-color-base);
+  border-radius: var(--radius-md);
+}
+
+/* Callouts / Admonitions */
+[data-theme='dark'] .admonition {
+  background-color: var(--ifm-background-surface-color);
+  border-left: 4px solid var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .admonition-heading {
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .admonition-content {
+  color: var(--ifm-font-color-base);
+}
+
+/* Interactive Components in Quizzes */
+[data-theme='dark'] .quiz-input,
+[data-theme='dark'] input[type="text"].quiz-input,
+[data-theme='dark'] input[type="radio"].quiz-input,
+[data-theme='dark'] input[type="checkbox"].quiz-input {
+  border: 1px solid var(--ifm-color-emphasis-400);
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .quiz-button,
+[data-theme='dark'] button.quiz-button {
+  border: 1px solid var(--ifm-color-emphasis-400);
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .quiz-button:hover,
+[data-theme='dark'] button.quiz-button:hover {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-primary);
+}
+
+/* Generic container fix for any white backgrounds in dark mode */
+[data-theme='dark'] .content-container,
+[data-theme='dark'] .interactive-block {
+  background-color: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+}

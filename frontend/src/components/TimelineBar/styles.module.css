@@ -1,0 +1,41 @@
+/**
+ * TimelineBar Component Styles
+ * Visual week range indicator for 13-week course timeline
+ */
+
+.timelineContainer {
+  margin-top: var(--spacing-sm);
+}
+
+.timelineLabel {
+  display: block;
+  font-size: var(--font-size-small);
+  color: var(--ifm-color-secondary-darkest);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .timelineLabel {
+  color: var(--ifm-color-secondary-lighter);
+}
+
+.timelineTrack {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background-color: var(--ifm-color-emphasis-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+[data-theme='dark'] .timelineTrack {
+  background-color: var(--ifm-color-emphasis-300);
+}
+
+.timelineFill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: all 0.3s ease-out;
+}

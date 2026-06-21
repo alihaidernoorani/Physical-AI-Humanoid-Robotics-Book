@@ -59,6 +59,7 @@ const config = {
             './src/css/custom.css',
             './src/css/readability.css',
             './src/css/diagrams.css',
+            './src/css/dark-mode-fixes.css',
           ],
         },
       } satisfies Preset.Options,
@@ -106,17 +107,13 @@ const config = {
           title: 'Resources',
           items: [
             {
-              label: 'GitHub',
+              label: 'GitHub Repository',
               href: 'https://github.com/alihaidernoorani/Physical-AI-Humanoid-Robotics-Textbook',
-            },
-            {
-              label: 'Docusaurus',
-              href: 'https://docusaurus.io',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Textbook.`,
     },
     prism: {
       theme: prismThemes.github,

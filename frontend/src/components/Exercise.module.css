@@ -1,0 +1,192 @@
+/**
+ * Exercise Component Styles
+ * Theme-aware styling with WCAG AA compliance
+ */
+
+.exerciseContainer {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  background-color: var(--ifm-card-background-color);
+}
+
+[data-theme='dark'] .exerciseContainer {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.exerciseTitle {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--ifm-heading-color);
+  font-size: var(--font-size-h3);
+  font-weight: 600;
+}
+
+.exerciseSection {
+  margin-bottom: var(--spacing-md);
+}
+
+.exerciseSectionTitle {
+  margin: var(--spacing-xs) 0;
+  color: var(--ifm-font-color-base);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.exerciseProblemBox {
+  padding: var(--spacing-sm);
+  background-color: var(--ifm-background-surface-color);
+  border-radius: var(--radius-sm);
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+[data-theme='dark'] .exerciseProblemBox {
+  background-color: var(--ifm-card-background-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.exerciseHintBox {
+  padding: var(--spacing-sm);
+  background-color: rgba(251, 188, 4, 0.1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ifm-color-warning);
+  color: var(--ifm-font-color-base);
+  margin-top: var(--spacing-xs);
+}
+
+[data-theme='dark'] .exerciseHintBox {
+  background-color: rgba(255, 183, 77, 0.15);
+  border-color: var(--ifm-color-warning);
+}
+
+.exerciseTextarea {
+  width: 100%;
+  min-height: 150px;
+  padding: var(--spacing-sm);
+  font-family: var(--ifm-font-family-monospace);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  resize: vertical;
+}
+
+.exerciseTextarea:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+  border-color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .exerciseTextarea {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.exerciseButtonGroup {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.exerciseButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-out;
+  color: #ffffff;
+}
+
+.exerciseButtonRun {
+  background-color: var(--ifm-color-success);
+}
+
+.exerciseButtonRun:hover {
+  background-color: var(--ifm-color-success-dark);
+}
+
+.exerciseButtonShow {
+  background-color: var(--ifm-color-primary);
+}
+
+.exerciseButtonShow:hover {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+.exerciseButtonReset {
+  background-color: var(--ifm-color-secondary);
+}
+
+.exerciseButtonReset:hover {
+  background-color: var(--ifm-color-secondary-dark);
+}
+
+.exerciseButtonHint {
+  background-color: var(--ifm-color-warning);
+}
+
+.exerciseButtonHint:hover {
+  background-color: var(--ifm-color-warning-dark);
+}
+
+.exerciseResultBox {
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: var(--spacing-md);
+}
+
+.exerciseResultSuccess {
+  background-color: var(--ifm-color-success-lightest);
+  border-color: var(--ifm-color-success);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .exerciseResultSuccess {
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: var(--ifm-color-success);
+}
+
+.exerciseResultError {
+  background-color: var(--ifm-color-danger-lightest);
+  border-color: var(--ifm-color-danger);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .exerciseResultError {
+  background-color: rgba(244, 67, 54, 0.15);
+  border-color: var(--ifm-color-danger);
+}
+
+.exerciseSolutionBox {
+  padding: var(--spacing-sm);
+  background-color: var(--ifm-color-success-lightest);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ifm-color-success);
+}
+
+[data-theme='dark'] .exerciseSolutionBox {
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: var(--ifm-color-success);
+}
+
+.exerciseSolutionCode {
+  padding: var(--spacing-sm);
+  background-color: var(--ifm-code-background);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--ifm-font-color-base);
+  margin-top: var(--spacing-xs);
+}
+
+[data-theme='dark'] .exerciseSolutionCode {
+  background-color: var(--ifm-background-color);
+}

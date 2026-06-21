@@ -81,20 +81,29 @@
   font-size: 2rem;
 }
 
-/* T065: 2x2 grid layout for module cards */
+/* Responsive 2x2 grid layout for module cards */
 .moduleGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  max-width: 900px;
+  gap: var(--spacing-md);
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-/* T066: Mobile single-column layout */
-@media screen and (max-width: 768px) {
+/* Tablet: 2x1 layout */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .moduleGrid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+  }
+}
+
+/* Mobile: Single-column layout */
+@media screen and (max-width: 767px) {
   .moduleGrid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
+    padding: 0 var(--spacing-sm);
+    gap: var(--spacing-sm);
   }
 }
 
@@ -111,7 +120,7 @@
 /* Module card styles */
 .moduleCard {
   display: block;
-  padding: 1.5rem;
+  padding: 1.75rem;
   background: var(--ifm-background-color);
   border-radius: 12px;
   border: 1px solid var(--ifm-color-emphasis-200);

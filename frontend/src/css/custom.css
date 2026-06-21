@@ -27,6 +27,37 @@
 
   /* Spacing rhythm */
   --ifm-spacing-vertical: 1.5rem;
+
+  /* Design System: Module Accent Colors */
+  --module-1-accent: var(--ifm-color-primary);        /* Module 1: ROS 2 - Green */
+  --module-2-accent: var(--ifm-color-info);           /* Module 2: Digital Twin - Blue */
+  --module-3-accent: var(--ifm-color-warning);        /* Module 3: Isaac - Orange */
+  --module-4-accent: var(--ifm-color-secondary);      /* Module 4: VLA - Gray */
+
+  /* Design System: Typography Scale */
+  --font-size-h1: 2.5rem;      /* 40px - Hero titles */
+  --font-size-h2: 2rem;        /* 32px - Section headers */
+  --font-size-h3: 1.5rem;      /* 24px - Module card titles */
+  --font-size-body: 1rem;      /* 16px - Base */
+  --font-size-small: 0.875rem; /* 14px - Meta text */
+
+  /* Design System: Line Heights */
+  --line-height-tight: 1.2;    /* Headings */
+  --line-height-normal: 1.65;  /* Body text */
+  --line-height-loose: 1.8;    /* Long-form content */
+
+  /* Design System: Spacing Scale (8px base unit) */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px */
+  --spacing-md: 1.5rem;   /* 24px */
+  --spacing-lg: 2rem;     /* 32px */
+  --spacing-xl: 3rem;     /* 48px */
+  --spacing-2xl: 4rem;    /* 64px */
+
+  /* Design System: Border Radius */
+  --radius-sm: 4px;    /* Buttons, inputs */
+  --radius-md: 8px;    /* Cards */
+  --radius-lg: 12px;   /* Hero section */
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -55,6 +86,12 @@
 
   /* Improved link contrast */
   --ifm-link-color: #67e8f9;
+
+  /* Design System: Module Accent Colors (dark mode variants) */
+  --module-1-accent: var(--ifm-color-primary);        /* Module 1: ROS 2 - Teal */
+  --module-2-accent: var(--ifm-color-info);           /* Module 2: Digital Twin - Light Blue */
+  --module-3-accent: var(--ifm-color-warning);        /* Module 3: Isaac - Light Orange */
+  --module-4-accent: var(--ifm-color-secondary);      /* Module 4: VLA - Light Gray */
 }
 
 /* T017: Navigation touch targets */
@@ -68,4 +105,46 @@
 
 .menu__link {
   padding: 0.75rem 1rem;
+}
+
+/* Pagination Navigation Spacing & Layout */
+.pagination-nav__link {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .pagination-nav__link {
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  background-color: var(--ifm-background-surface-color);
+}
+
+.pagination-nav__label {
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pagination-nav__sublabel {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+}
+
+/* Responsive: Reduce spacing on mobile */
+@media screen and (max-width: 767px) {
+  .pagination-nav__link {
+    padding: var(--spacing-sm);
+  }
+
+  .pagination-nav__sublabel {
+    font-size: var(--font-size-small);
+  }
 }

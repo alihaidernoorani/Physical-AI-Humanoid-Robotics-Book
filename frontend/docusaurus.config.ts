@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config = {
   title: 'Physical AI & Humanoid Robotics',
   tagline: 'AI Systems in the Physical World: Embodied Intelligence',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Future flags
   future: {

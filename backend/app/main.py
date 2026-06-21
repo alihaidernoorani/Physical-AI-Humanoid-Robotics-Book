@@ -32,10 +32,6 @@ app.include_router(chat_router, prefix="/api/v1", tags=["chat"])
 def read_root():
     return {"message": "RAG Backend API is running with OpenAI Agents SDK and Gemini bridge"}
 
-@app.get("/api/v1/health")
-def health_check():
-    from .chat import health_check as chat_health_check
-    return chat_health_check()
 
 if __name__ == "__main__":
     import uvicorn

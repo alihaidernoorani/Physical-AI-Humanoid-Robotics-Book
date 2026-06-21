@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="94 168 92 97">
+  <!-- Background -->
+  <rect x="94" y="168" width="92" height="97" rx="8" fill="#0f172a"/>
+
+  <!-- Ear panels -->
+  <rect x="96" y="210" width="11" height="26" rx="4" fill="#1e40af"/>
+  <rect x="173" y="210" width="11" height="26" rx="4" fill="#1e40af"/>
+  <circle cx="101.5" cy="217" r="2.5" fill="#38bdf8"/>
+  <circle cx="101.5" cy="228" r="2.5" fill="#38bdf8"/>
+  <circle cx="178.5" cy="217" r="2.5" fill="#38bdf8"/>
+  <circle cx="178.5" cy="228" r="2.5" fill="#38bdf8"/>
+
+  <!-- Robot head -->
+  <rect x="107" y="196" width="66" height="55" rx="10" fill="#1e40af"/>
+
+  <!-- Antenna -->
+  <rect x="136" y="180" width="8" height="18" rx="4" fill="#1e40af"/>
+  <circle cx="140" cy="177" r="7" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="140" cy="177" r="5" fill="#38bdf8"/>
+  <circle cx="140" cy="177" r="2.5" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Left eye -->
+  <rect x="113" y="210" width="20" height="13" rx="4" fill="#0f172a"/>
+  <rect x="115" y="212" width="16" height="9" rx="2.5" fill="#00d4ff"/>
+  <rect x="118" y="214" width="10" height="5" rx="1.5" fill="#a5f3fc" opacity="0.6"/>
+
+  <!-- Right eye -->
+  <rect x="147" y="210" width="20" height="13" rx="4" fill="#0f172a"/>
+  <rect x="149" y="212" width="16" height="9" rx="2.5" fill="#00d4ff"/>
+  <rect x="152" y="214" width="10" height="5" rx="1.5" fill="#a5f3fc" opacity="0.6"/>
+
+  <!-- Mouth grill -->
+  <rect x="117" y="233" width="46" height="10" rx="4" fill="#0f172a"/>
+  <rect x="121" y="236" width="7" height="4" rx="1.5" fill="#38bdf8"/>
+  <rect x="132" y="236" width="7" height="4" rx="1.5" fill="#38bdf8"/>
+  <rect x="143" y="236" width="7" height="4" rx="1.5" fill="#38bdf8"/>
+  <rect x="154" y="236" width="5" height="4" rx="1.5" fill="#38bdf8" opacity="0.5"/>
+
+  <!-- Neck -->
+  <rect x="128" y="251" width="24" height="12" rx="3" fill="#1e40af"/>
+</svg>

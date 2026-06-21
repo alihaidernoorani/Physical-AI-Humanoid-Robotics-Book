@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Quiz.module.css';
 
 const Quiz = ({ question, options, correctAnswer, explanation, className = '' }) => {
   // Handle both array and string formats for options
@@ -26,61 +27,35 @@ const Quiz = ({ question, options, correctAnswer, explanation, className = '' })
     setIsCorrect(false);
   };
 
-  const getOptionStyle = (option) => {
+  const getOptionClassName = (option) => {
+    const classes = [styles.quizOption];
+
     if (!submitted) {
-      return {
-        padding: '0.75rem',
-        margin: '0.5rem 0',
-        cursor: 'pointer',
-        border: '1px solid #ddd',
-        borderRadius: '4px',
-        backgroundColor: selectedOption === option ? '#e3f2fd' : '#fff',
-      };
+      if (selectedOption === option) {
+        classes.push(styles.quizOptionSelected);
+      }
     } else {
       if (option === correctAnswer) {
-        return {
-          padding: '0.75rem',
-          margin: '0.5rem 0',
-          border: '1px solid #4caf50',
-          borderRadius: '4px',
-          backgroundColor: '#e8f5e9',
-          fontWeight: 'bold',
-        };
+        classes.push(styles.quizOptionCorrect);
       } else if (option === selectedOption && option !== correctAnswer) {
-        return {
-          padding: '0.75rem',
-          margin: '0.5rem 0',
-          border: '1px solid #f44336',
-          borderRadius: '4px',
-          backgroundColor: '#ffebee',
-        };
+        classes.push(styles.quizOptionIncorrect);
       } else {
-        return {
-          padding: '0.75rem',
-          margin: '0.5rem 0',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
-          backgroundColor: '#f5f5f5',
-        };
+        classes.push(styles.quizOptionDisabled);
       }
     }
+
+    return classes.join(' ');
   };
 
   return (
-    <div className={`quiz-component ${className}`} style={{
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      padding: '1rem',
-      margin: '1rem 0',
-      backgroundColor: '#fff',
-    }}>
-      <h4 style={{ margin: '0 0 1rem 0' }}>{question}</h4>
+    <div className={`${styles.quizContainer} quiz-component ${className}`}>
+      <h4 className={styles.quizQuestion}>{question}</h4>
 
-      <div>
+      <div className={styles.quizOptionsContainer}>
         {parsedOptions.map((option, index) => (
           <div
             key={index}
-            style={getOptionStyle(option)}
+            className={getOptionClassName(option)}
             onClick={() => handleSubmit(option)}
           >
             <input
@@ -90,7 +65,7 @@ const Quiz = ({ question, options, correctAnswer, explanation, className = '' })
               checked={selectedOption === option}
               onChange={() => {}}
               disabled={submitted}
-              style={{ marginRight: '0.5rem' }}
+              className={styles.quizOptionInput}
             />
             {option}
           </div>
@@ -98,18 +73,12 @@ const Quiz = ({ question, options, correctAnswer, explanation, className = '' })
       </div>
 
       {submitted && (
-        <div style={{
-          marginTop: '1rem',
-          padding: '0.75rem',
-          borderRadius: '4px',
-          backgroundColor: isCorrect ? '#e8f5e9' : '#ffebee',
-          border: `1px solid ${isCorrect ? '#4caf50' : '#f44336'}`,
-        }}>
-          <p style={{ margin: '0.5rem 0', fontWeight: 'bold' }}>
+        <div className={`${styles.feedbackBox} ${isCorrect ? styles.feedbackBoxCorrect : styles.feedbackBoxIncorrect}`}>
+          <p className={styles.feedbackMessage}>
             {isCorrect ? '✅ Correct!' : '❌ Incorrect'}
           </p>
           {explanation && (
-            <p style={{ margin: '0.5rem 0' }}>
+            <p className={styles.feedbackExplanation}>
               <strong>Explanation:</strong> {explanation}
             </p>
           )}
@@ -119,15 +88,7 @@ const Quiz = ({ question, options, correctAnswer, explanation, className = '' })
       {submitted ? (
         <button
           onClick={handleReset}
-          style={{
-            marginTop: '1rem',
-            padding: '0.5rem 1rem',
-            backgroundColor: '#2196f3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
+          className={`${styles.quizButton} ${styles.quizButtonSecondary}`}
         >
           Try Again
         </button>
@@ -135,15 +96,7 @@ const Quiz = ({ question, options, correctAnswer, explanation, className = '' })
         selectedOption && (
           <button
             onClick={() => handleSubmit(selectedOption)}
-            style={{
-              marginTop: '1rem',
-              padding: '0.5rem 1rem',
-              backgroundColor: '#4caf50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
+            className={`${styles.quizButton} ${styles.quizButtonSuccess}`}
           >
             Submit Answer
           </button>

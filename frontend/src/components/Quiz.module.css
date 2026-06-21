@@ -1,0 +1,184 @@
+/**
+ * Quiz Component Styles
+ * Theme-aware styling with WCAG AA compliance
+ */
+
+.quizContainer {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  background-color: var(--ifm-card-background-color);
+}
+
+[data-theme='dark'] .quizContainer {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.quizQuestion {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--ifm-heading-color);
+  font-size: var(--font-size-h3);
+  font-weight: 600;
+}
+
+.quizOptionsContainer {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Quiz Options - Default State */
+.quizOption {
+  padding: var(--spacing-sm);
+  margin: var(--spacing-xs) 0;
+  cursor: pointer;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--radius-sm);
+  background-color: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  transition: all 0.2s ease-out;
+  display: flex;
+  align-items: center;
+}
+
+.quizOption:hover {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-primary);
+}
+
+.quizOption:focus-within {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+[data-theme='dark'] .quizOption {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+[data-theme='dark'] .quizOption:hover {
+  background-color: var(--ifm-card-background-color);
+  border-color: var(--ifm-color-primary);
+}
+
+/* Quiz Option - Selected (Before Submit) */
+.quizOptionSelected {
+  background-color: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .quizOptionSelected {
+  background-color: rgba(37, 194, 160, 0.15);
+  border-color: var(--ifm-color-primary);
+}
+
+/* Quiz Option - Correct Answer (After Submit) */
+.quizOptionCorrect {
+  background-color: var(--ifm-color-success-lightest);
+  border: 2px solid var(--ifm-color-success);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .quizOptionCorrect {
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: var(--ifm-color-success);
+}
+
+/* Quiz Option - Incorrect Answer (After Submit) */
+.quizOptionIncorrect {
+  background-color: var(--ifm-color-danger-lightest);
+  border: 2px solid var(--ifm-color-danger);
+}
+
+[data-theme='dark'] .quizOptionIncorrect {
+  background-color: rgba(244, 67, 54, 0.15);
+  border-color: var(--ifm-color-danger);
+}
+
+/* Quiz Option - Other (After Submit) */
+.quizOptionDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quizOptionInput {
+  margin-right: var(--spacing-xs);
+}
+
+/* Feedback Box */
+.feedbackBox {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border-width: 1px;
+  border-style: solid;
+}
+
+.feedbackBoxCorrect {
+  background-color: var(--ifm-color-success-lightest);
+  border-color: var(--ifm-color-success);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .feedbackBoxCorrect {
+  background-color: rgba(76, 175, 80, 0.15);
+  border-color: var(--ifm-color-success);
+}
+
+.feedbackBoxIncorrect {
+  background-color: var(--ifm-color-danger-lightest);
+  border-color: var(--ifm-color-danger);
+  color: var(--ifm-font-color-base);
+}
+
+[data-theme='dark'] .feedbackBoxIncorrect {
+  background-color: rgba(244, 67, 54, 0.15);
+  border-color: var(--ifm-color-danger);
+}
+
+.feedbackMessage {
+  margin: var(--spacing-xs) 0;
+  font-weight: 600;
+}
+
+.feedbackExplanation {
+  margin: var(--spacing-xs) 0;
+}
+
+/* Buttons */
+.quizButton {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-out;
+}
+
+.quizButtonPrimary {
+  background-color: var(--ifm-color-primary);
+  color: #ffffff;
+}
+
+.quizButtonPrimary:hover {
+  background-color: var(--ifm-color-primary-dark);
+}
+
+.quizButtonSecondary {
+  background-color: var(--ifm-color-secondary);
+  color: #ffffff;
+}
+
+.quizButtonSecondary:hover {
+  background-color: var(--ifm-color-secondary-dark);
+}
+
+.quizButtonSuccess {
+  background-color: var(--ifm-color-success);
+  color: #ffffff;
+}
+
+.quizButtonSuccess:hover {
+  background-color: var(--ifm-color-success-dark);
+}

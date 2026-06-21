@@ -1,0 +1,82 @@
+/**
+ * HeroSection Component Styles
+ * Modern gradient hero with responsive typography
+ */
+
+.hero {
+  padding: var(--spacing-2xl) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-primary) 0%,
+    var(--ifm-color-primary-dark) 50%,
+    var(--ifm-color-primary-darker) 100%
+  );
+}
+
+[data-theme='dark'] .hero {
+  background: linear-gradient(
+    135deg,
+    var(--ifm-color-primary-darker) 0%,
+    var(--ifm-color-primary-dark) 50%,
+    var(--ifm-color-primary) 100%
+  );
+}
+
+.heroContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.heroTitle {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-tight);
+  color: #ffffff;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+.heroTagline {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-normal);
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: var(--spacing-md);
+  font-weight: 400;
+}
+
+.heroDescription {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Responsive: Mobile */
+@media screen and (max-width: 767px) {
+  .hero {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .heroTitle {
+    font-size: calc(var(--font-size-h1) * 0.75); /* 30px */
+  }
+
+  .heroTagline {
+    font-size: var(--font-size-body);
+  }
+
+  .heroDescription {
+    font-size: var(--font-size-small);
+  }
+}
+
+/* Responsive: Tablet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .heroTitle {
+    font-size: calc(var(--font-size-h1) * 0.9); /* 36px */
+  }
+}

@@ -1,0 +1,119 @@
+/**
+ * ModuleCard Component Styles
+ * Clickable card with module info, timeline, and subtle animations
+ */
+
+.moduleCard {
+  display: block;
+  padding: var(--spacing-md);
+  background: var(--ifm-card-background-color);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-left: 4px solid; /* Color set via inline style with accentColor prop */
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+  min-height: 180px;
+  position: relative;
+}
+
+.moduleCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-right-color: var(--ifm-color-emphasis-300);
+  text-decoration: none;
+}
+
+[data-theme='dark'] .moduleCard {
+  border-right-color: var(--ifm-color-emphasis-300);
+  border-top-color: var(--ifm-color-emphasis-300);
+  border-bottom-color: var(--ifm-color-emphasis-300);
+}
+
+[data-theme='dark'] .moduleCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Focus state for keyboard navigation */
+.moduleCard:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .moduleCard {
+    transition: none;
+  }
+
+  .moduleCard:hover {
+    transform: none;
+  }
+}
+
+.moduleCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.moduleNumber {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ifm-color-primary);
+}
+
+.durationBadge {
+  font-size: var(--font-size-small);
+  color: var(--ifm-color-secondary-darker);
+  font-weight: 500;
+}
+
+[data-theme='dark'] .durationBadge {
+  color: var(--ifm-color-secondary-lighter);
+}
+
+.moduleCardTitle {
+  font-size: var(--font-size-h3);
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs);
+  color: var(--ifm-heading-color);
+  line-height: var(--line-height-tight);
+}
+
+.moduleCardSubtitle {
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  margin: 0 0 var(--spacing-xs);
+  color: var(--ifm-color-secondary-darkest);
+}
+
+[data-theme='dark'] .moduleCardSubtitle {
+  color: var(--ifm-color-secondary-lighter);
+}
+
+.moduleCardDescription {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-normal);
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0 0 var(--spacing-sm);
+
+  /* Truncate to 3 lines with ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme='dark'] .moduleCardDescription {
+  color: var(--ifm-color-secondary-lighter);
+}
+
+/* Touch target compliance */
+.moduleCard {
+  min-height: 44px;
+}
